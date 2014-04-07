@@ -17,6 +17,11 @@ public class ProyectoFinal {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        // TODO code application logic here
+        //Crea un nuevo objeto Principal
+        Juego juego = new Juego();
+        //Despliega la ventana en pantalla al hacerla visible
+        juego.setVisible(true);
     }
     
 }
