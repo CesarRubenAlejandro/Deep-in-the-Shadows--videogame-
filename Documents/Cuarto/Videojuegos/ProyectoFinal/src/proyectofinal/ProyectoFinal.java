@@ -8,7 +8,7 @@ package proyectofinal;
 
 /**
  *
- * @author Aaron
+ * @author Cesar, Luis, Maribel, Angela
  */
 public class ProyectoFinal {
 
