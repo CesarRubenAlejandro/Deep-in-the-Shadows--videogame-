@@ -27,11 +27,12 @@ import java.util.LinkedList;
 public class Juego extends JFrame implements Runnable, KeyListener, MouseListener {
 
     // Declarar todas las variable
+    private Image dbImage;    // Imagen a proyectar	 
+    private Graphics dbg;	// Objeto grafico
     //Constructor
     public Juego() {
-        setTitle("JFrame Breaking Blocks");
+        setTitle("Deep in the shadows");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(200, 200);
         this.setSize(800, 600); //tamaño del jframe
 
         //HILO
@@ -97,7 +98,22 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @param g es el <code>objeto grafico</code> usado para dibujar.
      */
     public void paint(Graphics g) {
-       
+    // Inicializan el DoubleBuffer
+        if (dbImage == null) {
+            dbImage = createImage(this.getSize().width, this.getSize().height);
+            dbg = dbImage.getGraphics();
+        }
+
+        // Actualiza la imagen de fondo.
+        dbg.setColor(getBackground());
+        dbg.fillRect(0, 0, this.getSize().width, this.getSize().height);
+
+        // Actualiza el Foreground.
+        dbg.setColor(getForeground());
+        paint1(dbg);
+
+        // Dibuja la imagen actualizada
+        g.drawImage(dbImage, 0, 0, this);   
     }
 
     /**
@@ -108,7 +124,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @param g es el <code>objeto grafico</code> usado para dibujar.
      */
     public void paint1(Graphics g) {
-
+        //validacion si el juego continua o ya perdio
+        if (true) {	
+            g.drawString("Empezo el juego", 20, 20);
+        } else {
+            //g.drawImage(gameover, 0, 0, this);
+        }
     }
 
     /**
