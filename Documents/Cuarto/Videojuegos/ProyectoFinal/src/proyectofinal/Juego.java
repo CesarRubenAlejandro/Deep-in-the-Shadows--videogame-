@@ -29,12 +29,41 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     // Declarar todas las variable
     private Image dbImage;    // Imagen a proyectar	 
     private Graphics dbg;	// Objeto grafico
+    
+    
+    private int nivel; // Nivel actual
+    private boolean menu; // Bandera para indicar la pantalla de menu
+    private boolean instrucciones; // Bandera para indicar la pantalla de instrucciones
+    private boolean ajustes; // Bandera para indicar la pantalla de ajustes
+    private boolean creditos; // Bandera para indicar la pantalla de creditos
+    private boolean puntajes; // Bandera para indicar la pantalla de puntajes
+    
+    private Image imFondoMenu;
+    
+    private Boton botInstrucciones;
+    
+    
     //Constructor
     public Juego() {
         setTitle("Deep in the shadows");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800, 600); //tamaño del jframe
-
+        addKeyListener(this);
+        addMouseListener(this);
+        
+        imFondoMenu = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/Menu.jpg")); // imagen de fondo del menu
+        
+        nivel = 0;// Nivel 0 indica que todavia no inicia
+        menu = true; // comenzamos en el menu
+        // Las demas pantallas estan apagadas
+        instrucciones = false; 
+        ajustes = false;
+        creditos = false;
+        puntajes = false;
+        
+       // botInstrucciones = new Boton(0,0);
+       // Image botInst = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonInst.png"));
+       // botInstrucciones.getAnima().sumaCuadro(botInst, 300);
         //HILO
         Thread th = new Thread(this);
         // Empieza el hilo
@@ -124,12 +153,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @param g es el <code>objeto grafico</code> usado para dibujar.
      */
     public void paint1(Graphics g) {
-        //validacion si el juego continua o ya perdio
-        if (true) {	
-            g.drawString("Empezo el juego", 20, 20);
-        } else {
-            //g.drawImage(gameover, 0, 0, this);
-        }
+       if (menu){
+           g.drawImage(imFondoMenu,0,0,this);
+       }
     }
 
     /**
