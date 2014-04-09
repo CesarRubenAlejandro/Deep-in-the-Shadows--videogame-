@@ -21,7 +21,12 @@ public class Boton extends Base{
      * @param posY es la posicion en y del boton
      */
     public Boton (int posX, int posY) {
-        super(posX, posY);    
+        super(posX, posY);  
+
+        anima= new Animacion();
+
+        anima = new Animacion();
+
     }
     
     

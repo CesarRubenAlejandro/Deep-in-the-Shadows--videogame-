@@ -7,7 +7,7 @@ package proyectofinal;
 
 /**
  *
- * @author Aaron
+ * @author Cesar Rodriguez, Angela Romo, Luis Reyna, Maribel Pastrana
  */
 import javax.swing.JFrame;
 import java.awt.Graphics;
@@ -29,20 +29,42 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     // Declarar todas las variable
     private Image dbImage;    // Imagen a proyectar	 
     private Graphics dbg;	// Objeto grafico
-    
-    
+
     private int nivel; // Nivel actual
     private boolean menu; // Bandera para indicar la pantalla de menu
     private boolean instrucciones; // Bandera para indicar la pantalla de instrucciones
     private boolean ajustes; // Bandera para indicar la pantalla de ajustes
     private boolean creditos; // Bandera para indicar la pantalla de creditos
     private boolean puntajes; // Bandera para indicar la pantalla de puntajes
-    
+    private boolean gameOver; // Bandera para indicar la pantalla de Game Over
+
+    //BOTONES
+    private Boton botonCreditos; // Boton para ir a la pantalla de Creditos
+    private Boton botonIniciar; // Boton para ir al nivel 1 del juego
+    private Boton botonInstrucciones; // Boton para ir a la pantalla de Instrucciones
+    private Boton botonAjustes; // Boton para ir a la pantalla de Ajustes
+    private Boton botonMejPuntajes; // Boton para ir a la pantalla de Mejores Puntajes
+    private Boton botonRegresa; // Boton para ir a la pantalla de Menu
+
+    //Imagenes botones
+    private Image imagenBotonCreditos; 
+    private Image imagenBotonInstrucciones;
+    private Image imagenBotonIniciar;
+    private Image imagenBotonAjustes;
+    private Image imagenBotonMejPuntajes;
+    private Image imagenBotonRegresa;
+
+    // fondos
     private Image imFondoMenu;
-    
-    private Boton botInstrucciones;
-    
-    
+    private Image imFondoAjustes;
+    private Image imFondoCreditos;
+    private Image imFondoPuntajes;
+    private Image imFondoInstrucciones;
+    private Image imFondoGameOver;
+    private Image imFondoNivel1;
+    private Image imFondoNivel2;
+    private Image imFondoNivel3;
+
     //Constructor
     public Juego() {
         setTitle("Deep in the shadows");
@@ -50,20 +72,69 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         this.setSize(800, 600); //tamaño del jframe
         addKeyListener(this);
         addMouseListener(this);
-        
+
+        imagenBotonCreditos = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonCreditos.png"));
+        imagenBotonInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonInstruc.png"));
+        imagenBotonIniciar = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonIniciar.png"));
+        imagenBotonAjustes = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonAjustes.png"));
+        imagenBotonMejPuntajes = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonMPuntaje.png"));
+        imagenBotonRegresa = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonRegresa.png"));
+
+        //Los botones se crean y se posicionan al centro del JFrame uno debajo de otro
+        botonCreditos = new Boton(0, 0);
+        botonCreditos.getAnima().sumaCuadro(imagenBotonCreditos, 300);
+        botonCreditos.setPosX(getWidth() / 2 - botonCreditos.getAncho() / 2);
+        botonCreditos.setPosY(getHeight() / 2 + 200);
+
+        botonInstrucciones = new Boton(0, 0);
+        botonInstrucciones.getAnima().sumaCuadro(imagenBotonInstrucciones, 300);
+        botonInstrucciones.setPosX(getWidth() / 2 - botonInstrucciones.getAncho() / 2);
+        botonInstrucciones.setPosY(getHeight() / 2 + 50);
+
+        botonIniciar = new Boton(0, 0);
+        botonIniciar.getAnima().sumaCuadro(imagenBotonIniciar, 300);
+        botonIniciar.setPosX(getWidth() / 2 - botonIniciar.getAncho() / 2);
+        botonIniciar.setPosY(getHeight() / 2);
+
+        botonAjustes = new Boton(0, 0);
+        botonAjustes.getAnima().sumaCuadro(imagenBotonAjustes, 300);
+        botonAjustes.setPosX(getWidth() / 2 - botonAjustes.getAncho() / 2);
+        botonAjustes.setPosY(getHeight() / 2 + 100);
+
+        botonMejPuntajes = new Boton(0, 0);
+        botonMejPuntajes.getAnima().sumaCuadro(imagenBotonMejPuntajes, 300);
+        botonMejPuntajes.setPosX(getWidth() / 2 - botonMejPuntajes.getAncho() / 2);
+        botonMejPuntajes.setPosY(getHeight() / 2 + 150);
+
+        botonRegresa = new Boton(0, 0);
+        botonRegresa.getAnima().sumaCuadro(imagenBotonRegresa, 300);
+        botonRegresa.setPosX(getWidth() / 2 - botonRegresa.getAncho() / 2);
+        botonRegresa.setPosY(getHeight() - 55);
+
+        //Se inicializan las imagenes de Fondo
+
         imFondoMenu = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/Menu.jpg")); // imagen de fondo del menu
-        
+        imFondoAjustes = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/ajustes.jpg"));
+        imFondoPuntajes = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/puntajes.jpg"));
+        imFondoCreditos = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/creditos.jpg"));
+        imFondoNivel1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/nivel1.jpg"));
+        imFondoNivel2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/nivel2.jpg"));
+        imFondoNivel3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/nivel3.jpg"));
+        imFondoInstrucciones =  Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
+
+        imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
+        imFondoGameOver = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/gameOver.jpg"));
+
+
         nivel = 0;// Nivel 0 indica que todavia no inicia
         menu = true; // comenzamos en el menu
         // Las demas pantallas estan apagadas
-        instrucciones = false; 
+        instrucciones = false;
         ajustes = false;
         creditos = false;
         puntajes = false;
-        
-       // botInstrucciones = new Boton(0,0);
-       // Image botInst = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonInst.png"));
-       // botInstrucciones.getAnima().sumaCuadro(botInst, 300);
+        gameOver = false;
+
         //HILO
         Thread th = new Thread(this);
         // Empieza el hilo
@@ -86,19 +157,18 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      */
     public void run() {
 
-        //si esta pausado no actualizas ni checas colision 
-        if (true) {
+        while (true) {
             actualiza();
             checaColision();
-        }
-        repaint(); // Se actualiza el <code>JFrame</code> repintando el contenido.
-        try {
-            // El thread se duerme.
-            Thread.sleep(80);
-        } catch (InterruptedException ex) {
-            System.out.println("Error en " + ex.toString());
-        }
 
+            repaint(); // Se actualiza el <code>JFrame</code> repintando el contenido.
+            try {
+                // El thread se duerme.
+                Thread.sleep(80);
+            } catch (InterruptedException ex) {
+                System.out.println("Error en " + ex.toString());
+            }
+        }
     }
 
     /**
@@ -127,7 +197,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @param g es el <code>objeto grafico</code> usado para dibujar.
      */
     public void paint(Graphics g) {
-    // Inicializan el DoubleBuffer
+        // Inicializan el DoubleBuffer
         if (dbImage == null) {
             dbImage = createImage(this.getSize().width, this.getSize().height);
             dbg = dbImage.getGraphics();
@@ -142,7 +212,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         paint1(dbg);
 
         // Dibuja la imagen actualizada
-        g.drawImage(dbImage, 0, 0, this);   
+        g.drawImage(dbImage, 0, 0, this);
     }
 
     /**
@@ -153,10 +223,56 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @param g es el <code>objeto grafico</code> usado para dibujar.
      */
     public void paint1(Graphics g) {
-       if (menu){
-           g.drawImage(imFondoMenu,0,0,this);
-       }
+
+       
+        // Si esta prendida la variable menu, pintar el fondo correspondiente y los botones necesarios
+        if (menu) {
+            g.drawImage(imFondoMenu, 0, 0, this);
+            g.drawImage(botonIniciar.getImagenI(), botonIniciar.getPosX(), botonIniciar.getPosY(), this);
+            g.drawImage(botonInstrucciones.getImagenI(), botonInstrucciones.getPosX(), botonInstrucciones.getPosY(), this);
+            g.drawImage(botonCreditos.getImagenI(), botonCreditos.getPosX(), botonCreditos.getPosY(), this);
+            g.drawImage(botonAjustes.getImagenI(), botonAjustes.getPosX(), botonAjustes.getPosY(), this);
+            g.drawImage(botonMejPuntajes.getImagenI(), botonMejPuntajes.getPosX(), botonMejPuntajes.getPosY(), this);
+        }
+        //Si esta prendida la variable ajustes, pintar el fondo correspondiente y el boton de regresar
+        if (ajustes) {
+            g.drawImage(imFondoAjustes, 0, 0, this);
+            g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
+        }
+         //Si esta prendida la variable creditos, pintar el fondo correspondiente y el boton de regresar
+        if (creditos) {
+            g.drawImage(imFondoCreditos, 0, 0, this);
+            g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
+        }
+         //Si esta prendida la variable puntajes, pintar el fondo correspondiente y el boton de regresar
+        if (puntajes) {
+            g.drawImage(imFondoPuntajes, 0, 0, this);
+            g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
+        }
+         //Si esta prendida la variable instrucciones, pintar el fondo correspondiente y el boton de regresar
+        if (instrucciones) {
+            g.drawImage(imFondoInstrucciones, 0, 0, this);
+            g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
+        }
+        //Si se termino el juego, pintar el fondo de GameOver y el boton de regresar
+        if (gameOver){
+            g.drawImage(imFondoGameOver, 0, 0, this);
+            g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
+
+        }
+        
+        if( !menu && nivel == 1){
+            g.drawImage(imFondoNivel1,0,0,this);
+        }
+        
+        if (!menu && nivel == 2){
+            g.drawImage (imFondoNivel2,0,0,this);
+        }
+        if(!menu && nivel == 3){
+            g.drawImage (imFondoNivel3,0,0,this);
+        }
     }
+   
 
     /**
      * Metodo <I>keyTyped</I> sobrescrito de la interface
@@ -168,7 +284,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * teclas.
      */
     public void keyTyped(KeyEvent e) {
-        
+
     }
 
     /**
@@ -192,7 +308,23 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @param e es el <code>evento</code> que se genera en al soltar las teclas.
      */
     public void keyReleased(KeyEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        //Para la entrega Alpha, una vez que se haya inicado el juego, se presiona la tecla 2 para ir al nivel 2, la tecla 3 para ir al nivel 3
+        // y la tecla G para terminar el juego
+        if (nivel > 0) {
+            if (e.getKeyCode() == KeyEvent.VK_G) {
+                gameOver = true;
+                nivel = 0;
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_2) {
+                nivel = 2;
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_3) {
+                nivel = 3;
+            }
+        }
 
     }
 
@@ -203,7 +335,44 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      */
     public void mouseClicked(MouseEvent e) {
 
+        int clickX = e.getX();
+        int clickY = e.getY();
+        //Si estas en la pantalla de menu, checar si se da click en los botones correspondientes
+        if (menu) {
+            if (botonIniciar.clickEnPersonaje(clickX, clickY)) {
+                nivel = 1;
+                menu = false;
+
+            } else if (botonAjustes.clickEnPersonaje(clickX, clickY)) {
+                ajustes = true;
+                menu = false;
+
+            } else if (botonCreditos.clickEnPersonaje(clickX, clickY)) {
+                creditos = true;
+                menu = false;
+
+            } else if (botonMejPuntajes.clickEnPersonaje(clickX, clickY)) {
+                puntajes = true;
+                menu = false;
+
+            } else if (botonInstrucciones.clickEnPersonaje(clickX, clickY)) {
+                instrucciones = true;
+                menu = false;
+            }
+        } //Si no estas en la pantalla de menu, checar si se da click en el boton de Regresar
+        else if (ajustes || creditos || puntajes || instrucciones || gameOver) {
+            if (botonRegresa.clickEnPersonaje(clickX, clickY)) {
+                menu = true;
+                instrucciones = false;
+                puntajes = false;
+                creditos = false;
+                ajustes = false;
+                gameOver = false;
+            }
+        }
+
     }
+
 
     /**
      * Metodo mousePressed sobrescrito de la interface MouseListener. En este
