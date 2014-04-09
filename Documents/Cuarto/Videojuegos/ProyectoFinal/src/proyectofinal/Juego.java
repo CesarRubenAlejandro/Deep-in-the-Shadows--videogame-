@@ -371,41 +371,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
         }
 
-        int clickX = e.getX();
-        int clickY = e.getY();
-        //Si estas en la pantalla de menu, checar si se da click en los botones correspondientes
-        if (menu) {
-            if (botonIniciar.clickEnPersonaje(clickX, clickY)) {
-                nivel = 1;
-                menu = false;
-
-            } else if (botonAjustes.clickEnPersonaje(clickX, clickY)) {
-                ajustes = true;
-                menu = false;
-
-            } else if (botonCreditos.clickEnPersonaje(clickX, clickY)) {
-                creditos = true;
-                menu = false;
-
-            } else if (botonMejPuntajes.clickEnPersonaje(clickX, clickY)) {
-                puntajes = true;
-                menu = false;
-
-            } else if (botonInstrucciones.clickEnPersonaje(clickX, clickY)) {
-                instrucciones = true;
-                menu = false;
-            }
-        } //Si no estas en la pantalla de menu, checar si se da click en el boton de Regresar
-        else if (ajustes || creditos || puntajes || instrucciones || gameOver) {
-            if (botonRegresa.clickEnPersonaje(clickX, clickY)) {
-                menu = true;
-                instrucciones = false;
-                puntajes = false;
-                creditos = false;
-                ajustes = false;
-                gameOver = false;
-            }
-        }
+       
 
     }
 
