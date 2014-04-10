@@ -32,11 +32,9 @@ public class Personaje extends Base {
      * Metodo constructor que hereda los atributos de la clase
      * <code>Base</code>.
      *
-     * @param posX es la <code>posiscion en x</code> del objeto elefante.
-     * @param posY es el <code>posiscion en y</code> del objeto elefante.
-     * @param elefN es la <code>imagen</code> del los objetos elefs.
+     * @param posX es la <code>posiscion en x</code> del objeto 
+     * @param posY es el <code>posiscion en y</code> del objeto 
      * @param anima es la <code>Animacion</code> del objeto elefante.
-     * @param num es la cantidad de elefes <code>Int</code> del objeto elefante.
      */
     public Personaje(int posX, int posY) {
         super(posX, posY);

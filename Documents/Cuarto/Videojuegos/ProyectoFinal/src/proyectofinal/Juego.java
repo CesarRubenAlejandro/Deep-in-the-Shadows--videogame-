@@ -42,7 +42,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
     //Actores
     private Personaje jhon;
-    private Enemigo enemigo;
+    private Enemigo momia;
+    private Enemigo cobra;
     private Diamante diamante;
     private Plataforma plataforma;
     private Piedra piedra;
@@ -141,6 +142,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         plataforma= new Plataforma(0,200+jhon.getAlto());
         piedra = new Piedra(this.getWidth()-110,this.getHeight()-110);
         picos= new Picos(20,20);
+        
+        cobra = new Enemigo (500,180);
+        Image cob =  Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpiente.png"));
+        cobra.getAnima().sumaCuadro(cob, 100);
+        
+        momia = new Enemigo (400,300);
+        Image mom = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia2.png"));
+        momia.getAnima().sumaCuadro(mom, 100);
         
         nivel = 0;// Nivel 0 indica que todavia no inicia
         menu = true; // comenzamos en el menu
@@ -316,6 +325,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(plataforma.getImagenI(), plataforma.getPosX(), plataforma.getPosY(), this);
+            
+            g.drawImage(momia.getImagenI(), momia.getPosX(), momia.getPosY(), this);
+            
+            g.drawImage (cobra.getImagenI(), cobra.getPosX(), cobra.getPosY(), this);
         }
         
         if (!menu && nivel == 2){
@@ -328,6 +341,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawImage(plataforma.getImagenI(), plataforma.getPosX(), plataforma.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(picos.getImagenI(), picos.getPosX(), picos.getPosY(), this);
+            
+            g.drawImage(momia.getImagenI(), momia.getPosX(), momia.getPosY(), this);
+            
+            g.drawImage (cobra.getImagenI(), cobra.getPosX(), cobra.getPosY(), this);
         }
         if(!menu && nivel == 3){
             g.drawImage (imFondoNivel3,0,0,this);
@@ -341,6 +358,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawImage(picos.getImagenI(), picos.getPosX(), picos.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(piedra.getImagenI(), piedra.getPosX(), piedra.getPosY(), this);
+            
+            g.drawImage(momia.getImagenI(), momia.getPosX(), momia.getPosY(), this);
+            
+            g.drawImage (cobra.getImagenI(), cobra.getPosX(), cobra.getPosY(), this);
         }
     }
    
@@ -522,15 +543,15 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     /**
      * @return the enemigo
      */
-    public Enemigo getEnemigo() {
-        return enemigo;
-    }
+    ///public Enemigo getEnemigo() {
+      //  return enemigo;
+   // }
 
     /**
      * @param enemigo the enemigo to set
      */
-    public void setEnemigo(Enemigo enemigo) {
-        this.enemigo = enemigo;
-    }
+  //  public void setEnemigo(Enemigo enemigo) {
+   //     this.enemigo = enemigo;
+   // }
 
 }

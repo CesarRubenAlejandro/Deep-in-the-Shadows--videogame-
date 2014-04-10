@@ -34,14 +34,13 @@ public class Enemigo extends Base {
      *
      * @param posX es la <code>posiscion en x</code> del objeto elefante.
      * @param posY es el <code>posiscion en y</code> del objeto elefante.
-     * @param elefN es la <code>imagen</code> del los objetos elefs.
      * @param anima es la <code>Animacion</code> del objeto elefante.
-     * @param num es la cantidad de elefes <code>Int</code> del objeto elefante.
      */
     public Enemigo(int posX, int posY) {
         super(posX, posY);
+        anima = new Animacion();
         //Se cargan las imágenes(cuadros) para la animación
-        Image corre1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/corre1.gif"));
+      /*  Image corre1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/corre1.gif"));
         Image corre2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/corre2.gif"));
         Image corre3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/corre4.gif"));
         Image corre4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/corre5.gif"));
@@ -51,7 +50,7 @@ public class Enemigo extends Base {
         anima.sumaCuadro(corre1, 100);
         anima.sumaCuadro(corre2, 100);
         anima.sumaCuadro(corre3, 100);
-        anima.sumaCuadro(corre4, 100);
+        anima.sumaCuadro(corre4, 100);*/
     }
     /**
      * Metodo que hace llamada al metodo de anima para actualizar la imagen segun el tiempo
@@ -61,5 +60,8 @@ public class Enemigo extends Base {
      */
     public void actualiza(long tiempo) {
         anima.actualiza(tiempo);
+    }
+    public Animacion getAnima(){
+        return anima;
     }
 }
