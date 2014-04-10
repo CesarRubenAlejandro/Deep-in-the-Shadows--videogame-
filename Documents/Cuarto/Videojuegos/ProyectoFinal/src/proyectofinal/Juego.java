@@ -31,6 +31,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Graphics dbg;	// Objeto grafico
 
     private int nivel; // Nivel actual
+    private int direccion;
     private boolean menu; // Bandera para indicar la pantalla de menu
     private boolean instrucciones; // Bandera para indicar la pantalla de instrucciones
     private boolean ajustes; // Bandera para indicar la pantalla de ajustes
@@ -42,6 +43,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     //Actores
     private Personaje jhon;
     private Enemigo enemigo;
+    private Diamante diamante;
     //BOTONES
     private Boton botonCreditos; // Boton para ir a la pantalla de Creditos
     private Boton botonIniciar; // Boton para ir al nivel 1 del juego
@@ -131,6 +133,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         //se inicializan actores
         jhon = new Personaje(200,200);
+        diamante= new Diamante(300,200);
         
         
         nivel = 0;// Nivel 0 indica que todavia no inicia
@@ -184,9 +187,38 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * las variables.
      */
     public void actualiza() {
+        switch (direccion) {
+                case 1: {
+//                        if (!ladoIzq && balonMove) {
+                            jhon.setPosY(jhon.getPosY() - 4);
+                            break;    //se mueve hacia izquierda
+//                        }
+
+                    }
+                case 2: {
+//                    if (!ladoDer && balonMove) {
+                        jhon.setPosY(jhon.getPosY() + 4);
+                        break;    //se mueve hacia derecha
+//                    }
+                }
+                case 3: {
+//                    if (!ladoIzq && balonMove) {
+                        jhon.setPosX(jhon.getPosX() - 4);
+                        break;    //se mueve hacia izquierda
+//                    }
+
+                }
+                case 4: {
+//                    if (!ladoDer && balonMove) {
+                        jhon.setPosX(jhon.getPosX() + 4);
+                        break;    //se mueve hacia derecha
+//                    }
+                }
+            }
          long tiempoTranscurrido =System.currentTimeMillis() - getTiempoActual();
         setTiempoActual(getTiempoActual() + tiempoTranscurrido);
         getJhon().actualiza(tiempoTranscurrido);
+        diamante.actualiza(tiempoTranscurrido);
     }
 
     /**
@@ -196,7 +228,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      */
     public void checaColision() {
         //revisa si la barra intenta salir del JFrame  
-
+        if(jhon.getPosX()>this.getWidth()-jhon.getAncho() || jhon.getPosX()<0 || jhon.getPosY()>this.getHeight()-jhon.getAlto() || jhon.getPosY()<0) direccion= 0;
     }
 
     /**
@@ -274,17 +306,23 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawImage(imFondoNivel1,0,0,this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), this);
+            //Dibuja la imagen en la posicion actualizada
+            g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
         }
         
         if (!menu && nivel == 2){
             g.drawImage (imFondoNivel2,0,0,this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), this);
+            //Dibuja la imagen en la posicion actualizada
+            g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
         }
         if(!menu && nivel == 3){
             g.drawImage (imFondoNivel3,0,0,this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), this);
+            //Dibuja la imagen en la posicion actualizada
+            g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
         }
     }
    
@@ -311,7 +349,15 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @param e es el <code>evento</code> generado al presionar las teclas.
      */
     public void keyPressed(KeyEvent e) {
-
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {    //Presiono flecha izquierda
+            direccion = 3;
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {    //Presiono flecha derecha
+            direccion = 4;
+        }else if (e.getKeyCode() == KeyEvent.VK_UP) {    //Presiono flecha derecha
+            direccion = 1;
+        }else if (e.getKeyCode() == KeyEvent.VK_DOWN) {    //Presiono flecha derecha
+            direccion = 2;
+        }
     }
 
     /**
