@@ -20,10 +20,6 @@ import java.awt.Toolkit;
 import java.awt.Color;
 import java.util.LinkedList;
 
-/**
- *
- * @author Cesar , Angela A01036009, A01139764
- */
 public class Juego extends JFrame implements Runnable, KeyListener, MouseListener {
 
     // Declarar todas las variable
@@ -41,7 +37,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private long tiempoActual;
 
     //Actores
-    private Personaje jhon;
+    private Personaje jhon; 
     private Enemigo momia;
     private Enemigo cobra;
     private Diamante diamante;
@@ -141,15 +137,19 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         diamante= new Diamante(300,200);
         plataforma= new Plataforma(0,200+jhon.getAlto());
         piedra = new Piedra(this.getWidth()-110,this.getHeight()-110);
-        picos= new Picos(20,20);
+        picos= new Picos(0,25);
         
-        cobra = new Enemigo (500,180);
+        cobra = new Enemigo (500,getHeight()-60);
         Image cob =  Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpiente.png"));
+        Image cob2 =  Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpiente2.png"));
         cobra.getAnima().sumaCuadro(cob, 100);
+        cobra.getAnima().sumaCuadro(cob2, 100);
         
-        momia = new Enemigo (400,300);
-        Image mom = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia2.png"));
+        momia = new Enemigo (0,plataforma.getPosY()-90);
+        Image mom = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia.png"));
+        Image mom2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia2.png"));
         momia.getAnima().sumaCuadro(mom, 100);
+        momia.getAnima().sumaCuadro(mom2, 100);
         
         nivel = 0;// Nivel 0 indica que todavia no inicia
         menu = true; // comenzamos en el menu
@@ -202,6 +202,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * las variables.
      */
     public void actualiza() {
+         
         switch (direccion) {
                 case 1: {
 //                        if (!ladoIzq && balonMove) {
@@ -325,10 +326,6 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(plataforma.getImagenI(), plataforma.getPosX(), plataforma.getPosY(), this);
-            
-            g.drawImage(momia.getImagenI(), momia.getPosX(), momia.getPosY(), this);
-            
-            g.drawImage (cobra.getImagenI(), cobra.getPosX(), cobra.getPosY(), this);
         }
         
         if (!menu && nivel == 2){
