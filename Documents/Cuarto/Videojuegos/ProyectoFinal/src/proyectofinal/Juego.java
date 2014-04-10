@@ -45,6 +45,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Enemigo enemigo;
     private Diamante diamante;
     private Plataforma plataforma;
+    private Piedra piedra;
+    private Picos picos;
+    
     //BOTONES
     private Boton botonCreditos; // Boton para ir a la pantalla de Creditos
     private Boton botonIniciar; // Boton para ir al nivel 1 del juego
@@ -136,6 +139,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         jhon = new Personaje(200,200);
         diamante= new Diamante(300,200);
         plataforma= new Plataforma(0,200+jhon.getAlto());
+        piedra = new Piedra(this.getWidth()-110,this.getHeight()-110);
+        picos= new Picos(20,20);
         
         nivel = 0;// Nivel 0 indica que todavia no inicia
         menu = true; // comenzamos en el menu
@@ -321,6 +326,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(plataforma.getImagenI(), plataforma.getPosX(), plataforma.getPosY(), this);
+            //Dibuja la imagen en la posicion actualizada
+            g.drawImage(picos.getImagenI(), picos.getPosX(), picos.getPosY(), this);
         }
         if(!menu && nivel == 3){
             g.drawImage (imFondoNivel3,0,0,this);
@@ -330,6 +337,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(plataforma.getImagenI(), plataforma.getPosX(), plataforma.getPosY(), this);
+            //Dibuja la imagen en la posicion actualizada
+            g.drawImage(picos.getImagenI(), picos.getPosX(), picos.getPosY(), this);
+            //Dibuja la imagen en la posicion actualizada
+            g.drawImage(piedra.getImagenI(), piedra.getPosX(), piedra.getPosY(), this);
         }
     }
    
