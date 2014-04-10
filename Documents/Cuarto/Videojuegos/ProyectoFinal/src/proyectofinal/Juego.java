@@ -37,7 +37,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private boolean creditos; // Bandera para indicar la pantalla de creditos
     private boolean puntajes; // Bandera para indicar la pantalla de puntajes
     private boolean gameOver; // Bandera para indicar la pantalla de Game Over
+    private long tiempoActual;
 
+    //Actores
+    private Personaje jhon;
+    private Enemigo enemigo;
     //BOTONES
     private Boton botonCreditos; // Boton para ir a la pantalla de Creditos
     private Boton botonIniciar; // Boton para ir al nivel 1 del juego
@@ -125,7 +129,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
         imFondoGameOver = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/gameOver.jpg"));
 
-
+        //se inicializan actores
+        jhon = new Personaje(200,200);
+        
+        
         nivel = 0;// Nivel 0 indica que todavia no inicia
         menu = true; // comenzamos en el menu
         // Las demas pantallas estan apagadas
@@ -177,7 +184,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * las variables.
      */
     public void actualiza() {
-
+         long tiempoTranscurrido =System.currentTimeMillis() - getTiempoActual();
+        setTiempoActual(getTiempoActual() + tiempoTranscurrido);
+        getJhon().actualiza(tiempoTranscurrido);
     }
 
     /**
@@ -263,13 +272,19 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         
         if( !menu && nivel == 1){
             g.drawImage(imFondoNivel1,0,0,this);
+            //Dibuja la imagen en la posicion actualizada
+            g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), this);
         }
         
         if (!menu && nivel == 2){
             g.drawImage (imFondoNivel2,0,0,this);
+            //Dibuja la imagen en la posicion actualizada
+            g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), this);
         }
         if(!menu && nivel == 3){
             g.drawImage (imFondoNivel3,0,0,this);
+            //Dibuja la imagen en la posicion actualizada
+            g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), this);
         }
     }
    
@@ -410,6 +425,48 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * componente.
      */
     public void mouseExited(MouseEvent e) {
+    }
+
+    /**
+     * @return the tiempoActual
+     */
+    public long getTiempoActual() {
+        return tiempoActual;
+    }
+
+    /**
+     * @param tiempoActual the tiempoActual to set
+     */
+    public void setTiempoActual(long tiempoActual) {
+        this.tiempoActual = tiempoActual;
+    }
+
+    /**
+     * @return the jhon
+     */
+    public Personaje getJhon() {
+        return jhon;
+    }
+
+    /**
+     * @param jhon the jhon to set
+     */
+    public void setJhon(Personaje jhon) {
+        this.jhon = jhon;
+    }
+
+    /**
+     * @return the enemigo
+     */
+    public Enemigo getEnemigo() {
+        return enemigo;
+    }
+
+    /**
+     * @param enemigo the enemigo to set
+     */
+    public void setEnemigo(Enemigo enemigo) {
+        this.enemigo = enemigo;
     }
 
 }
