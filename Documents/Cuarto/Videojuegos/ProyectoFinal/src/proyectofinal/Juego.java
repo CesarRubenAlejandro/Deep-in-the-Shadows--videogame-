@@ -36,6 +36,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private boolean gameOver; // Bandera para indicar la pantalla de Game Over
     private long tiempoActual;
     private int veloc;
+    private boolean gravedadB;
+    private double gravedad;
+    private double tP;
+    private double t;
 
     //Actores
     private Personaje jhon; 
@@ -138,13 +142,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         jhon = new Personaje(200,200);
         plataformaLst = new LinkedList();
         int ran = 3 + (int)(Math.random() * ((8 - 3) + 1));
+        System.out.println("random :" + ran);
         for(int x=0; x<ran; x++){
             int ran2= 200 + (int)(Math.random() * ((600 - 200) + 1));
             plataformaLst.add(new Plataforma(-(800-ran2),200*x));
             plataformaLst.add(new Plataforma(ran2+100,200*x));
         }
         
-        diamante= new Diamante(0,plataformaLst.get(ran/2).getPosY()-60);
+        diamante= new Diamante(0,plataformaLst.get(ran).getPosY()-60);
         //ya no se utiliza
         //plataforma= new Plataforma(0,200+jhon.getAlto()); 
         piedra = new Piedra(this.getWidth()-110,this.getHeight()-110);
@@ -171,6 +176,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         puntajes = false;
         gameOver = false;
         veloc=2;
+        gravedadB=false;
+        gravedad = 9.8;
+        tP = .1;
+        t = .15;
 
         //HILO
         Thread th = new Thread(this);
@@ -195,8 +204,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     public void run() {
 
         while (true) {
-            actualiza();
+            // cambio de colision y actualiza
             checaColision();
+            actualiza();
 
             repaint(); // Se actualiza el <code>JFrame</code> repintando el contenido.
             try {
@@ -247,9 +257,20 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         setTiempoActual(getTiempoActual() + tiempoTranscurrido);
         getJhon().actualiza(tiempoTranscurrido);
         diamante.actualiza(tiempoTranscurrido);
-        diamante.setPosY(diamante.getPosY()-veloc);
-        for(Plataforma p: plataformaLst){
-            p.setPosY(p.getPosY()-veloc);
+        if(gravedadB){
+                int y = (int) ((4 * 1 * t) - (.5 * gravedad * t * t));
+                jhon.setPosY(-y + jhon.getPosY());
+                t = t + tP;
+        }else {
+            t= .15;
+            jhon.setPosY(jhon.getPosY()-veloc);
+        }
+        //mover solo si no es el final
+        if(plataformaLst.getLast().getPosY()>400){
+            diamante.setPosY(diamante.getPosY()-veloc);
+            for(Plataforma p: plataformaLst){
+                p.setPosY(p.getPosY()-veloc);
+            }
         }
     }
 
@@ -259,8 +280,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * entre sí y con las orillas del <code>JFrame</code>.
      */
     public void checaColision() {
+        boolean b=false;
+        for(Plataforma p: plataformaLst){
+            if(p.intersecta(jhon)){
+                b=true;
+            }
+        }
+        if(b) gravedadB=false; 
+        else gravedadB=true;
         //revisa si la barra intenta salir del JFrame  
-        if(jhon.getPosX()>this.getWidth()-jhon.getAncho() || jhon.getPosX()<0 || jhon.getPosY()>this.getHeight()-jhon.getAlto() || jhon.getPosY()<0) direccion= 0;
+        if(jhon.getPosX()>this.getWidth()-jhon.getAncho() || jhon.getPosX()<0 || jhon.getPosY()>this.getHeight()-jhon.getAlto()) direccion= 0;
     }
 
     /**
