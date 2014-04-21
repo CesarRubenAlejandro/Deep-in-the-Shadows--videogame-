@@ -42,7 +42,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private double t;
 
     //Actores
-    private Personaje jhon; 
+    private Personaje jhon;
     private Enemigo momia;
     private Enemigo cobra;
     private Diamante diamante;
@@ -50,7 +50,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Plataforma plataforma; // not used
     private Piedra piedra;
     private Picos picos;
-    
+
     //BOTONES
     private Boton botonCreditos; // Boton para ir a la pantalla de Creditos
     private Boton botonIniciar; // Boton para ir al nivel 1 del juego
@@ -60,7 +60,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Boton botonRegresa; // Boton para ir a la pantalla de Menu
 
     //Imagenes botones
-    private Image imagenBotonCreditos; 
+    private Image imagenBotonCreditos;
     private Image imagenBotonInstrucciones;
     private Image imagenBotonIniciar;
     private Image imagenBotonAjustes;
@@ -125,7 +125,6 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         botonRegresa.setPosY(getHeight() - 55);
 
         //Se inicializan las imagenes de Fondo
-
         imFondoMenu = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/Menu.jpg")); // imagen de fondo del menu
         imFondoAjustes = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/ajustes.jpg"));
         imFondoPuntajes = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/puntajes.jpg"));
@@ -133,50 +132,56 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         imFondoNivel1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/nivel1.jpg"));
         imFondoNivel2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/nivel2.jpg"));
         imFondoNivel3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/nivel3.jpg"));
-        imFondoInstrucciones =  Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
+        imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
 
         imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
         imFondoGameOver = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/gameOver.jpg"));
 
         //se inicializan actores
-        jhon = new Personaje(200,200);
+        jhon = new Personaje(200, 200);
         plataformaLst = new LinkedList();
-        int ran = 3 + (int)(Math.random() * ((8 - 3) + 1));
+        int ran = 3 + (int) (Math.random() * ((8 - 3) + 1));
         System.out.println("random :" + ran);
-        for(int x=0; x<ran; x++){
-            int ran2= 200 + (int)(Math.random() * ((600 - 200) + 1));
-            plataformaLst.add(new Plataforma(-(800-ran2),200*x));
-            plataformaLst.add(new Plataforma(ran2+100,200*x));
+        for (int x = 0; x < ran; x++) {
+            int ran2 = 200 + (int) (Math.random() * ((600 - 200) + 1));
+            plataformaLst.add(new Plataforma(-(800 - ran2), 200 * x));
+            plataformaLst.add(new Plataforma(ran2 + 100, 200 * x));
         }
         
-        diamante= new Diamante(0,plataformaLst.get(ran).getPosY()-60);
+        Plataforma aux = (Plataforma) plataformaLst.get(1);
+        jhon.setPosY(aux.getPosY()-15);
+        
+
+        diamante = new Diamante(0, plataformaLst.get(ran).getPosY() - 60);
         //ya no se utiliza
         //plataforma= new Plataforma(0,200+jhon.getAlto()); 
-        piedra = new Piedra(this.getWidth()-110,this.getHeight()-110);
-        picos= new Picos(0,25);
-        
-        cobra = new Enemigo (500,getHeight()-60);
-        Image cob =  Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpiente.png"));
-        Image cob2 =  Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpiente2.png"));
+        piedra = new Piedra(this.getWidth() - 110, this.getHeight() - 110);
+        picos = new Picos(0, 25);
+
+        cobra = new Enemigo(500, getHeight() - 60);
+        Image cob = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpiente.png"));
+        Image cob2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpiente2.png"));
         cobra.getAnima().sumaCuadro(cob, 100);
         cobra.getAnima().sumaCuadro(cob2, 100);
         // CAMBIO
-        momia = new Enemigo (0,90);
+        momia = new Enemigo(0, 90);
         Image mom = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia.png"));
         Image mom2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia2.png"));
         momia.getAnima().sumaCuadro(mom, 100);
         momia.getAnima().sumaCuadro(mom2, 100);
-        
+
         nivel = 0;// Nivel 0 indica que todavia no inicia
         menu = true; // comenzamos en el menu
+        
+
         // Las demas pantallas estan apagadas
         instrucciones = false;
         ajustes = false;
         creditos = false;
         puntajes = false;
         gameOver = false;
-        veloc=2;
-        gravedadB=false;
+        veloc = 2;
+        gravedadB = false;
         gravedad = 9.8;
         tP = .1;
         t = .15;
@@ -205,9 +210,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         while (true) {
             // cambio de colision y actualiza
-            checaColision();
-            actualiza();
 
+            actualiza();
+            checaColision();
             repaint(); // Se actualiza el <code>JFrame</code> repintando el contenido.
             try {
                 // El thread se duerme.
@@ -224,52 +229,40 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * las variables.
      */
     public void actualiza() {
-         
+
         switch (direccion) {
-                case 1: {
-//                        if (!ladoIzq && balonMove) {
-                            jhon.setPosY(jhon.getPosY() - 4);
-                            break;    //se mueve hacia izquierda
-//                        }
 
-                    }
-                case 2: {
-//                    if (!ladoDer && balonMove) {
-                        jhon.setPosY(jhon.getPosY() + 4);
-                        break;    //se mueve hacia derecha
-//                    }
-                }
-                case 3: {
-//                    if (!ladoIzq && balonMove) {
-                        jhon.setPosX(jhon.getPosX() - 4);
-                        break;    //se mueve hacia izquierda
-//                    }
+            case 3: {
+//                   
+                jhon.setPosX(jhon.getPosX() - 4);
+                break;    //se mueve hacia izquierda
+//                   
 
-                }
-                case 4: {
-//                    if (!ladoDer && balonMove) {
-                        jhon.setPosX(jhon.getPosX() + 4);
-                        break;    //se mueve hacia derecha
-//                    }
-                }
             }
-         long tiempoTranscurrido =System.currentTimeMillis() - getTiempoActual();
+            case 4: {
+//                   
+                jhon.setPosX(jhon.getPosX() + 4);
+                break;    //se mueve hacia derecha
+//                   
+            }
+        }
+        long tiempoTranscurrido = System.currentTimeMillis() - getTiempoActual();
         setTiempoActual(getTiempoActual() + tiempoTranscurrido);
         getJhon().actualiza(tiempoTranscurrido);
         diamante.actualiza(tiempoTranscurrido);
-        if(gravedadB){
-                int y = (int) ((4 * 1 * t) - (.5 * gravedad * t * t));
-                jhon.setPosY(-y + jhon.getPosY());
-                t = t + tP;
-        }else {
-            t= .15;
-            jhon.setPosY(jhon.getPosY()-veloc);
+        if (gravedadB) {
+            int y = (int) ((4 * 1 * t) - (.5 * gravedad * t * t));
+            jhon.setPosY(-y + jhon.getPosY());
+            t = t + tP;
+        } else {
+            t = .15;
+            jhon.setPosY(jhon.getPosY() - veloc);
         }
         //mover solo si no es el final
-        if(plataformaLst.getLast().getPosY()>400){
-            diamante.setPosY(diamante.getPosY()-veloc);
-            for(Plataforma p: plataformaLst){
-                p.setPosY(p.getPosY()-veloc);
+        if (plataformaLst.getLast().getPosY() > 400) {
+            diamante.setPosY(diamante.getPosY() - veloc);
+            for (Plataforma p : plataformaLst) {
+                p.setPosY(p.getPosY() - veloc);
             }
         }
     }
@@ -280,16 +273,21 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * entre sí y con las orillas del <code>JFrame</code>.
      */
     public void checaColision() {
-        boolean b=false;
-        for(Plataforma p: plataformaLst){
-            if(p.intersecta(jhon)){
-                b=true;
+        boolean b = false;
+        for (Plataforma p : plataformaLst) {
+            if (p.intersecta(jhon)) {
+                b = true;
             }
         }
-        if(b) gravedadB=false; 
-        else gravedadB=true;
+        if (b) {
+            gravedadB = false;
+        } else {
+            gravedadB = true;
+        }
         //revisa si la barra intenta salir del JFrame  
-        if(jhon.getPosX()>this.getWidth()-jhon.getAncho() || jhon.getPosX()<0 || jhon.getPosY()>this.getHeight()-jhon.getAlto()) direccion= 0;
+        if (jhon.getPosX() > this.getWidth() - jhon.getAncho() || jhon.getPosX() < 0 || jhon.getPosY() > this.getHeight() - jhon.getAlto()) {
+            direccion = 0;
+        }
     }
 
     /**
@@ -326,7 +324,6 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      */
     public void paint1(Graphics g) {
 
-       
         // Si esta prendida la variable menu, pintar el fondo correspondiente y los botones necesarios
         if (menu) {
             g.drawImage(imFondoMenu, 0, 0, this);
@@ -341,44 +338,44 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawImage(imFondoAjustes, 0, 0, this);
             g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
         }
-         //Si esta prendida la variable creditos, pintar el fondo correspondiente y el boton de regresar
+        //Si esta prendida la variable creditos, pintar el fondo correspondiente y el boton de regresar
         if (creditos) {
             g.drawImage(imFondoCreditos, 0, 0, this);
             g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
         }
-         //Si esta prendida la variable puntajes, pintar el fondo correspondiente y el boton de regresar
+        //Si esta prendida la variable puntajes, pintar el fondo correspondiente y el boton de regresar
         if (puntajes) {
             g.drawImage(imFondoPuntajes, 0, 0, this);
             g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
         }
-         //Si esta prendida la variable instrucciones, pintar el fondo correspondiente y el boton de regresar
+        //Si esta prendida la variable instrucciones, pintar el fondo correspondiente y el boton de regresar
         if (instrucciones) {
             g.drawImage(imFondoInstrucciones, 0, 0, this);
             g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
         }
         //Si se termino el juego, pintar el fondo de GameOver y el boton de regresar
-        if (gameOver){
+        if (gameOver) {
             g.drawImage(imFondoGameOver, 0, 0, this);
             g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
 
         }
-        
-        if( !menu && nivel == 1){
-            g.drawImage(imFondoNivel1,0,0,this);
+
+        if (!menu && nivel == 1) {
+            g.drawImage(imFondoNivel1, 0, 0, this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
-            for(Plataforma p: plataformaLst){
+            for (Plataforma p : plataformaLst) {
                 g.drawImage(p.getImagenI(), p.getPosX(), p.getPosY(), this);
             }
             //g.drawImage(plataforma.getImagenI(), plataforma.getPosX(), plataforma.getPosY(), this);
-           
+
         }
-        
-        if (!menu && nivel == 2){
-            g.drawImage (imFondoNivel2,0,0,this);
+
+        if (!menu && nivel == 2) {
+            g.drawImage(imFondoNivel2, 0, 0, this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
@@ -387,13 +384,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             //g.drawImage(plataforma.getImagenI(), plataforma.getPosX(), plataforma.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(picos.getImagenI(), picos.getPosX(), picos.getPosY(), this);
-            
+
             g.drawImage(momia.getImagenI(), momia.getPosX(), momia.getPosY(), this);
-            
-            g.drawImage (cobra.getImagenI(), cobra.getPosX(), cobra.getPosY(), this);
+
+            g.drawImage(cobra.getImagenI(), cobra.getPosX(), cobra.getPosY(), this);
         }
-        if(!menu && nivel == 3){
-            g.drawImage (imFondoNivel3,0,0,this);
+        if (!menu && nivel == 3) {
+            g.drawImage(imFondoNivel3, 0, 0, this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
@@ -404,13 +401,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawImage(picos.getImagenI(), picos.getPosX(), picos.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(piedra.getImagenI(), piedra.getPosX(), piedra.getPosY(), this);
-            
+
             g.drawImage(momia.getImagenI(), momia.getPosX(), momia.getPosY(), this);
-            
-            g.drawImage (cobra.getImagenI(), cobra.getPosX(), cobra.getPosY(), this);
+
+            g.drawImage(cobra.getImagenI(), cobra.getPosX(), cobra.getPosY(), this);
         }
     }
-   
 
     /**
      * Metodo <I>keyTyped</I> sobrescrito de la interface
@@ -438,9 +434,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             direccion = 3;
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {    //Presiono flecha derecha
             direccion = 4;
-        }else if (e.getKeyCode() == KeyEvent.VK_UP) {    //Presiono flecha derecha
+        } else if (e.getKeyCode() == KeyEvent.VK_UP) {    //Presiono flecha derecha
             direccion = 1;
-        }else if (e.getKeyCode() == KeyEvent.VK_DOWN) {    //Presiono flecha derecha
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {    //Presiono flecha derecha
             direccion = 2;
         }
     }
@@ -504,9 +500,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 instrucciones = true;
                 menu = false;
             }
-        }
-        //Si no estas en la pantalla de menu, checar si se da click en el boton de Regresar
-        else if (ajustes || creditos || puntajes || instrucciones|| gameOver) {
+        } //Si no estas en la pantalla de menu, checar si se da click en el boton de Regresar
+        else if (ajustes || creditos || puntajes || instrucciones || gameOver) {
             if (botonRegresa.clickEnPersonaje(clickX, clickY)) {
                 menu = true;
                 instrucciones = false;
@@ -517,10 +512,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
         }
 
-       
-
     }
-
 
     /**
      * Metodo mousePressed sobrescrito de la interface MouseListener. En este
@@ -590,14 +582,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @return the enemigo
      */
     ///public Enemigo getEnemigo() {
-      //  return enemigo;
-   // }
-
+    //  return enemigo;
+    // }
     /**
      * @param enemigo the enemigo to set
      */
   //  public void setEnemigo(Enemigo enemigo) {
-   //     this.enemigo = enemigo;
-   // }
-
+    //     this.enemigo = enemigo;
+    // }
 }
