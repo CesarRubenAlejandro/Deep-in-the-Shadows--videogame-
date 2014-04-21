@@ -41,7 +41,7 @@ public class Plataforma extends Base {
     public Plataforma(int posX, int posY) {
         super(posX, posY);
         //Se cargan las imágenes(cuadros) para la animación
-        Image plataforma = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/p400.png"));
+        Image plataforma = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/p800.png"));
 
         //Se crea la animación
         anima = new Animacion();

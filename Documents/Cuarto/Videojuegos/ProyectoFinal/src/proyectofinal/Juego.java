@@ -35,13 +35,15 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private boolean puntajes; // Bandera para indicar la pantalla de puntajes
     private boolean gameOver; // Bandera para indicar la pantalla de Game Over
     private long tiempoActual;
+    private int veloc;
 
     //Actores
     private Personaje jhon; 
     private Enemigo momia;
     private Enemigo cobra;
     private Diamante diamante;
-    private Plataforma plataforma;
+    private LinkedList<Plataforma> plataformaLst;
+    private Plataforma plataforma; // not used
     private Piedra piedra;
     private Picos picos;
     
@@ -134,8 +136,17 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         //se inicializan actores
         jhon = new Personaje(200,200);
-        diamante= new Diamante(300,200);
-        plataforma= new Plataforma(0,200+jhon.getAlto());
+        plataformaLst = new LinkedList();
+        int ran = 3 + (int)(Math.random() * ((8 - 3) + 1));
+        for(int x=0; x<ran; x++){
+            int ran2= 200 + (int)(Math.random() * ((600 - 200) + 1));
+            plataformaLst.add(new Plataforma(-(800-ran2),200*x));
+            plataformaLst.add(new Plataforma(ran2+100,200*x));
+        }
+        
+        diamante= new Diamante(0,plataformaLst.get(ran/2).getPosY()-60);
+        //ya no se utiliza
+        //plataforma= new Plataforma(0,200+jhon.getAlto()); 
         piedra = new Piedra(this.getWidth()-110,this.getHeight()-110);
         picos= new Picos(0,25);
         
@@ -144,8 +155,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         Image cob2 =  Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpiente2.png"));
         cobra.getAnima().sumaCuadro(cob, 100);
         cobra.getAnima().sumaCuadro(cob2, 100);
-        
-        momia = new Enemigo (0,plataforma.getPosY()-90);
+        // CAMBIO
+        momia = new Enemigo (0,90);
         Image mom = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia.png"));
         Image mom2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia2.png"));
         momia.getAnima().sumaCuadro(mom, 100);
@@ -159,6 +170,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         creditos = false;
         puntajes = false;
         gameOver = false;
+        veloc=2;
 
         //HILO
         Thread th = new Thread(this);
@@ -235,6 +247,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         setTiempoActual(getTiempoActual() + tiempoTranscurrido);
         getJhon().actualiza(tiempoTranscurrido);
         diamante.actualiza(tiempoTranscurrido);
+        diamante.setPosY(diamante.getPosY()-veloc);
+        for(Plataforma p: plataformaLst){
+            p.setPosY(p.getPosY()-veloc);
+        }
     }
 
     /**
@@ -325,7 +341,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
-            g.drawImage(plataforma.getImagenI(), plataforma.getPosX(), plataforma.getPosY(), this);
+            for(Plataforma p: plataformaLst){
+                g.drawImage(p.getImagenI(), p.getPosX(), p.getPosY(), this);
+            }
+            //g.drawImage(plataforma.getImagenI(), plataforma.getPosX(), plataforma.getPosY(), this);
+           
         }
         
         if (!menu && nivel == 2){
@@ -335,7 +355,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
-            g.drawImage(plataforma.getImagenI(), plataforma.getPosX(), plataforma.getPosY(), this);
+            //g.drawImage(plataforma.getImagenI(), plataforma.getPosX(), plataforma.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(picos.getImagenI(), picos.getPosX(), picos.getPosY(), this);
             
@@ -350,7 +370,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
-            g.drawImage(plataforma.getImagenI(), plataforma.getPosX(), plataforma.getPosY(), this);
+            //g.drawImage(plataforma.getImagenI(), plataforma.getPosX(), plataforma.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(picos.getImagenI(), picos.getPosX(), picos.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
