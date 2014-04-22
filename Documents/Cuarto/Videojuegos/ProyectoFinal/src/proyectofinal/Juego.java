@@ -138,18 +138,18 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         imFondoGameOver = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/gameOver.jpg"));
 
         //se inicializan actores
-        jhon = new Personaje(200, 200);
+        jhon = new Personaje(200, 200-140); //menos 140 para que este sobre la primera barra
         plataformaLst = new LinkedList();
         int ran = 3 + (int) (Math.random() * ((8 - 3) + 1));
         System.out.println("random :" + ran);
-        for (int x = 0; x < ran; x++) {
+        for (int x = 1; x <= ran; x++) {
             int ran2 = 200 + (int) (Math.random() * ((600 - 200) + 1));
             plataformaLst.add(new Plataforma(-(800 - ran2), 200 * x));
             plataformaLst.add(new Plataforma(ran2 + 100, 200 * x));
         }
         
-        Plataforma aux = (Plataforma) plataformaLst.get(1);
-        jhon.setPosY(aux.getPosY()-15);
+//        Plataforma aux = (Plataforma) plataformaLst.get(1);
+//        jhon.setPosY(aux.getPosY()-15);
         
 
         diamante = new Diamante(0, plataformaLst.get(ran).getPosY() - 60);
@@ -251,19 +251,19 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         getJhon().actualiza(tiempoTranscurrido);
         diamante.actualiza(tiempoTranscurrido);
         if (gravedadB) {
+            System.out.println("entro");
             int y = (int) ((4 * 1 * t) - (.5 * gravedad * t * t));
             jhon.setPosY(-y + jhon.getPosY());
             t = t + tP;
         } else {
             t = .15;
-            jhon.setPosY(jhon.getPosY() - veloc);
         }
-        //mover solo si no es el final
         if (plataformaLst.getLast().getPosY() > 400) {
             diamante.setPosY(diamante.getPosY() - veloc);
             for (Plataforma p : plataformaLst) {
                 p.setPosY(p.getPosY() - veloc);
             }
+            if(!gravedadB)jhon.setPosY(jhon.getPosY() - veloc);
         }
     }
 
