@@ -261,11 +261,15 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             for (Plataforma p : plataformaLst) {
                 if (jhon.intersectaJhon(p)) {
                     jhon.setPosY(p.getPosY()- jhon.getAlto());
+                    brinco=0;
                     break;
                 }
             }
         } else {
-            brinco=0;
+            if(brinco != 0){ 
+                jhon.setPosY(-(int)(brinco * 0.8939966636005579 * t) + jhon.getPosY());
+                t= .25;
+            }
             t = .15;
         }
         //mueve plataforma hacia arriba hasta que sea la ultima barra
