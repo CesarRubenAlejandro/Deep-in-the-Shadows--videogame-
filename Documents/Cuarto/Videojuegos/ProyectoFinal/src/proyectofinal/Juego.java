@@ -272,6 +272,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
             t = .15;
         }
+        
+        System.out.println("brinco: " + brinco);
         //mueve plataforma hacia arriba hasta que sea la ultima barra
         if (plataformaLst.getLast().getPosY() > 400) {
             diamante.setPosY(diamante.getPosY() - veloc);
