@@ -251,9 +251,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         getJhon().actualiza(tiempoTranscurrido);
         diamante.actualiza(tiempoTranscurrido);
         if (gravedadB) {
-            System.out.println("entro");
-            int y = (int) ((4 * 1 * t) - (.5 * gravedad * t * t));
-            jhon.setPosY(-y + jhon.getPosY());
+            int y = (int) ((30 * 0.8939966636005579 * t) - (.5 * gravedad * t * t));
+            jhon.setPosY(y + jhon.getPosY());
+            System.out.println("entro "+ y + " "+ jhon.getPosY());
             t = t + tP;
         } else {
             t = .15;
@@ -285,8 +285,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             gravedadB = true;
         }
         //revisa si la barra intenta salir del JFrame  
-        if (jhon.getPosX() > this.getWidth() - jhon.getAncho() || jhon.getPosX() < 0 || jhon.getPosY() > this.getHeight() - jhon.getAlto()) {
+        if (jhon.getPosX() > this.getWidth() - jhon.getAncho() || jhon.getPosX() < 0) {
             direccion = 0;
+        }
+        if(jhon.getPosY() > this.getHeight() - jhon.getAlto()){
+            gravedadB=false;
         }
     }
 
