@@ -7,6 +7,7 @@ package proyectofinal;
  * @version 1.00 2014/9/4
  */
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 
 public class Personaje extends Base {
@@ -49,5 +50,29 @@ public class Personaje extends Base {
      */
     public void actualiza(long tiempo) {
         anima.actualiza(tiempo);
+    }
+    /**
+     * Metodo de acceso que regresa un nuevo rectangulo
+     *
+     * @return un objeto de la clase <code>Rectangle</code> que es el perimetro
+     * del rectangulo
+     */
+    public Rectangle getPerimetroJhon() {
+        
+        return new Rectangle((int) getPosX(), (int) getPosY()+120, getAncho(), getAlto()-120);
+    }
+    
+
+    /**
+     * Metodo intersecta
+     * 
+     * Checa si el objeto <code>Animal</code> intersecta a otro
+     * <code>Animal</code>
+     *
+     * @return un valor boleano <code>true</code> si lo intersecta
+     * <code>false</code> en caso contrario
+     */
+    public boolean intersectaJhon(Base obj) {
+        return getPerimetroJhon().intersects(obj.getPerimetro());
     }
 }

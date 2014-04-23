@@ -40,6 +40,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private double gravedad;
     private double tP;
     private double t;
+    private double brinco;
 
     //Actores
     private Personaje jhon;
@@ -245,26 +246,29 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 break;    //se mueve hacia derecha
 //                   
             }
+           
         }
         long tiempoTranscurrido = System.currentTimeMillis() - getTiempoActual();
         setTiempoActual(getTiempoActual() + tiempoTranscurrido);
         getJhon().actualiza(tiempoTranscurrido);
         diamante.actualiza(tiempoTranscurrido);
+        //entra cuando no esta tocando las barras y la gravedad actua
         if (gravedadB) {
-            int y = (int) ((30 * 0.8939966636005579 * t) - (.5 * gravedad * t * t));
-            jhon.setPosY(y + jhon.getPosY());
-            System.out.println("entro "+ y + " "+ jhon.getPosY());
+            int y = (int) ((brinco * 0.8939966636005579 * t) - (.5 * gravedad * t * t));
+            jhon.setPosY(-y + jhon.getPosY());
             t = t + tP;
             //checa si el nuevo y de jhon esta justo al borde de la barra y si no la pone justo al borde
             for (Plataforma p : plataformaLst) {
-                if (p.intersecta(jhon)) {
+                if (jhon.intersectaJhon(p)) {
                     jhon.setPosY(p.getPosY()- jhon.getAlto());
                     break;
                 }
             }
         } else {
+            brinco=0;
             t = .15;
         }
+        //mueve plataforma hacia arriba hasta que sea la ultima barra
         if (plataformaLst.getLast().getPosY() > 400) {
             diamante.setPosY(diamante.getPosY() - veloc);
             for (Plataforma p : plataformaLst) {
@@ -282,7 +286,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     public void checaColision() {
         boolean b = false;
         for (Plataforma p : plataformaLst) {
-            if (p.intersecta(jhon)) {
+            if (jhon.intersectaJhon(p)) {
                 b = true;
             }
         }
@@ -446,7 +450,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {    //Presiono flecha derecha
             direccion = 4;
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {    //Presiono flecha derecha
-            direccion = 1;
+            brinco= 10;
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {    //Presiono flecha derecha
             direccion = 2;
         }
