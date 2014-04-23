@@ -255,6 +255,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             jhon.setPosY(y + jhon.getPosY());
             System.out.println("entro "+ y + " "+ jhon.getPosY());
             t = t + tP;
+            //checa si el nuevo y de jhon esta justo al borde de la barra y si no la pone justo al borde
+            for (Plataforma p : plataformaLst) {
+                if (p.intersecta(jhon)) {
+                    jhon.setPosY(p.getPosY()- jhon.getAlto());
+                    break;
+                }
+            }
         } else {
             t = .15;
         }
@@ -288,6 +295,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         if (jhon.getPosX() > this.getWidth() - jhon.getAncho() || jhon.getPosX() < 0) {
             direccion = 0;
         }
+        //checa para que jhon no se salga del applet por la gravedad
         if(jhon.getPosY() > this.getHeight() - jhon.getAlto()){
             gravedadB=false;
         }
