@@ -25,7 +25,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     // Declarar todas las variable
     private Image dbImage;    // Imagen a proyectar	 
     private Graphics dbg;	// Objeto grafico
-
+    private Image gifIntro;
+    
     private int nivel; // Nivel actual
     private int direccion;
     private boolean menu; // Bandera para indicar la pantalla de menu
@@ -33,6 +34,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private boolean ajustes; // Bandera para indicar la pantalla de ajustes
     private boolean creditos; // Bandera para indicar la pantalla de creditos
     private boolean puntajes; // Bandera para indicar la pantalla de puntajes
+    private boolean saltaIntroduccion; //Bandera para indicar si se salta o no la intro
     private boolean gameOver; // Bandera para indicar la pantalla de Game Over
     private long tiempoActual;
     private int veloc;
@@ -41,6 +43,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private double tP;
     private double t;
     private double brinco;
+    private int cont;
 
     //Actores
     private Personaje jhon;
@@ -52,6 +55,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Piedra piedra;
     private Picos picos;
 
+    
+
     //BOTONES
     private Boton botonCreditos; // Boton para ir a la pantalla de Creditos
     private Boton botonIniciar; // Boton para ir al nivel 1 del juego
@@ -59,6 +64,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Boton botonAjustes; // Boton para ir a la pantalla de Ajustes
     private Boton botonMejPuntajes; // Boton para ir a la pantalla de Mejores Puntajes
     private Boton botonRegresa; // Boton para ir a la pantalla de Menu
+    private Boton botonSaltaIntro; //Imagen del boton que salta intro
 
     //Imagenes botones
     private Image imagenBotonCreditos;
@@ -67,6 +73,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image imagenBotonAjustes;
     private Image imagenBotonMejPuntajes;
     private Image imagenBotonRegresa;
+    private Image imagenBotonSaltaIntro; 
+   
 
     // fondos
     private Image imFondoMenu;
@@ -78,6 +86,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image imFondoNivel1;
     private Image imFondoNivel2;
     private Image imFondoNivel3;
+    private Image imagenIntro; //Imagen del gif de intro
+   
 
     //Constructor
     public Juego() {
@@ -86,6 +96,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         this.setSize(800, 600); //tamaño del jframe
         addKeyListener(this);
         addMouseListener(this);
+        
+        cont = 0;
 
         imagenBotonCreditos = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonCreditos.png"));
         imagenBotonInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonInstruc.png"));
@@ -93,13 +105,21 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         imagenBotonAjustes = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonAjustes.png"));
         imagenBotonMejPuntajes = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonMPuntaje.png"));
         imagenBotonRegresa = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonRegresa.png"));
-
+        imagenBotonSaltaIntro = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/botonFlecha.png"));
         //Los botones se crean y se posicionan al centro del JFrame uno debajo de otro
         botonCreditos = new Boton(0, 0);
         botonCreditos.getAnima().sumaCuadro(imagenBotonCreditos, 300);
         botonCreditos.setPosX(getWidth() / 2 - botonCreditos.getAncho() / 2);
         botonCreditos.setPosY(getHeight() / 2 + 200);
-
+        
+        
+        botonSaltaIntro = new Boton (0,0);
+        botonSaltaIntro.getAnima().sumaCuadro(imagenBotonSaltaIntro, 300);
+        botonSaltaIntro.setPosX(730);
+        botonSaltaIntro.setPosY(550);
+        
+        
+        
         botonInstrucciones = new Boton(0, 0);
         botonInstrucciones.getAnima().sumaCuadro(imagenBotonInstrucciones, 300);
         botonInstrucciones.setPosX(getWidth() / 2 - botonInstrucciones.getAncho() / 2);
@@ -134,7 +154,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         imFondoNivel2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/nivel2.jpg"));
         imFondoNivel3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/nivel3.jpg"));
         imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
-
+        imagenIntro =  Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/IntroGIF.gif"));
+      
+        
         imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
         imFondoGameOver = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/gameOver.jpg"));
 
@@ -172,7 +194,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         momia.getAnima().sumaCuadro(mom2, 100);
 
         nivel = 0;// Nivel 0 indica que todavia no inicia
-        menu = true; // comenzamos en el menu
+        menu = false; // comenzamos en el menu
         
 
         // Las demas pantallas estan apagadas
@@ -181,6 +203,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         creditos = false;
         puntajes = false;
         gameOver = false;
+        saltaIntroduccion = false;
         veloc = 2;
         gravedadB = false;
         gravedad = 9.8;
@@ -230,7 +253,15 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * las variables.
      */
     public void actualiza() {
-
+        
+        /* Lo que dura el gif de intro  es hasta 330, y se inicializo en 0*/
+        if (cont < 330) cont ++;
+        
+        
+        /* si ya es 330 prendo menu */
+        if (cont == 330) menu = true;
+        
+        
         switch (direccion) {
 
             case 3: {
@@ -273,15 +304,20 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             t = .15;
         }
         
-        System.out.println("brinco: " + brinco);
+        
         //mueve plataforma hacia arriba hasta que sea la ultima barra
-        if (plataformaLst.getLast().getPosY() > 400) {
-            diamante.setPosY(diamante.getPosY() - veloc);
-            for (Plataforma p : plataformaLst) {
-                p.setPosY(p.getPosY() - veloc);
+        
+            if (plataformaLst.getLast().getPosY() > 400) {
+                diamante.setPosY(diamante.getPosY() - veloc);
+                for (Plataforma p : plataformaLst) {
+                    p.setPosY(p.getPosY() - veloc);
+                }
+                if (!gravedadB) {
+                    jhon.setPosY(jhon.getPosY() - veloc);
+                }
             }
-            if(!gravedadB)jhon.setPosY(jhon.getPosY() - veloc);
-        }
+        
+
     }
 
     /**
@@ -344,7 +380,15 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @param g es el <code>objeto grafico</code> usado para dibujar.
      */
     public void paint1(Graphics g) {
+        
+        //Si no se ha dado click en el boton de saltarIntroduccion y no ha pasado el tiempo completo del gif se pintan
+        if ((cont < 330) && (!saltaIntroduccion)) {
+            g.drawImage(imagenIntro, 0, 0, this);
+            g.drawImage(botonSaltaIntro.getImagenI(), botonSaltaIntro.getPosX(), botonSaltaIntro.getPosY(), this);
 
+        }
+       
+             
         // Si esta prendida la variable menu, pintar el fondo correspondiente y los botones necesarios
         if (menu) {
             g.drawImage(imFondoMenu, 0, 0, this);
@@ -499,6 +543,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     public void mouseClicked(MouseEvent e) {
         int clickX = e.getX();
         int clickY = e.getY();
+        if(botonSaltaIntro.clickEnPersonaje (clickX,clickY)){
+            saltaIntroduccion = true;
+            menu = true;
+        }
         //Si estas en la pantalla de menu, checar si se da click en los botones correspondientes
         if (menu) {
             if (botonIniciar.clickEnPersonaje(clickX, clickY)) {
