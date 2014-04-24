@@ -26,7 +26,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image dbImage;    // Imagen a proyectar	 
     private Graphics dbg;	// Objeto grafico
     private Image gifIntro;
-    
+
     private int nivel; // Nivel actual
     private int direccion;
     private boolean menu; // Bandera para indicar la pantalla de menu
@@ -55,8 +55,6 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Piedra piedra;
     private Picos picos;
 
-    
-
     //BOTONES
     private Boton botonCreditos; // Boton para ir a la pantalla de Creditos
     private Boton botonIniciar; // Boton para ir al nivel 1 del juego
@@ -73,8 +71,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image imagenBotonAjustes;
     private Image imagenBotonMejPuntajes;
     private Image imagenBotonRegresa;
-    private Image imagenBotonSaltaIntro; 
-   
+    private Image imagenBotonSaltaIntro;
 
     // fondos
     private Image imFondoMenu;
@@ -87,7 +84,6 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image imFondoNivel2;
     private Image imFondoNivel3;
     private Image imagenIntro; //Imagen del gif de intro
-   
 
     //Constructor
     public Juego() {
@@ -96,7 +92,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         this.setSize(800, 600); //tamaño del jframe
         addKeyListener(this);
         addMouseListener(this);
-        
+
         cont = 0;
 
         imagenBotonCreditos = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonCreditos.png"));
@@ -111,15 +107,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         botonCreditos.getAnima().sumaCuadro(imagenBotonCreditos, 300);
         botonCreditos.setPosX(getWidth() / 2 - botonCreditos.getAncho() / 2);
         botonCreditos.setPosY(getHeight() / 2 + 200);
-        
-        
-        botonSaltaIntro = new Boton (0,0);
+
+        botonSaltaIntro = new Boton(0, 0);
         botonSaltaIntro.getAnima().sumaCuadro(imagenBotonSaltaIntro, 300);
         botonSaltaIntro.setPosX(730);
         botonSaltaIntro.setPosY(550);
-        
-        
-        
+
         botonInstrucciones = new Boton(0, 0);
         botonInstrucciones.getAnima().sumaCuadro(imagenBotonInstrucciones, 300);
         botonInstrucciones.setPosX(getWidth() / 2 - botonInstrucciones.getAncho() / 2);
@@ -154,14 +147,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         imFondoNivel2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/nivel2.jpg"));
         imFondoNivel3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/nivel3.jpg"));
         imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
-        imagenIntro =  Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/IntroGIF.gif"));
-      
-        
+        imagenIntro = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/IntroGIF.gif"));
+
         imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
         imFondoGameOver = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/gameOver.jpg"));
 
         //se inicializan actores
-        jhon = new Personaje(200, 200-140); //menos 140 para que este sobre la primera barra
+        jhon = new Personaje(getWidth()/2, 200 - 140); //menos 140 para que este sobre la primera barra
         plataformaLst = new LinkedList();
         int ran = 3 + (int) (Math.random() * ((8 - 3) + 1));
         System.out.println("random :" + ran);
@@ -170,11 +162,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             plataformaLst.add(new Plataforma(-(800 - ran2), 200 * x));
             plataformaLst.add(new Plataforma(ran2 + 100, 200 * x));
         }
-        
+
 //        Plataforma aux = (Plataforma) plataformaLst.get(1);
 //        jhon.setPosY(aux.getPosY()-15);
-        
-
         diamante = new Diamante(0, plataformaLst.get(ran).getPosY() - 60);
         //ya no se utiliza
         //plataforma= new Plataforma(0,200+jhon.getAlto()); 
@@ -195,7 +185,6 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         nivel = 0;// Nivel 0 indica que todavia no inicia
         menu = false; // comenzamos en el menu
-        
 
         // Las demas pantallas estan apagadas
         instrucciones = false;
@@ -218,9 +207,47 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
     /**
      * Reset - limpia y prepara todo para el inicio del nuevo juego.
+     * 
      */
     public void reset() {
+        nivel = 0;// Nivel 0 indica que todavia no inicia
+        menu = true; // comenzamos en el menu
+        brinco = 0;
+        direccion = 0;
 
+        // Las demas pantallas estan apagadas
+        instrucciones = false;
+        ajustes = false;
+        creditos = false;
+        puntajes = false;
+        gameOver = false;
+        saltaIntroduccion = false;
+        // Valores default
+        veloc = 2;
+        gravedadB = false;
+        gravedad = 9.8;
+        tP = .1;
+        t = .15;
+        //Vaciamos la lista de plataformas y volvemos a llenarla
+        plataformaLst.clear();
+        
+        int ran = 3 + (int) (Math.random() * ((8 - 3) + 1));
+        System.out.println("random :" + ran);
+        for (int x = 1; x <= ran; x++) {
+            int ran2 = 200 + (int) (Math.random() * ((600 - 200) + 1));
+            plataformaLst.add(new Plataforma(-(800 - ran2), 200 * x));
+            plataformaLst.add(new Plataforma(ran2 + 100, 200 * x));
+        }
+        //Se reposiciona a Jhon para que inicie desde arriba 
+        jhon.setPosX(getWidth()/2); 
+        jhon.setPosY(30); // Valor aproximado para que empiece arriba de todas las plataformas
+        
+        //Se reposiciona el diamante sobre la ultima plataforma nueva
+        Plataforma aux2 = (Plataforma) plataformaLst.getLast();
+        diamante.setPosX(20);
+        diamante.setPosY(aux2.getPosY()-aux2.getAlto()-diamante.getAlto()-10);
+        
+        
     }
 
     /**
@@ -253,60 +280,56 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * las variables.
      */
     public void actualiza() {
-        
-        /* Lo que dura el gif de intro  es hasta 330, y se inicializo en 0*/
-        if (cont < 330) cont ++;
-        
-        
-        /* si ya es 330 prendo menu */
-        if (cont == 330) menu = true;
-        
-        
-        switch (direccion) {
 
-            case 3: {
-//                   
-                jhon.setPosX(jhon.getPosX() - 4);
-                break;    //se mueve hacia izquierda
-//                   
+        if (!menu && nivel < 1) {
+            /* Lo que dura el gif de intro  es hasta 330, y se inicializo en 0*/
+            if (cont < 330) {
+                cont++;
+            }
 
+            /* si ya es 330 prendo menu */
+            if (cont == 330) {
+                menu = true;
+                cont = 400; // De esta forma, el contador de la intro ya no afectara con el juego
             }
-            case 4: {
-//                   
-                jhon.setPosX(jhon.getPosX() + 4);
-                break;    //se mueve hacia derecha
-//                   
-            }
-           
         }
-        long tiempoTranscurrido = System.currentTimeMillis() - getTiempoActual();
-        setTiempoActual(getTiempoActual() + tiempoTranscurrido);
-        getJhon().actualiza(tiempoTranscurrido);
-        diamante.actualiza(tiempoTranscurrido);
-        //entra cuando no esta tocando las barras y la gravedad actua
-        if (gravedadB) {
-            int y = (int) ((brinco * 0.8939966636005579 * t) - (.5 * gravedad * t * t));
-            jhon.setPosY(-y + jhon.getPosY());
-            t = t + tP;
-            //checa si el nuevo y de jhon esta justo al borde de la barra y si no la pone justo al borde
-            for (Plataforma p : plataformaLst) {
-                if (jhon.intersectaJhon(p)) {
-                    jhon.setPosY(p.getPosY()- jhon.getAlto());
-                    brinco=0;
-                    break;
+        if (nivel > 0) {
+            switch (direccion) {
+                case 3: {             
+                    jhon.setPosX(jhon.getPosX() - 4);
+                    break;    //se mueve hacia izquierda                
+                }
+                case 4: {                
+                    jhon.setPosX(jhon.getPosX() + 4);
+                    break;    //se mueve hacia derecha                  
                 }
             }
-        } else {
-            if(brinco != 0){ 
-                jhon.setPosY(-(int)(brinco * 0.8939966636005579 * t) + jhon.getPosY());
-                t= .25;
+            long tiempoTranscurrido = System.currentTimeMillis() - getTiempoActual();
+            setTiempoActual(getTiempoActual() + tiempoTranscurrido);
+            getJhon().actualiza(tiempoTranscurrido);
+            diamante.actualiza(tiempoTranscurrido);
+            //entra cuando no esta tocando las barras y la gravedad actua
+            if (gravedadB) {
+                int y = (int) ((brinco * 0.8939966636005579 * t) - (.5 * gravedad * t * t));
+                jhon.setPosY(-y + jhon.getPosY());
+                t = t + tP;
+                //checa si el nuevo y de jhon esta justo al borde de la barra y si no la pone justo al borde
+                for (Plataforma p : plataformaLst) {
+                    if (jhon.intersectaJhon(p)) {
+                        jhon.setPosY(p.getPosY() - jhon.getAlto());
+                        brinco = 0;
+                        break;
+                    }
+                }
+            } else {
+                if (brinco != 0) {
+                    jhon.setPosY(-(int) (brinco * 0.8939966636005579 * t) + jhon.getPosY());
+                    t = .25;
+                }
+                t = .15;
             }
-            t = .15;
-        }
-        
-        
-        //mueve plataforma hacia arriba hasta que sea la ultima barra
-        
+
+            //mueve plataforma hacia arriba hasta que sea la ultima barra
             if (plataformaLst.getLast().getPosY() > 400) {
                 diamante.setPosY(diamante.getPosY() - veloc);
                 for (Plataforma p : plataformaLst) {
@@ -316,8 +339,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     jhon.setPosY(jhon.getPosY() - veloc);
                 }
             }
-        
-
+        }
     }
 
     /**
@@ -342,8 +364,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             direccion = 0;
         }
         //checa para que jhon no se salga del applet por la gravedad
-        if(jhon.getPosY() > this.getHeight() - jhon.getAlto()){
-            gravedadB=false;
+        if (jhon.getPosY() > this.getHeight() - jhon.getAlto()) {
+            gravedadB = false;
         }
     }
 
@@ -380,15 +402,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @param g es el <code>objeto grafico</code> usado para dibujar.
      */
     public void paint1(Graphics g) {
-        
+
         //Si no se ha dado click en el boton de saltarIntroduccion y no ha pasado el tiempo completo del gif se pintan
         if ((cont < 330) && (!saltaIntroduccion)) {
             g.drawImage(imagenIntro, 0, 0, this);
             g.drawImage(botonSaltaIntro.getImagenI(), botonSaltaIntro.getPosX(), botonSaltaIntro.getPosY(), this);
 
         }
-       
-             
+
         // Si esta prendida la variable menu, pintar el fondo correspondiente y los botones necesarios
         if (menu) {
             g.drawImage(imFondoMenu, 0, 0, this);
@@ -500,7 +521,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {    //Presiono flecha derecha
             direccion = 4;
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {    //Presiono flecha derecha
-            brinco= 10;
+            brinco = 10;
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {    //Presiono flecha derecha
             direccion = 2;
         }
@@ -543,7 +564,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     public void mouseClicked(MouseEvent e) {
         int clickX = e.getX();
         int clickY = e.getY();
-        if(botonSaltaIntro.clickEnPersonaje (clickX,clickY)){
+        if (botonSaltaIntro.clickEnPersonaje(clickX, clickY)) {
             saltaIntroduccion = true;
             menu = true;
         }
@@ -570,7 +591,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 menu = false;
             }
         } //Si no estas en la pantalla de menu, checar si se da click en el boton de Regresar
-        else if (ajustes || creditos || puntajes || instrucciones || gameOver) {
+        else if (ajustes || creditos || puntajes || instrucciones /*|| gameOver*/) {
             if (botonRegresa.clickEnPersonaje(clickX, clickY)) {
                 menu = true;
                 instrucciones = false;
@@ -578,6 +599,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 creditos = false;
                 ajustes = false;
                 gameOver = false;
+            }
+        }
+        else if (gameOver){
+            if (botonRegresa.clickEnPersonaje(clickX, clickY)) {
+                reset(); // Reiniciar los valores del juego
             }
         }
 

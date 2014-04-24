@@ -1,4 +1,3 @@
-
 package proyectofinal;
 /**
  * Clase Personaje
