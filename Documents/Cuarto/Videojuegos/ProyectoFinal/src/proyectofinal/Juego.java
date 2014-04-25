@@ -85,6 +85,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image imFondoNivel3;
     private Image imagenIntro; //Imagen del gif de intro
 
+    //Antorchas
+    private Antorcha antorcha1;
+    private Antorcha antorcha2;
+
+    //Puertas
+    private Puerta puerta1;
+
     //Constructor
     public Juego() {
         setTitle("Deep in the shadows");
@@ -138,6 +145,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         botonRegresa.setPosX(getWidth() / 2 - botonRegresa.getAncho() / 2);
         botonRegresa.setPosY(getHeight() - 55);
 
+        //Antorchas
+        antorcha1 = new Antorcha(getWidth() / 2, 0);
+        antorcha2 = new Antorcha(3 * getWidth() / 4, 0);
+        antorcha1.setPosY(getHeight() + antorcha1.getAlto());
+        antorcha2.setPosY(getHeight() + antorcha2.getAlto());
+
+        //Puerta
+        puerta1 = new Puerta(getWidth() / 4 - 251, 0);
+        puerta1.setPosY(getHeight() + puerta1.getAlto());
+
         //Se inicializan las imagenes de Fondo
         imFondoMenu = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/Menu.jpg")); // imagen de fondo del menu
         imFondoAjustes = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/ajustes.jpg"));
@@ -153,7 +170,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         imFondoGameOver = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/gameOver.jpg"));
 
         //se inicializan actores
-        jhon = new Personaje(getWidth()/2, 200 - 140); //menos 140 para que este sobre la primera barra
+        jhon = new Personaje(getWidth() / 2, 200 - 140); //menos 140 para que este sobre la primera barra
         plataformaLst = new LinkedList();
         int ran = 3 + (int) (Math.random() * ((8 - 3) + 1));
         System.out.println("random :" + ran);
@@ -207,7 +224,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
     /**
      * Reset - limpia y prepara todo para el inicio del nuevo juego.
-     * 
+     *
      */
     public void reset() {
         nivel = 0;// Nivel 0 indica que todavia no inicia
@@ -230,7 +247,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         t = .15;
         //Vaciamos la lista de plataformas y volvemos a llenarla
         plataformaLst.clear();
-        
+
         int ran = 3 + (int) (Math.random() * ((8 - 3) + 1));
         System.out.println("random :" + ran);
         for (int x = 1; x <= ran; x++) {
@@ -239,15 +256,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             plataformaLst.add(new Plataforma(ran2 + 100, 200 * x));
         }
         //Se reposiciona a Jhon para que inicie desde arriba 
-        jhon.setPosX(getWidth()/2); 
+        jhon.setPosX(getWidth() / 2);
         jhon.setPosY(30); // Valor aproximado para que empiece arriba de todas las plataformas
-        
+
         //Se reposiciona el diamante sobre la ultima plataforma nueva
         Plataforma aux2 = (Plataforma) plataformaLst.getLast();
         diamante.setPosX(20);
-        diamante.setPosY(aux2.getPosY()-aux2.getAlto()-diamante.getAlto()-10);
-        
-        
+        diamante.setPosY(aux2.getPosY() - aux2.getAlto() - diamante.getAlto() - 10);
+
     }
 
     /**
@@ -274,6 +290,21 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         }
     }
 
+    public void mueveObjetos() {
+        Plataforma aux2 = (Plataforma) plataformaLst.getLast();
+        if (aux2.getPosY()-getHeight()/4- 30  < getHeight() / 2 +100)  { //Aproximadamente, si la penultima barra revasa la mitad del jframe, se empiezan a mover los objetos
+            if (puerta1.getPosY() + puerta1.getAlto() >= getHeight()) {
+                puerta1.setPosY(puerta1.getPosY() - 3);
+            }
+
+            if (antorcha1.getPosY() + antorcha1.getAlto() >= getHeight()) {
+                antorcha1.setPosY(antorcha1.getPosY() - 3);
+                antorcha2.setPosY(antorcha2.getPosY() - 3);
+            }
+        }
+
+    }
+
     /**
      * Metodo <I>actualiza</I>
      * Es usado para actualizar la posicion de los personajes y los valores de
@@ -295,11 +326,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         }
         if (nivel > 0) {
             switch (direccion) {
-                case 3: {             
+                case 3: {
                     jhon.setPosX(jhon.getPosX() - 4);
                     break;    //se mueve hacia izquierda                
                 }
-                case 4: {                
+                case 4: {
                     jhon.setPosX(jhon.getPosX() + 4);
                     break;    //se mueve hacia derecha                  
                 }
@@ -334,11 +365,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 diamante.setPosY(diamante.getPosY() - veloc);
                 for (Plataforma p : plataformaLst) {
                     p.setPosY(p.getPosY() - veloc);
+
                 }
                 if (!gravedadB) {
                     jhon.setPosY(jhon.getPosY() - veloc);
                 }
             }
+            //else{
+            mueveObjetos();
+            //}
+
         }
     }
 
@@ -447,6 +483,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         }
 
         if (!menu && nivel == 1) {
+
             g.drawImage(imFondoNivel1, 0, 0, this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), this);
@@ -457,7 +494,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 g.drawImage(p.getImagenI(), p.getPosX(), p.getPosY(), this);
             }
             //g.drawImage(plataforma.getImagenI(), plataforma.getPosX(), plataforma.getPosY(), this);
-
+            g.drawImage(antorcha1.getImagenI(), antorcha1.getPosX(), antorcha1.getPosY(), this);
+            g.drawImage(antorcha2.getImagenI(), antorcha2.getPosX(), antorcha2.getPosY(), this);
+            g.drawImage(puerta1.getImagenI(), puerta1.getPosX(), puerta1.getPosY(), this);
         }
 
         if (!menu && nivel == 2) {
@@ -552,6 +591,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             if (e.getKeyCode() == KeyEvent.VK_3) {
                 nivel = 3;
             }
+
+            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                if (jhon.intersecta(puerta1)) {
+                    nivel++;
+                }
+            }
         }
 
     }
@@ -600,8 +645,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 ajustes = false;
                 gameOver = false;
             }
-        }
-        else if (gameOver){
+        } else if (gameOver) {
             if (botonRegresa.clickEnPersonaje(clickX, clickY)) {
                 reset(); // Reiniciar los valores del juego
             }
