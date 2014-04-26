@@ -498,7 +498,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
             g.drawImage(imFondoNivel1, 0, 0, this);
             //Dibuja la imagen en la posicion actualizada
-            g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), this);
+            g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), -jhon.getAncho(),jhon.getAlto(), this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
