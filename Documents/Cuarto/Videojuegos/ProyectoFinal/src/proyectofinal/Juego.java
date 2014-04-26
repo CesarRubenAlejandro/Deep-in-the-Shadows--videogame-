@@ -341,7 +341,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             diamante.actualiza(tiempoTranscurrido);
             //entra cuando no esta tocando las barras y la gravedad actua
             if (gravedadB) {
-                int y = (int) ((brinco * 0.8939966636005579 * t) - (.5 * gravedad * t * t));
+                int y = (int) ((brinco * 0.8939966636005579 * t) - (.5 * gravedad*2 * t * t));
                 jhon.setPosY(-y + jhon.getPosY());
                 System.out.println("gravedad :"+ y);
                 t = t + tP;
@@ -493,13 +493,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
 
         }
-
         if (!menu && nivel == 1) {
 
             g.drawImage(imFondoNivel1, 0, 0, this);
             //Dibuja la imagen en la posicion actualizada
-            g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), -jhon.getAncho(),jhon.getAlto(), this);
-            //Dibuja la imagen en la posicion actualizada
+             if(direccion ==3)
+                g.drawImage(getJhon().getImagenI(), getJhon().getPosX()+50, getJhon().getPosY(), -jhon.getAncho(),jhon.getAlto(), this);
+            else
+                g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), jhon.getAncho(),jhon.getAlto(), this);
             g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
             for (Plataforma p : plataformaLst) {
@@ -513,8 +514,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         if (!menu && nivel == 2) {
             g.drawImage(imFondoNivel2, 0, 0, this);
-            //Dibuja la imagen en la posicion actualizada
-            g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), this);
+//            //Dibuja la imagen en la posicion actualizada
+//            g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
@@ -529,7 +530,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         if (!menu && nivel == 3) {
             g.drawImage(imFondoNivel3, 0, 0, this);
             //Dibuja la imagen en la posicion actualizada
-            g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), this);
+//            g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
@@ -572,7 +573,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {    //Presiono flecha derecha
             direccion = 4;
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {    //Presiono flecha derecha
-            brinco = 10;
+            brinco = 20;
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {    //Presiono flecha derecha
             direccion = 2;
         }
