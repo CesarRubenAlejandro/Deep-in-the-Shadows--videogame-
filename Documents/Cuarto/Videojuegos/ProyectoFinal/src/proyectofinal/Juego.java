@@ -44,6 +44,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private double t;
     private double brinco;
     private int cont;
+    private int puntos;
 
     //Actores
     private Personaje jhon;
@@ -215,6 +216,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         gravedad = 9.8;
         tP = .1;
         t = .15;
+        puntos = 0;
 
         //HILO
         Thread th = new Thread(this);
@@ -415,6 +417,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             gravedadB = false;
             brinco=0;
         }
+        
+        if(jhon.intersecta(diamante)){
+            puntos += 10;
+            diamante.setPosX(-100);
+            //agregar sonido
+        }
     }
 
     /**
@@ -501,7 +509,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 g.drawImage(getJhon().getImagenI(), getJhon().getPosX()+50, getJhon().getPosY(), -jhon.getAncho(),jhon.getAlto(), this);
             else
                 g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), jhon.getAncho(),jhon.getAlto(), this);
-            g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
+            if(diamante != null)
+             g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
             for (Plataforma p : plataformaLst) {
                 g.drawImage(p.getImagenI(), p.getPosX(), p.getPosY(), this);
@@ -510,6 +519,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawImage(antorcha1.getImagenI(), antorcha1.getPosX(), antorcha1.getPosY(), this);
             g.drawImage(antorcha2.getImagenI(), antorcha2.getPosX(), antorcha2.getPosY(), this);
             g.drawImage(puerta1.getImagenI(), puerta1.getPosX(), puerta1.getPosY(), this);
+            
+            g.drawString("Puntos: " + puntos, 30, 80);
         }
 
         if (!menu && nivel == 2) {
