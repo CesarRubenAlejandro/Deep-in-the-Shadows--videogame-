@@ -343,18 +343,22 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             if (gravedadB) {
                 int y = (int) ((brinco * 0.8939966636005579 * t) - (.5 * gravedad * t * t));
                 jhon.setPosY(-y + jhon.getPosY());
+                System.out.println("gravedad :"+ y);
                 t = t + tP;
                 //checa si el nuevo y de jhon esta justo al borde de la barra y si no la pone justo al borde
                 for (Plataforma p : plataformaLst) {
                     if (jhon.intersectaJhon(p)) {
                         jhon.setPosY(p.getPosY() - jhon.getAlto());
+                        System.out.println("salta :"+ jhon.getPosY());
                         brinco = 0;
+                        t = .15; // parche para que al final no se vaya hasta el final, sucede algo en el manejo de las colisiones que no checa que esta tocando la barra
                         break;
                     }
                 }
             } else {
                 if (brinco != 0) {
-                    jhon.setPosY(-(int) (brinco * 0.8939966636005579 * t) + jhon.getPosY());
+                    jhon.setPosY((-(int) (brinco * 0.8939966636005579 * t) + jhon.getPosY())-veloc);
+                    System.out.println("y3 :"+ jhon.getPosY());
                     t = .25;
                 }
                 t = .15;
@@ -369,7 +373,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 }
                 if (!gravedadB) {
                     jhon.setPosY(jhon.getPosY() - veloc);
+                    System.out.println("y4 :"+ jhon.getPosY());
                 }
+            }else{
+                
+               
+                        System.out.println("entro" + jhon.getPosY());
             }
             //else{
             mueveObjetos();
@@ -392,8 +401,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         }
         if (b) {
             gravedadB = false;
+            System.out.println("false");
         } else {
             gravedadB = true;
+            System.out.println("true");
         }
         //revisa si la barra intenta salir del JFrame  
         if (jhon.getPosX() > this.getWidth() - jhon.getAncho() || jhon.getPosX() < 0) {
@@ -402,6 +413,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         //checa para que jhon no se salga del applet por la gravedad
         if (jhon.getPosY() > this.getHeight() - jhon.getAlto()) {
             gravedadB = false;
+            brinco=0;
         }
     }
 
