@@ -16,7 +16,7 @@ public class Puerta extends Base {
     public Puerta(int posX, int posY) {
         super(posX, posY);
         //Se cargan las imágenes(cuadros) para la animación
-        Image diamante2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/download.jpg"));
+        Image diamante2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/puerta.png"));
       
         //Se crea la animación
         anima = new Animacion();
