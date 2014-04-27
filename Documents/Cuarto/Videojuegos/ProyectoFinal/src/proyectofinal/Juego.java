@@ -200,13 +200,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         plataformaLst = new LinkedList();
         ran = 6;
-       
+       //Llenar lista de plataformas
         for (int x = 1; x <= ran; x++) {
 
-            if (x == ran) {
+            if (x == ran) { // si estas en la ultima plataforma, insertar la plataforma extendida que funcionara como piso del nivel
                 piso.setPosY(200 * x);
                 plataformaLst.add(piso);
-            } else {
+            } else { // Si no, insertar pares de plataformas 
                 int ran2 = 200 + (int) (Math.random() * ((600 - 200) + 1));
                 plataformaLst.add(new Plataforma(-(800 - ran2), 200 * x));
                 plataformaLst.add(new Plataforma(ran2 + 120, 200 * x));
@@ -331,7 +331,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
         }
     }
-
+    /*
+    Este metodo sirve para mover los objetos antorchas y puertas junto a la ultima barra
+    Los objetos estan posicionados encima de la ultima barra, de esta forma simulan moverse junto a ella
+    */
     public void mueveObjetos() {
 
         antorcha1.setPosY(plataformaLst.get(ran + 4).getPosY() - antorcha1.getAlto());
@@ -346,21 +349,21 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * las variables.
      */
     public void actualiza() {
-         if((menu) && (iniciaMusica == 0)){
+         if((menu) && (iniciaMusica == 0)){ // Se utiliza un bool para todas las musicas de fondo para que se comience a reproducir solo una vez 
              musicaMenu.play();
-             iniciaMusica++;
+             iniciaMusica++; // Una vez que se actualice, no entrara otra vez y habra continuidad natural de la musica
          }
         if (!menu && nivel < 1) {
             
             /* Lo que dura el gif de intro  es hasta 330, y se inicializo en 0*/
             if (cont < 330) {
-                if(iniciaMusicaIntro == 0){
+                if(iniciaMusicaIntro == 0){ // Se utiliza un bool para todas las musicas de fondo para que se comience a reproducir solo una vez 
                   musicaIntro.play();   
                  
-                  iniciaMusicaIntro ++;
+                  iniciaMusicaIntro ++; // Una vez que se actualice, no entrara otra vez y habra continuidad natural de la musica
                 }
      
-                cont++;
+                cont++; // Contador de tiempo de longitud de la introduccion del juego
             }
 
             /* si ya es 330 prendo menu */
@@ -380,7 +383,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 
             }
             
-            if (mueveJohn) {
+            if (mueveJohn) { // Movimiento del personaje
                 switch (direccion) {
                     case 3: {
                         jhon.setPosX(jhon.getPosX() - 10);
@@ -398,7 +401,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             long tiempoTranscurrido = System.currentTimeMillis() - getTiempoActual();
             setTiempoActual(getTiempoActual() + tiempoTranscurrido);
 
-            if (mueveJohn) {
+            if (mueveJohn) { // Solo se anima el personaje si se esta moviendo
                 getJhon().actualiza(tiempoTranscurrido);
             }
 
@@ -458,6 +461,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * entre sí y con las orillas del <code>JFrame</code>.
      */
     public void checaColision() {
+       
         boolean b = false;
         for (Plataforma p : plataformaLst) {
             if (jhon.intersectaJhon(p)) {
@@ -476,10 +480,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             direccion = 0;
         }
         //checa para que jhon no se salga del applet por la gravedad
-        if (jhon.getPosY() > this.getHeight() - jhon.getAlto()) {
+        /*if (jhon.getPosY() > this.getHeight() - jhon.getAlto()) {
             gravedadB = false;
             brinco = 0;
-        }
+        }*/
 
         if (jhon.intersecta(diamante)) {
             diamante.setPosX(-100);
@@ -499,8 +503,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         }
         
-        
-
+        if (jhon.getPosY()+jhon.getAlto()-15<0 || (jhon.getPosY()+jhon.getAlto()/2>getHeight())){ // si el personaje se pasa por arriba del jframe, pierde el juego (nivel 1)
+            gameOver = true;//pierde el juego                                                     // o si el personaje cae cuando aun no aparecen las plataformas
+            nivel = 0;
+        }
     }
 
     /**
@@ -673,7 +679,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {    //Presiono flecha derecha
             direccion = 4;
             mueveJohn = true;
-        } else if (e.getKeyCode() == KeyEvent.VK_UP) {    //Presiono flecha derecha
+        } else if ((e.getKeyCode() == KeyEvent.VK_UP) && (!gravedadB)) {    //Presiono flecha derecha
             brinco = 20;
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {    //Presiono flecha derecha
             direccion = 2;
