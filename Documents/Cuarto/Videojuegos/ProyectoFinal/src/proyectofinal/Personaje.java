@@ -25,16 +25,16 @@ public class Personaje extends Base {
         
         super(posX, posY);
         //Se cargan las imágenes(cuadros) para la animación
-        Image corre1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/prueba.png"));
-       // Image corre2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/corre2.png"));
-        //Image corre3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/corre4.png"));
-        //Image corre4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/corre5.png"));
+        Image corre1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/jhon1.png"));
+        Image corre2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/jhon2.png"));
+        Image corre3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/jhon3.png"));
+        Image corre4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/jhon4.png"));
         //Se crea la animación
         anima = new Animacion();
         anima.sumaCuadro(corre1, 200);
-        //anima.sumaCuadro(corre2, 200);
-        //anima.sumaCuadro(corre3, 200);
-        //anima.sumaCuadro(corre4, 200);
+        anima.sumaCuadro(corre2, 200);
+        anima.sumaCuadro(corre3, 200);
+        anima.sumaCuadro(corre4, 200);
         balas = 5;
     }
     /**

@@ -21,9 +21,9 @@ public class Diamante extends Base {
     public Diamante(int posX, int posY) {
         super(posX, posY);
         //Se cargan las imágenes(cuadros) para la animación
-        Image diamante1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/diamante.png"));
-        Image diamante2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/diamante2.png"));
-        Image diamante3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/diamante3.png"));
+        Image diamante1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/diamanteP.png"));
+        Image diamante2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/diamante2P.png"));
+        Image diamante3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/diamante3P.png"));
 
         //Se crea la animación
         anima = new Animacion();
