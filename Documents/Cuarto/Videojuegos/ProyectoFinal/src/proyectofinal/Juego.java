@@ -20,12 +20,19 @@ import java.awt.Toolkit;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.LinkedList;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.*;
 
 public class Juego extends JFrame implements Runnable, KeyListener, MouseListener {
 
     // Declarar todas las variable
     private Image dbImage;    // Imagen a proyectar	 
     private Graphics dbg;	// Objeto grafico
+    private Font fontPuntajes; // tipografia para los puntajes
     private Image gifIntro;
 
     private int nivel; // Nivel actual
@@ -107,6 +114,27 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
     //Puertas
     private Puerta puerta1;
+    
+    //Nombre del jugador
+    private String playerName;
+    private boolean auxLeerNombre;
+    
+    //Puntajes y nombres
+    private String nom1;
+    private int punt1;
+    
+    private String nom2;
+    private int punt2;
+    
+    private String nom3;
+    private int punt3;
+    
+    private String nom4;
+    private int punt4;
+    
+    private String nom5;
+    private int punt5;
+    
 
     //Constructor
     public Juego() {
@@ -115,8 +143,30 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         this.setSize(800, 600); //tamaño del jframe
         addKeyListener(this);
         addMouseListener(this);
+        
+        fontPuntajes = new Font ("Cambria", 0, 34);
 
-        cont = 0;
+        cont = 0;//contador de tiempo del video al inicio
+        auxLeerNombre = true;// permite leer una vez el nombre del jugador
+        //Valores por default a los nombres
+        nom1= "-";
+        nom2= "-";
+        nom3= "-";
+        nom4= "-";
+        nom5= "-";
+        //Valores por default a los mejores puntajes
+        punt1=0;
+        punt2=0;
+        punt3=0;
+        punt4=0;
+        punt5=0;
+        
+         try{ //Se llama la funcion de Puntajes para establecer los puntajes mayores antes de empezar cualquier juego
+             // Si es la primera vez que se juega, se llena con los valores default
+                Puntajes();
+              }  catch (IOException e){
+                   System.out.println("Error en " + e.toString());
+               }
 
         imagenBotonCreditos = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonCreditos.png"));
         imagenBotonInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonInstruc.png"));
@@ -167,8 +217,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         antorcha1.setPosY(getHeight() + antorcha1.getAlto());
         antorcha2.setPosY(getHeight() + antorcha2.getAlto());
         
-        iniciaMusicaIntro = 0;
-        iniciaMusicaNivel1 = 0;
+        iniciaMusicaIntro = 0;//Auxiliar para reproducir la musica de introduccion
+        iniciaMusicaNivel1 = 0;//Auxiliar para reproducir la musica del nivel 1
 
         //Puerta
         puerta1 = new Puerta(10 , 0);
@@ -178,7 +228,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         //Se inicializan las imagenes de Fondo
         imFondoMenu = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/Menu.jpg")); // imagen de fondo del menu
         imFondoAjustes = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/ajustes.jpg"));
-        imFondoPuntajes = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/puntajes.jpg"));
+        imFondoPuntajes = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/PantallaMPuntajes.jpg"));
         imFondoCreditos = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/creditos.jpg"));
         imFondoNivel1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/fondo1.jpg"));
         imFondoNivel2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/nivel2.jpg"));
@@ -213,24 +263,18 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
 
         }
-
-//        Plataforma aux = (Plataforma) plataformaLst.get(1);
-//        jhon.setPosY(aux.getPosY()-15);
+        //Se inicializan los diamantes
         diamante = new Diamante(5, plataformaLst.get(ran).getPosY() - 60);
         diamante2 = new Diamante(getWidth() - 100 - diamante.getAncho(), plataformaLst.getFirst().getPosY() - 60);
         diamante3 = new Diamante(getWidth() / 2, plataformaLst.get(ran / 2).getPosY() - 60);
-
-        //ya no se utiliza
-        //plataforma= new Plataforma(0,200+jhon.getAlto()); 
+        //Se inicializan los enemigos y obstaculos
         piedra = new Piedra(this.getWidth() - 110, this.getHeight() - 110);
         picos = new Picos(0, 25);
-
         cobra = new Enemigo(500, getHeight() - 60);
         Image cob = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpiente.png"));
         Image cob2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpiente2.png"));
         cobra.getAnima().sumaCuadro(cob, 100);
         cobra.getAnima().sumaCuadro(cob2, 100);
-        // CAMBIO
         momia = new Enemigo(0, 90);
         Image mom = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia.png"));
         Image mom2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia2.png"));
@@ -255,7 +299,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         t = .15;
         puntos = 0;
         iniciaMusica = 0;
-
+        playerName = "";
         //HILO
         Thread th = new Thread(this);
         // Empieza el hilo
@@ -331,6 +375,131 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
         }
     }
+    /**
+     * Metodo Puntajes 
+     * Este metodo abre el archivo de texto donde estan los mejores puntajes guardados
+     * Lee los mejores puntajes y nombres y compara con el punaje actual
+     * Sobreescrive los puntajes y los reacomoda
+     * @throws IOException 
+     */
+    public void Puntajes() throws IOException {
+        try{
+        String nomArchivo = "Datos.txt"; // Nombre del archivo de texto
+        BufferedReader fileIn = new BufferedReader(new FileReader(nomArchivo));
+        int apunta=-1; // Apuntador auxiliar para cambiar el nombre
+        int [] arreglo; // Arreglo auxiliar donde guardar los puntajes del .txt
+        arreglo = new int [5]; // De tamanio 5
+        
+        String [] nombres; // Arreglo auxiliar donde guardar los nombres
+        nombres = new String [5];
+        
+        //Leer los nombres y puntajes
+        //nom1 = fileIn.readLine();
+        nombres[0] = fileIn.readLine();
+        arreglo[0] = Integer.parseInt(fileIn.readLine());
+        
+        //nom2 = fileIn.readLine();
+        nombres[1] = fileIn.readLine();
+        arreglo[1] = Integer.parseInt(fileIn.readLine());
+        
+       // nom3 = fileIn.readLine();
+        nombres[2] = fileIn.readLine();
+        arreglo[2] = Integer.parseInt(fileIn.readLine());
+        
+        //nom4 = fileIn.readLine();
+        nombres[3] = fileIn.readLine();
+        arreglo[3] = Integer.parseInt(fileIn.readLine());
+        
+        //nom5 = fileIn.readLine();
+        nombres[4] = fileIn.readLine();
+        arreglo[4] = Integer.parseInt(fileIn.readLine());
+        
+        fileIn.close();
+        
+        //Auxiliares de reacomodo
+        int aux;
+        int aux2; 
+        String ayuda; 
+        String ayuda2;
+        for (int i=0; i<5;i++){ // Recorre el arreglo completamente
+            if (puntos>arreglo[i]){ // Si el puntaje actual es mayor al de la posicion actual del arreglo
+                //Reemplaza el valor y reacomoda todo el arreglo
+                aux = arreglo[i];
+                ayuda = nombres[i];
+                
+                arreglo[i] = puntos;
+                nombres[i] = playerName;
+                
+                apunta = i;
+                for (int j=i+1; j<5; j++){
+                    aux2 = arreglo[j];
+                    ayuda2 = nombres[j];
+                    
+                    arreglo[j] = aux;
+                    nombres[j] = ayuda;
+                    
+                    aux=aux2;
+                    ayuda = ayuda2;
+                }
+                i=6; // Sale del ciclo
+            }
+        }
+        //Reasignar los valores de mejores puntajes con sus respectivos nombres
+        punt1 = arreglo[0];
+        nom1 = nombres[0];
+        
+        punt2 = arreglo[1];
+        nom2 = nombres[1];
+        
+        punt3 = arreglo[2];
+        nom3 = nombres[2];
+        
+        punt4 = arreglo[3];
+        nom4 = nombres[3];
+        
+        punt5 = arreglo[4];
+        nom5 = nombres[4];
+        
+        switch (apunta){ // Sirve para sustituir el nombre correspondiente y su puntaje
+            case 0:
+                nom1 = playerName;
+                break;
+            case 1:
+                nom2 = playerName;
+                break;
+            case 2:
+                nom3 = playerName;
+                break;
+            case 3:
+                nom4 = playerName;
+                break;
+            case 4:
+                nom5 = playerName;
+                break;
+        }
+        //Reescribir en el archivo de texto los mejores puntajes
+         PrintWriter fileOut = new PrintWriter(new FileWriter(nomArchivo));
+         fileOut.println(nom1);
+         fileOut.println(punt1);
+         
+         fileOut.println(nom2);
+         fileOut.println(punt2);
+         
+         fileOut.println(nom3);
+         fileOut.println(punt3);
+         
+         fileOut.println(nom4);
+         fileOut.println(punt4);
+         
+         fileOut.println(nom5);
+         fileOut.println(punt5);
+         
+         fileOut.close();
+        } catch (IOException e) {
+            System.out.println("Error en " + e.toString());
+        }
+    }
+    
     /*
     Este metodo sirve para mover los objetos antorchas y puertas junto a la ultima barra
     Los objetos estan posicionados encima de la ultima barra, de esta forma simulan moverse junto a ella
@@ -349,7 +518,23 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * las variables.
      */
     public void actualiza() {
+       
+        if (gameOver&&auxLeerNombre){ // Si se acaba el juego y esta prendida la bandera
+            //Leer el nombre del jugador por medio de un OptionPane
+            playerName = JOptionPane.showInputDialog(null, "Nombre:", "Puntaje", JOptionPane.QUESTION_MESSAGE);
+		if (playerName == null) {
+			System.exit(0);
+		}
+                //Checar y acomodar mejores puntajes
+                try{
+                Puntajes();
+                }  catch (IOException e){
+                    System.out.println("Error en " + e.toString());
+                }
+                auxLeerNombre = false; // Apagar bandera para realizar el proceso solo 1 vez cada vez que termine el juego
+        }
          if((menu) && (iniciaMusica == 0)){ // Se utiliza un bool para todas las musicas de fondo para que se comience a reproducir solo una vez 
+             musicaMenu.setLooping(true);
              musicaMenu.play();
              iniciaMusica++; // Una vez que se actualice, no entrara otra vez y habra continuidad natural de la musica
          }
@@ -401,9 +586,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             long tiempoTranscurrido = System.currentTimeMillis() - getTiempoActual();
             setTiempoActual(getTiempoActual() + tiempoTranscurrido);
 
-            if (mueveJohn) { // Solo se anima el personaje si se esta moviendo
-                getJhon().actualiza(tiempoTranscurrido);
-            }
+           jhon.actualiza(tiempoTranscurrido);
+            
 
             diamante.actualiza(tiempoTranscurrido);
             diamante2.actualiza(tiempoTranscurrido);
@@ -576,6 +760,33 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         //Si esta prendida la variable puntajes, pintar el fondo correspondiente y el boton de regresar
         if (puntajes) {
             g.drawImage(imFondoPuntajes, 0, 0, this);
+            //Lugares de mejores puntajes
+            g.setColor(Color.yellow);
+            g.setFont(fontPuntajes);
+            g.drawString("1.", 40, 170);
+            g.drawString("2.", 40, 220);
+            g.drawString("3.", 40, 270);
+            g.drawString("4.", 40, 320);
+            g.drawString("5.", 40, 370);
+            
+            // Mejores jugadores y sus puntos
+            g.setColor(Color.WHITE);
+            
+            g.drawString(nom1, 70, 170);
+            g.drawString(""+punt1, 270,170);
+            
+            g.drawString(nom2, 70, 220);
+            g.drawString(""+punt2, 270,220);
+            
+            g.drawString(nom3, 70, 270);
+            g.drawString(""+punt3, 270,270);
+            
+            g.drawString(nom4, 70, 320);
+            g.drawString(""+punt4, 270,320);
+            
+            g.drawString(nom5, 70, 370);
+            g.drawString(""+punt5, 270,370);
+            
             g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
         }
         //Si esta prendida la variable instrucciones, pintar el fondo correspondiente y el boton de regresar
@@ -608,7 +819,6 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             for (Plataforma p : plataformaLst) {
                 g.drawImage(p.getImagenI(), p.getPosX(), p.getPosY(), this);
             }
-            //g.drawImage(plataforma.getImagenI(), plataforma.getPosX(), plataforma.getPosY(), this);
             g.drawImage(antorcha1.getImagenI(), antorcha1.getPosX(), antorcha1.getPosY(), this);
             g.drawImage(antorcha2.getImagenI(), antorcha2.getPosX(), antorcha2.getPosY(), this);
             g.drawImage(puerta1.getImagenI(), puerta1.getPosX(), puerta1.getPosY(), this);
@@ -634,19 +844,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         }
         if (!menu && nivel == 3) {
             g.drawImage(imFondoNivel3, 0, 0, this);
-            //Dibuja la imagen en la posicion actualizada
-//            g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), this);
-            //Dibuja la imagen en la posicion actualizada
             g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
-            //Dibuja la imagen en la posicion actualizada
-            //g.drawImage(plataforma.getImagenI(), plataforma.getPosX(), plataforma.getPosY(), this);
-            //Dibuja la imagen en la posicion actualizada
             g.drawImage(picos.getImagenI(), picos.getPosX(), picos.getPosY(), this);
-            //Dibuja la imagen en la posicion actualizada
             g.drawImage(piedra.getImagenI(), piedra.getPosX(), piedra.getPosY(), this);
-
             g.drawImage(momia.getImagenI(), momia.getPosX(), momia.getPosY(), this);
-
             g.drawImage(cobra.getImagenI(), cobra.getPosX(), cobra.getPosY(), this);
         }
     }
