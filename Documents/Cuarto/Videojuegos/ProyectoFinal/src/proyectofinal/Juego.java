@@ -58,11 +58,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private int iniciaMusica;
     private int iniciaMusicaIntro;
     private int iniciaMusicaNivel1;
-    
+    private boolean sonidosFlag;
+    private boolean musicaFlag;
     //Musica
     private SoundClip musicaMenu;
     private SoundClip musicaIntro;
     private SoundClip musicaNivel1;
+    
+    //Sonidos
+    private SoundClip sonidoSalta;
+    private SoundClip sonidoDiamante;
 
     //Actores
     private Personaje jhon;
@@ -241,6 +246,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         musicaIntro = new SoundClip("sonidos/intro.wav");
         musicaNivel1 = new SoundClip("sonidos/nivel1.mid");
         
+        //Sonidos
+        sonidoDiamante = new SoundClip ("sonidos/clic.wav");
+        sonidoSalta = new SoundClip("sonidos/Cae.wav");
+        
         imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
         imFondoGameOver = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/gameOver.jpg"));
         piso = new Plataforma(0, getHeight() + 10);
@@ -291,6 +300,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         mueveJohn = false;
         puntajes = false;
         gameOver = false;
+        sonidosFlag = true;
+        musicaFlag = true;
         saltaIntroduccion = false;
         veloc = 2;
         gravedadB = false;
@@ -535,7 +546,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         }
          if((menu) && (iniciaMusica == 0)){ // Se utiliza un bool para todas las musicas de fondo para que se comience a reproducir solo una vez 
              musicaMenu.setLooping(true);
-             musicaMenu.play();
+             if(musicaFlag){
+                musicaMenu.play(); 
+             }
+             
              iniciaMusica++; // Una vez que se actualice, no entrara otra vez y habra continuidad natural de la musica
          }
         if (!menu && nivel < 1) {
@@ -543,7 +557,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             /* Lo que dura el gif de intro  es hasta 330, y se inicializo en 0*/
             if (cont < 330) {
                 if(iniciaMusicaIntro == 0){ // Se utiliza un bool para todas las musicas de fondo para que se comience a reproducir solo una vez 
-                  musicaIntro.play();   
+                    if(musicaFlag){
+                         musicaIntro.play(); 
+                    }
+                     
                  
                   iniciaMusicaIntro ++; // Una vez que se actualice, no entrara otra vez y habra continuidad natural de la musica
                 }
@@ -553,7 +570,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
             /* si ya es 330 prendo menu */
             if (cont == 330) {
-               musicaIntro.stop();
+               if(musicaFlag){
+                   musicaIntro.stop();
+               }
+               
                 menu = true;
                 cont = 400; // De esta forma, el contador de la intro ya no afectara con el juego
             }
@@ -563,7 +583,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             musicaMenu.stop();
             if((nivel == 1) && (iniciaMusicaNivel1 == 0)){
                  musicaNivel1.setLooping(true);
-                musicaNivel1.play();
+                 if(musicaFlag){
+                      musicaNivel1.play();
+                 }
+               
                 iniciaMusicaNivel1 ++;
                 
             }
@@ -672,6 +695,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         if (jhon.intersecta(diamante)) {
             diamante.setPosX(-100);
             puntos += 10;
+            if(sonidosFlag){
+                 sonidoDiamante.play();
+            }
+           
 
             //agregar sonido
         }
@@ -679,11 +706,17 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         if (jhon.intersecta(diamante2)) {
             diamante2.setPosX(-100);
             puntos += 10;
+            if(sonidosFlag){
+                 sonidoDiamante.play();
+            }
 
         }
         if (jhon.intersecta(diamante3)) {
             diamante3.setPosX(-100);
             puntos += 10;
+            if(sonidosFlag){
+                 sonidoDiamante.play();
+            }
 
         }
         
@@ -882,6 +915,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             mueveJohn = true;
         } else if ((e.getKeyCode() == KeyEvent.VK_UP) && (!gravedadB)) {    //Presiono flecha derecha
             brinco = 20;
+            if(sonidosFlag){
+                 sonidoSalta.play(); 
+            }
+          
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {    //Presiono flecha derecha
             direccion = 2;
         }
