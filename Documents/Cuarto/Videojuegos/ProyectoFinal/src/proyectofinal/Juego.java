@@ -850,27 +850,22 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         //Si esta prendida la variable ajustes, pintar el fondo correspondiente y el boton de regresar
         if (ajustes) {
             g.drawImage(imFondoAjustes, 0, 0, this);
-            
-            
-            if(musicaFlag){
-                g.drawImage(musicaOn.getImagenI(), musicaOn.getPosX(), musicaOn.getPosY(), this);
-            }
-            
 
-            else if (!musicaFlag) {
+            if (musicaFlag) {
+                g.drawImage(musicaOn.getImagenI(), musicaOn.getPosX(), musicaOn.getPosY(), this);
+            } else if (!musicaFlag) {
                 g.drawImage(musicaOff.getImagenI(), musicaOff.getPosX(), musicaOff.getPosY(), this);
             }
 
-            if(sonidosFlag){
+            if (sonidosFlag) {
                 g.drawImage(sonidoOn.getImagenI(), sonidoOn.getPosX(), sonidoOn.getPosY(), this);
             }
             if (!sonidosFlag) {
                 g.drawImage(sonidoOff.getImagenI(), sonidoOff.getPosX(), sonidoOff.getPosY(), this);
             }
 
-            
-           g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
-           
+            g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
+
         }
         //Si esta prendida la variable creditos, pintar el fondo correspondiente y el boton de regresar
         if (creditos) {
@@ -1069,17 +1064,18 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     public void mouseClicked(MouseEvent e) {
         int clickX = e.getX();
         int clickY = e.getY();
+        
         if (musicaOn.clickEnPersonaje(clickX, clickY)) {
-            musicaFlag = false;
+            musicaFlag = !musicaFlag;
         }
         if (musicaOff.clickEnPersonaje(clickX, clickY)) {
-            musicaFlag = true;
+            musicaFlag = !musicaFlag;
         }
          if (sonidoOn.clickEnPersonaje(clickX, clickY)) {
-            sonidosFlag = !sonidosFlag;
+            sonidosFlag = false;
         }
         if (sonidoOff.clickEnPersonaje(clickX, clickY)) {
-            sonidosFlag = !sonidosFlag;
+            sonidosFlag = true;
         }
         if (botonSaltaIntro.clickEnPersonaje(clickX, clickY)) {
             saltaIntroduccion = true;
