@@ -268,14 +268,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         //puerta1.setPosX(puerta1.getAncho());
 
         //Se inicializan las imagenes de Fondo
-        imFondoMenu = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/Menu.jpg")); // imagen de fondo del menu
-        imFondoAjustes = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/ajustes.jpg"));
+        imFondoMenu = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/menu.jpg")); // imagen de fondo del menu
+        imFondoAjustes = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/ajustes_1.JPG"));
         imFondoPuntajes = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/PantallaMPuntajes.jpg"));
-        imFondoCreditos = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/creditos.jpg"));
+        imFondoCreditos = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/creditos.JPG"));
         imFondoNivel1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/fondo1.jpg"));
         imFondoNivel2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/nivel2.jpg"));
         imFondoNivel3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/nivel3.jpg"));
-        imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
+        imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.JPG"));
         imagenIntro = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/IntroGIF.gif"));
 
         //Musica
@@ -287,8 +287,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         sonidoDiamante = new SoundClip("sonidos/clic.wav");
         sonidoSalta = new SoundClip("sonidos/Cae.wav");
 
-        imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
-        imFondoGameOver = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/gameOver.jpg"));
+       // imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
+        imFondoGameOver = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/gameOver.JPG"));
         piso = new Plataforma(0, getHeight() + 10);
         //se inicializan actores
         jhon = new Personaje(0, 200 - 100); //menos 100 para que este sobre la primera barra
@@ -361,7 +361,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      */
     public void reset() {
 
-        cont = 0;//contador de tiempo del video al inicio
+        //cont = 0;//contador de tiempo del video al inicio
         auxLeerNombre = true;// permite leer una vez el nombre del jugador
 
         //Antorchas
