@@ -105,7 +105,6 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image imagenMusicaOff;
     private Image imagenSonidoOn;
     private Image imagenSonidoOff;
-           
 
     // fondos
     private Image imFondoMenu;
@@ -191,40 +190,38 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         imagenBotonRegresa = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonRegresa.png"));
         imagenBotonSaltaIntro = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/saltarIntro.png"));
         imagenPausado = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Pausado.png"));
-        
+
         imagenSonidoOff = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/apagado.png"));
         imagenSonidoOn = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/encendido.png"));
         imagenMusicaOff = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/apagado.png"));
         imagenMusicaOn = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/encendido.png"));
-        
-        
+
         //Los botones se crean y se posicionan al centro del JFrame uno debajo de otro
         botonCreditos = new Boton(0, 0);
         botonCreditos.getAnima().sumaCuadro(imagenBotonCreditos, 300);
         botonCreditos.setPosX(getWidth() / 2 - botonCreditos.getAncho() / 2);
         botonCreditos.setPosY(getHeight() / 2 + 200);
-        
-        
+
         //BOTONES DE LAS BOCINAS
-        musicaOn = new Boton (0,0);
+        musicaOn = new Boton(0, 0);
         musicaOn.getAnima().sumaCuadro(imagenMusicaOn, 300);
-        musicaOn.setPosX(80);
-        musicaOn.setPosY(280);
-        
-        musicaOff = new Boton (0,0);
+        musicaOn.setPosX(50);
+        musicaOn.setPosY(380);
+
+        musicaOff = new Boton(0, 0);
         musicaOff.getAnima().sumaCuadro(imagenMusicaOff, 300);
-        musicaOff.setPosX(80);
-        musicaOff.setPosY(280);
-        
-        sonidoOn = new Boton (0,0);
+        musicaOff.setPosX(120);
+        musicaOff.setPosY(380);
+
+        sonidoOn = new Boton(0, 0);
         sonidoOn.getAnima().sumaCuadro(imagenSonidoOn, 300);
-        sonidoOn.setPosX(80);
-        sonidoOn.setPosY(400);
-        
-        sonidoOff = new Boton (0,0);
+        sonidoOn.setPosX(50);
+        sonidoOn.setPosY(280);
+
+        sonidoOff = new Boton(0, 0);
         sonidoOff.getAnima().sumaCuadro(imagenSonidoOff, 300);
-        sonidoOff.setPosX(80);
-        sonidoOff.setPosY(400);
+        sonidoOff.setPosX(120);
+        sonidoOff.setPosY(280);
 
         botonSaltaIntro = new Boton(0, 0);
         botonSaltaIntro.getAnima().sumaCuadro(imagenBotonSaltaIntro, 300);
@@ -366,7 +363,6 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         cont = 0;//contador de tiempo del video al inicio
         auxLeerNombre = true;// permite leer una vez el nombre del jugador
-       
 
         //Antorchas
         antorcha1.setPosY(getHeight() + antorcha1.getAlto());
@@ -621,7 +617,6 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             if (musicaFlag) {
                 musicaMenu.play();
             }
-            
 
             iniciaMusica++; // Una vez que se actualice, no entrara otra vez y habra continuidad natural de la musica
         }
@@ -850,22 +845,19 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         //Si esta prendida la variable ajustes, pintar el fondo correspondiente y el boton de regresar
         if (ajustes) {
             g.drawImage(imFondoAjustes, 0, 0, this);
-
-            if (musicaFlag) {
-                g.drawImage(musicaOn.getImagenI(), musicaOn.getPosX(), musicaOn.getPosY(), this);
-            } else if (!musicaFlag) {
-                g.drawImage(musicaOff.getImagenI(), musicaOff.getPosX(), musicaOff.getPosY(), this);
-            }
-
-            if (sonidosFlag) {
-                g.drawImage(sonidoOn.getImagenI(), sonidoOn.getPosX(), sonidoOn.getPosY(), this);
-            }
-            if (!sonidosFlag) {
-                g.drawImage(sonidoOff.getImagenI(), sonidoOff.getPosX(), sonidoOff.getPosY(), this);
-            }
-
             g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
+            if (musicaFlag) {
+                g.drawImage(musicaOff.getImagenI(), musicaOff.getPosX(), musicaOff.getPosY(), this);
+            } else if (!musicaFlag) {
+                g.drawImage(musicaOn.getImagenI(), musicaOn.getPosX(), musicaOn.getPosY(), this);
 
+            }
+             if (sonidosFlag) {
+                g.drawImage(sonidoOff.getImagenI(), sonidoOff.getPosX(), sonidoOff.getPosY(), this);
+            } else if (!sonidosFlag) {
+                g.drawImage(sonidoOn.getImagenI(), sonidoOn.getPosX(), sonidoOn.getPosY(), this);
+
+            }
         }
         //Si esta prendida la variable creditos, pintar el fondo correspondiente y el boton de regresar
         if (creditos) {
@@ -1064,18 +1056,21 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     public void mouseClicked(MouseEvent e) {
         int clickX = e.getX();
         int clickY = e.getY();
-        
+
         if (musicaOn.clickEnPersonaje(clickX, clickY)) {
-            musicaFlag = !musicaFlag;
+            musicaFlag = true;
+            musicaMenu.play();
+
         }
         if (musicaOff.clickEnPersonaje(clickX, clickY)) {
-            musicaFlag = !musicaFlag;
+            musicaFlag = false;
+            musicaMenu.stop();
         }
-         if (sonidoOn.clickEnPersonaje(clickX, clickY)) {
-            sonidosFlag = false;
+        if (sonidoOn.clickEnPersonaje(clickX, clickY)) {
+            sonidosFlag = true;
         }
         if (sonidoOff.clickEnPersonaje(clickX, clickY)) {
-            sonidosFlag = true;
+            sonidosFlag = false;
         }
         if (botonSaltaIntro.clickEnPersonaje(clickX, clickY)) {
             saltaIntroduccion = true;
