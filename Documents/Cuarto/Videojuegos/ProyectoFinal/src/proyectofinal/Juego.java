@@ -52,28 +52,29 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private double tP;
     private double t;
     private double brinco;
-    private int cont;
-    private int puntos;
-    private int ran;
-    private int iniciaMusica;
-    private int iniciaMusicaIntro;
-    private int iniciaMusicaNivel1;
-    private boolean sonidosFlag;
-    private boolean musicaFlag;
+    private int cont; //Variable auxiliar para el tiempo de la intro (dura 330)
+    private int puntos; //Variable para guardar los puntos acumulados del usuario
+    private int ran; //Variable  para el numero de barras que hay en el primer nivel
+    private int iniciaMusica;//Variable auxiliar para comenzar la musica y no se ejecute cada vez que entra a actualiza
+    private int iniciaMusicaIntro; //Variable auxiliar para comenzar la musica y no se ejecute cada vez que entra a actualiza
+    private int iniciaMusicaNivel1; //Variable auxiliar para comenzar la musica y no se ejecute cada vez que entra a actualiza
+    private boolean sonidosFlag; //Bandera para saber si debe o no haber sonido
+    private boolean musicaFlag; //Bandera para saber si debe o no haber musica
+    private boolean pausa; //Variable para indicar si el usuario teclea P 
     //Musica
-    private SoundClip musicaMenu;
-    private SoundClip musicaIntro;
-    private SoundClip musicaNivel1;
-    
+    private SoundClip musicaMenu; //Musica del menu
+    private SoundClip musicaIntro; //Musica de la intro
+    private SoundClip musicaNivel1; //Musica del nivel 1
+
     //Sonidos
-    private SoundClip sonidoSalta;
-    private SoundClip sonidoDiamante;
+    private SoundClip sonidoSalta; //Sonido cuando John salta
+    private SoundClip sonidoDiamante; //Sonido cuando John toma un diamante
 
     //Actores
-    private Personaje jhon;
+    private Personaje jhon; //Personaje principal
     private Enemigo momia;
     private Enemigo cobra;
-    private LinkedList<Plataforma> plataformaLst;
+    private LinkedList<Plataforma> plataformaLst; //Lista de plataformas para el primer nivel
     private Plataforma piso; // not used
     private Piedra piedra;
     private Picos picos;
@@ -86,15 +87,25 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Boton botonMejPuntajes; // Boton para ir a la pantalla de Mejores Puntajes
     private Boton botonRegresa; // Boton para ir a la pantalla de Menu
     private Boton botonSaltaIntro; //Imagen del boton que salta intro
+    private Boton sonidoOn;
+    private Boton sonidoOff;
+    private Boton musicaOn;
+    private Boton musicaOff;
 
     //Imagenes botones
-    private Image imagenBotonCreditos;
-    private Image imagenBotonInstrucciones;
-    private Image imagenBotonIniciar;
-    private Image imagenBotonAjustes;
-    private Image imagenBotonMejPuntajes;
-    private Image imagenBotonRegresa;
-    private Image imagenBotonSaltaIntro;
+    private Image imagenBotonCreditos; //Imagen del boton de creditos
+    private Image imagenBotonInstrucciones; //Imagen del boton de instrucciones
+    private Image imagenBotonIniciar; //Imagen del boton iniciar
+    private Image imagenBotonAjustes;//Imagen del boton ajustes del menu
+    private Image imagenBotonMejPuntajes;//Imagen del boton mejores puntajes del menu
+    private Image imagenBotonRegresa;//Imagen del boton regresa a menu
+    private Image imagenBotonSaltaIntro;//Imagen del boton salta introduccion
+    private Image imagenPausado;//Imagen del pausado
+    private Image imagenMusicaOn;
+    private Image imagenMusicaOff;
+    private Image imagenSonidoOn;
+    private Image imagenSonidoOff;
+           
 
     // fondos
     private Image imFondoMenu;
@@ -119,27 +130,26 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
     //Puertas
     private Puerta puerta1;
-    
+
     //Nombre del jugador
     private String playerName;
     private boolean auxLeerNombre;
-    
+
     //Puntajes y nombres
     private String nom1;
     private int punt1;
-    
+
     private String nom2;
     private int punt2;
-    
+
     private String nom3;
     private int punt3;
-    
+
     private String nom4;
     private int punt4;
-    
+
     private String nom5;
     private int punt5;
-    
 
     //Constructor
     public Juego() {
@@ -148,30 +158,30 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         this.setSize(800, 600); //tamaño del jframe
         addKeyListener(this);
         addMouseListener(this);
-        
-        fontPuntajes = new Font ("Cambria", 0, 34);
+
+        fontPuntajes = new Font("Cambria", 0, 34);
 
         cont = 0;//contador de tiempo del video al inicio
         auxLeerNombre = true;// permite leer una vez el nombre del jugador
         //Valores por default a los nombres
-        nom1= "-";
-        nom2= "-";
-        nom3= "-";
-        nom4= "-";
-        nom5= "-";
+        nom1 = "-";
+        nom2 = "-";
+        nom3 = "-";
+        nom4 = "-";
+        nom5 = "-";
         //Valores por default a los mejores puntajes
-        punt1=0;
-        punt2=0;
-        punt3=0;
-        punt4=0;
-        punt5=0;
-        
-         try{ //Se llama la funcion de Puntajes para establecer los puntajes mayores antes de empezar cualquier juego
-             // Si es la primera vez que se juega, se llena con los valores default
-                Puntajes();
-              }  catch (IOException e){
-                   System.out.println("Error en " + e.toString());
-               }
+        punt1 = 0;
+        punt2 = 0;
+        punt3 = 0;
+        punt4 = 0;
+        punt5 = 0;
+
+        try { //Se llama la funcion de Puntajes para establecer los puntajes mayores antes de empezar cualquier juego
+            // Si es la primera vez que se juega, se llena con los valores default
+            Puntajes();
+        } catch (IOException e) {
+            System.out.println("Error en " + e.toString());
+        }
 
         imagenBotonCreditos = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonCreditos.png"));
         imagenBotonInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonInstruc.png"));
@@ -180,11 +190,41 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         imagenBotonMejPuntajes = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonMPuntaje.png"));
         imagenBotonRegresa = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/botonRegresa.png"));
         imagenBotonSaltaIntro = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Botones/saltarIntro.png"));
+        imagenPausado = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Pausado.png"));
+        
+        imagenSonidoOff = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/apagado.png"));
+        imagenSonidoOn = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/encendido.png"));
+        imagenMusicaOff = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/apagado.png"));
+        imagenMusicaOn = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/encendido.png"));
+        
+        
         //Los botones se crean y se posicionan al centro del JFrame uno debajo de otro
         botonCreditos = new Boton(0, 0);
         botonCreditos.getAnima().sumaCuadro(imagenBotonCreditos, 300);
         botonCreditos.setPosX(getWidth() / 2 - botonCreditos.getAncho() / 2);
         botonCreditos.setPosY(getHeight() / 2 + 200);
+        
+        
+        //BOTONES DE LAS BOCINAS
+        musicaOn = new Boton (0,0);
+        musicaOn.getAnima().sumaCuadro(imagenMusicaOn, 300);
+        musicaOn.setPosX(80);
+        musicaOn.setPosY(280);
+        
+        musicaOff = new Boton (0,0);
+        musicaOff.getAnima().sumaCuadro(imagenMusicaOff, 300);
+        musicaOff.setPosX(80);
+        musicaOff.setPosY(280);
+        
+        sonidoOn = new Boton (0,0);
+        sonidoOn.getAnima().sumaCuadro(imagenSonidoOn, 300);
+        sonidoOn.setPosX(80);
+        sonidoOn.setPosY(400);
+        
+        sonidoOff = new Boton (0,0);
+        sonidoOff.getAnima().sumaCuadro(imagenSonidoOff, 300);
+        sonidoOff.setPosX(80);
+        sonidoOff.setPosY(400);
 
         botonSaltaIntro = new Boton(0, 0);
         botonSaltaIntro.getAnima().sumaCuadro(imagenBotonSaltaIntro, 300);
@@ -221,12 +261,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         antorcha2 = new Antorcha(3 * getWidth() / 4, 0);
         antorcha1.setPosY(getHeight() + antorcha1.getAlto());
         antorcha2.setPosY(getHeight() + antorcha2.getAlto());
-        
+
         iniciaMusicaIntro = 0;//Auxiliar para reproducir la musica de introduccion
         iniciaMusicaNivel1 = 0;//Auxiliar para reproducir la musica del nivel 1
 
         //Puerta
-        puerta1 = new Puerta(10 , 0);
+        puerta1 = new Puerta(10, 0);
         puerta1.setPosY(getHeight() + puerta1.getAlto());
         //puerta1.setPosX(puerta1.getAncho());
 
@@ -245,11 +285,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         musicaMenu = new SoundClip("sonidos/menu.wav");
         musicaIntro = new SoundClip("sonidos/intro.wav");
         musicaNivel1 = new SoundClip("sonidos/nivel1.mid");
-        
+
         //Sonidos
-        sonidoDiamante = new SoundClip ("sonidos/clic.wav");
+        sonidoDiamante = new SoundClip("sonidos/clic.wav");
         sonidoSalta = new SoundClip("sonidos/Cae.wav");
-        
+
         imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
         imFondoGameOver = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/gameOver.jpg"));
         piso = new Plataforma(0, getHeight() + 10);
@@ -259,7 +299,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         plataformaLst = new LinkedList();
         ran = 6;
-       //Llenar lista de plataformas
+        //Llenar lista de plataformas
         for (int x = 1; x <= ran; x++) {
 
             if (x == ran) { // si estas en la ultima plataforma, insertar la plataforma extendida que funcionara como piso del nivel
@@ -299,6 +339,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         creditos = false;
         mueveJohn = false;
         puntajes = false;
+        pausa = false;
         gameOver = false;
         sonidosFlag = true;
         musicaFlag = true;
@@ -322,6 +363,19 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      *
      */
     public void reset() {
+
+        cont = 0;//contador de tiempo del video al inicio
+        auxLeerNombre = true;// permite leer una vez el nombre del jugador
+       
+
+        //Antorchas
+        antorcha1.setPosY(getHeight() + antorcha1.getAlto());
+        antorcha2.setPosY(getHeight() + antorcha2.getAlto());
+
+        puerta1.setPosY(getHeight() + puerta1.getAlto());
+        iniciaMusicaIntro = 0;//Auxiliar para reproducir la musica de introduccion
+        iniciaMusicaNivel1 = 0;//Auxiliar para reproducir la musica del nivel 1
+
         nivel = 0;// Nivel 0 indica que todavia no inicia
         menu = true; // comenzamos en el menu
         brinco = 0;
@@ -330,6 +384,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         // Las demas pantallas estan apagadas
         instrucciones = false;
         ajustes = false;
+        pausa = false;
+        sonidosFlag = true;
+        musicaFlag = true;
         creditos = false;
         puntajes = false;
         gameOver = false;
@@ -340,18 +397,32 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         gravedad = 9.8;
         tP = .1;
         t = .15;
+        musicaNivel1.stop();
+        musicaMenu.play();
+        musicaMenu.setLooping(true);
         //Vaciamos la lista de plataformas y volvemos a llenarla
         plataformaLst.clear();
 
         ran = 6;
-        System.out.println("random :" + ran);
+
         for (int x = 1; x <= ran; x++) {
 
-            int ran2 = 200 + (int) (Math.random() * ((600 - 200) + 1));
-            plataformaLst.add(new Plataforma(-(800 - ran2), 200 * x));
-            plataformaLst.add(new Plataforma(ran2 + 100, 200 * x));
+            if (x == ran) { // si estas en la ultima plataforma, insertar la plataforma extendida que funcionara como piso del nivel
+                piso.setPosY(200 * x);
+                plataformaLst.add(piso);
+            } else { // Si no, insertar pares de plataformas 
+                int ran2 = 200 + (int) (Math.random() * ((600 - 200) + 1));
+                plataformaLst.add(new Plataforma(-(800 - ran2), 200 * x));
+                plataformaLst.add(new Plataforma(ran2 + 120, 200 * x));
+            }
 
         }
+        diamante.setPosX(5);
+        diamante.setPosY(plataformaLst.get(ran).getPosY() - 60);
+        diamante2.setPosX(getWidth() - 100 - diamante.getAncho());
+        diamante2.setPosY(plataformaLst.getFirst().getPosY() - 60);
+        diamante3.setPosX(getWidth() / 2);
+        diamante3.setPosY(plataformaLst.get(ran / 2).getPosY() - 60);
         //Se reposiciona a Jhon para que inicie desde arriba 
         jhon.setPosX(getWidth() / 2);
         jhon.setPosY(30); // Valor aproximado para que empiece arriba de todas las plataformas
@@ -386,135 +457,136 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
         }
     }
+
     /**
-     * Metodo Puntajes 
-     * Este metodo abre el archivo de texto donde estan los mejores puntajes guardados
-     * Lee los mejores puntajes y nombres y compara con el punaje actual
-     * Sobreescrive los puntajes y los reacomoda
-     * @throws IOException 
+     * Metodo Puntajes Este metodo abre el archivo de texto donde estan los
+     * mejores puntajes guardados Lee los mejores puntajes y nombres y compara
+     * con el punaje actual Sobreescrive los puntajes y los reacomoda
+     *
+     * @throws IOException
      */
     public void Puntajes() throws IOException {
-        try{
-        String nomArchivo = "Datos.txt"; // Nombre del archivo de texto
-        BufferedReader fileIn = new BufferedReader(new FileReader(nomArchivo));
-        int apunta=-1; // Apuntador auxiliar para cambiar el nombre
-        int [] arreglo; // Arreglo auxiliar donde guardar los puntajes del .txt
-        arreglo = new int [5]; // De tamanio 5
-        
-        String [] nombres; // Arreglo auxiliar donde guardar los nombres
-        nombres = new String [5];
-        
-        //Leer los nombres y puntajes
-        //nom1 = fileIn.readLine();
-        nombres[0] = fileIn.readLine();
-        arreglo[0] = Integer.parseInt(fileIn.readLine());
-        
-        //nom2 = fileIn.readLine();
-        nombres[1] = fileIn.readLine();
-        arreglo[1] = Integer.parseInt(fileIn.readLine());
-        
-       // nom3 = fileIn.readLine();
-        nombres[2] = fileIn.readLine();
-        arreglo[2] = Integer.parseInt(fileIn.readLine());
-        
-        //nom4 = fileIn.readLine();
-        nombres[3] = fileIn.readLine();
-        arreglo[3] = Integer.parseInt(fileIn.readLine());
-        
-        //nom5 = fileIn.readLine();
-        nombres[4] = fileIn.readLine();
-        arreglo[4] = Integer.parseInt(fileIn.readLine());
-        
-        fileIn.close();
-        
-        //Auxiliares de reacomodo
-        int aux;
-        int aux2; 
-        String ayuda; 
-        String ayuda2;
-        for (int i=0; i<5;i++){ // Recorre el arreglo completamente
-            if (puntos>arreglo[i]){ // Si el puntaje actual es mayor al de la posicion actual del arreglo
-                //Reemplaza el valor y reacomoda todo el arreglo
-                aux = arreglo[i];
-                ayuda = nombres[i];
-                
-                arreglo[i] = puntos;
-                nombres[i] = playerName;
-                
-                apunta = i;
-                for (int j=i+1; j<5; j++){
-                    aux2 = arreglo[j];
-                    ayuda2 = nombres[j];
-                    
-                    arreglo[j] = aux;
-                    nombres[j] = ayuda;
-                    
-                    aux=aux2;
-                    ayuda = ayuda2;
+        try {
+            String nomArchivo = "Datos.txt"; // Nombre del archivo de texto
+            BufferedReader fileIn = new BufferedReader(new FileReader(nomArchivo));
+            int apunta = -1; // Apuntador auxiliar para cambiar el nombre
+            int[] arreglo; // Arreglo auxiliar donde guardar los puntajes del .txt
+            arreglo = new int[5]; // De tamanio 5
+
+            String[] nombres; // Arreglo auxiliar donde guardar los nombres
+            nombres = new String[5];
+
+            //Leer los nombres y puntajes
+            //nom1 = fileIn.readLine();
+            nombres[0] = fileIn.readLine();
+            arreglo[0] = Integer.parseInt(fileIn.readLine());
+
+            //nom2 = fileIn.readLine();
+            nombres[1] = fileIn.readLine();
+            arreglo[1] = Integer.parseInt(fileIn.readLine());
+
+            // nom3 = fileIn.readLine();
+            nombres[2] = fileIn.readLine();
+            arreglo[2] = Integer.parseInt(fileIn.readLine());
+
+            //nom4 = fileIn.readLine();
+            nombres[3] = fileIn.readLine();
+            arreglo[3] = Integer.parseInt(fileIn.readLine());
+
+            //nom5 = fileIn.readLine();
+            nombres[4] = fileIn.readLine();
+            arreglo[4] = Integer.parseInt(fileIn.readLine());
+
+            fileIn.close();
+
+            //Auxiliares de reacomodo
+            int aux;
+            int aux2;
+            String ayuda;
+            String ayuda2;
+            for (int i = 0; i < 5; i++) { // Recorre el arreglo completamente
+                if (puntos > arreglo[i]) { // Si el puntaje actual es mayor al de la posicion actual del arreglo
+                    //Reemplaza el valor y reacomoda todo el arreglo
+                    aux = arreglo[i];
+                    ayuda = nombres[i];
+
+                    arreglo[i] = puntos;
+                    nombres[i] = playerName;
+
+                    apunta = i;
+                    for (int j = i + 1; j < 5; j++) {
+                        aux2 = arreglo[j];
+                        ayuda2 = nombres[j];
+
+                        arreglo[j] = aux;
+                        nombres[j] = ayuda;
+
+                        aux = aux2;
+                        ayuda = ayuda2;
+                    }
+                    i = 6; // Sale del ciclo
                 }
-                i=6; // Sale del ciclo
             }
-        }
-        //Reasignar los valores de mejores puntajes con sus respectivos nombres
-        punt1 = arreglo[0];
-        nom1 = nombres[0];
-        
-        punt2 = arreglo[1];
-        nom2 = nombres[1];
-        
-        punt3 = arreglo[2];
-        nom3 = nombres[2];
-        
-        punt4 = arreglo[3];
-        nom4 = nombres[3];
-        
-        punt5 = arreglo[4];
-        nom5 = nombres[4];
-        
-        switch (apunta){ // Sirve para sustituir el nombre correspondiente y su puntaje
-            case 0:
-                nom1 = playerName;
-                break;
-            case 1:
-                nom2 = playerName;
-                break;
-            case 2:
-                nom3 = playerName;
-                break;
-            case 3:
-                nom4 = playerName;
-                break;
-            case 4:
-                nom5 = playerName;
-                break;
-        }
-        //Reescribir en el archivo de texto los mejores puntajes
-         PrintWriter fileOut = new PrintWriter(new FileWriter(nomArchivo));
-         fileOut.println(nom1);
-         fileOut.println(punt1);
-         
-         fileOut.println(nom2);
-         fileOut.println(punt2);
-         
-         fileOut.println(nom3);
-         fileOut.println(punt3);
-         
-         fileOut.println(nom4);
-         fileOut.println(punt4);
-         
-         fileOut.println(nom5);
-         fileOut.println(punt5);
-         
-         fileOut.close();
+            //Reasignar los valores de mejores puntajes con sus respectivos nombres
+            punt1 = arreglo[0];
+            nom1 = nombres[0];
+
+            punt2 = arreglo[1];
+            nom2 = nombres[1];
+
+            punt3 = arreglo[2];
+            nom3 = nombres[2];
+
+            punt4 = arreglo[3];
+            nom4 = nombres[3];
+
+            punt5 = arreglo[4];
+            nom5 = nombres[4];
+
+            switch (apunta) { // Sirve para sustituir el nombre correspondiente y su puntaje
+                case 0:
+                    nom1 = playerName;
+                    break;
+                case 1:
+                    nom2 = playerName;
+                    break;
+                case 2:
+                    nom3 = playerName;
+                    break;
+                case 3:
+                    nom4 = playerName;
+                    break;
+                case 4:
+                    nom5 = playerName;
+                    break;
+            }
+            //Reescribir en el archivo de texto los mejores puntajes
+            PrintWriter fileOut = new PrintWriter(new FileWriter(nomArchivo));
+            fileOut.println(nom1);
+            fileOut.println(punt1);
+
+            fileOut.println(nom2);
+            fileOut.println(punt2);
+
+            fileOut.println(nom3);
+            fileOut.println(punt3);
+
+            fileOut.println(nom4);
+            fileOut.println(punt4);
+
+            fileOut.println(nom5);
+            fileOut.println(punt5);
+
+            fileOut.close();
         } catch (IOException e) {
             System.out.println("Error en " + e.toString());
         }
     }
-    
+
     /*
-    Este metodo sirve para mover los objetos antorchas y puertas junto a la ultima barra
-    Los objetos estan posicionados encima de la ultima barra, de esta forma simulan moverse junto a ella
-    */
+     Este metodo sirve para mover los objetos antorchas y puertas junto a la ultima barra
+     Los objetos estan posicionados encima de la ultima barra, de esta forma simulan moverse junto a ella
+     */
     public void mueveObjetos() {
 
         antorcha1.setPosY(plataformaLst.get(ran + 4).getPosY() - antorcha1.getAlto());
@@ -529,68 +601,68 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * las variables.
      */
     public void actualiza() {
-       
-        if (gameOver&&auxLeerNombre){ // Si se acaba el juego y esta prendida la bandera
+
+        if (gameOver && auxLeerNombre) { // Si se acaba el juego y esta prendida la bandera
             //Leer el nombre del jugador por medio de un OptionPane
             playerName = JOptionPane.showInputDialog(null, "Nombre:", "Puntaje", JOptionPane.QUESTION_MESSAGE);
-		if (playerName == null) {
-			System.exit(0);
-		}
-                //Checar y acomodar mejores puntajes
-                try{
+            if (playerName == null) {
+                System.exit(0);
+            }
+            //Checar y acomodar mejores puntajes
+            try {
                 Puntajes();
-                }  catch (IOException e){
-                    System.out.println("Error en " + e.toString());
-                }
-                auxLeerNombre = false; // Apagar bandera para realizar el proceso solo 1 vez cada vez que termine el juego
+            } catch (IOException e) {
+                System.out.println("Error en " + e.toString());
+            }
+            auxLeerNombre = false; // Apagar bandera para realizar el proceso solo 1 vez cada vez que termine el juego
         }
-         if((menu) && (iniciaMusica == 0)){ // Se utiliza un bool para todas las musicas de fondo para que se comience a reproducir solo una vez 
-             musicaMenu.setLooping(true);
-             if(musicaFlag){
-                musicaMenu.play(); 
-             }
-             
-             iniciaMusica++; // Una vez que se actualice, no entrara otra vez y habra continuidad natural de la musica
-         }
-        if (!menu && nivel < 1) {
+        if ((menu) && (iniciaMusica == 0)) { // Se utiliza un bool para todas las musicas de fondo para que se comience a reproducir solo una vez 
+            musicaMenu.setLooping(true);
+            if (musicaFlag) {
+                musicaMenu.play();
+            }
             
+
+            iniciaMusica++; // Una vez que se actualice, no entrara otra vez y habra continuidad natural de la musica
+        }
+        if (!menu && nivel < 1) {
+
             /* Lo que dura el gif de intro  es hasta 330, y se inicializo en 0*/
             if (cont < 330) {
-                if(iniciaMusicaIntro == 0){ // Se utiliza un bool para todas las musicas de fondo para que se comience a reproducir solo una vez 
-                    if(musicaFlag){
-                         musicaIntro.play(); 
+                if (iniciaMusicaIntro == 0) { // Se utiliza un bool para todas las musicas de fondo para que se comience a reproducir solo una vez 
+                    if (musicaFlag) {
+                        musicaIntro.play();
                     }
-                     
-                 
-                  iniciaMusicaIntro ++; // Una vez que se actualice, no entrara otra vez y habra continuidad natural de la musica
+
+                    iniciaMusicaIntro++; // Una vez que se actualice, no entrara otra vez y habra continuidad natural de la musica
                 }
-     
+
                 cont++; // Contador de tiempo de longitud de la introduccion del juego
             }
 
             /* si ya es 330 prendo menu */
             if (cont == 330) {
-               if(musicaFlag){
-                   musicaIntro.stop();
-               }
-               
+                if (musicaFlag) {
+                    musicaIntro.stop();
+                }
+
                 menu = true;
                 cont = 400; // De esta forma, el contador de la intro ya no afectara con el juego
             }
         }
-        if (nivel > 0) {
-           
+        if ((nivel > 0) && (!pausa)) {
+
             musicaMenu.stop();
-            if((nivel == 1) && (iniciaMusicaNivel1 == 0)){
-                 musicaNivel1.setLooping(true);
-                 if(musicaFlag){
-                      musicaNivel1.play();
-                 }
-               
-                iniciaMusicaNivel1 ++;
-                
+            if ((nivel == 1) && (iniciaMusicaNivel1 == 0)) {
+                musicaNivel1.setLooping(true);
+                if (musicaFlag) {
+                    musicaNivel1.play();
+                }
+
+                iniciaMusicaNivel1++;
+
             }
-            
+
             if (mueveJohn) { // Movimiento del personaje
                 switch (direccion) {
                     case 3: {
@@ -609,8 +681,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             long tiempoTranscurrido = System.currentTimeMillis() - getTiempoActual();
             setTiempoActual(getTiempoActual() + tiempoTranscurrido);
 
-           jhon.actualiza(tiempoTranscurrido);
-            
+            jhon.actualiza(tiempoTranscurrido);
 
             diamante.actualiza(tiempoTranscurrido);
             diamante2.actualiza(tiempoTranscurrido);
@@ -668,7 +739,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * entre sí y con las orillas del <code>JFrame</code>.
      */
     public void checaColision() {
-       
+
         boolean b = false;
         for (Plataforma p : plataformaLst) {
             if (jhon.intersectaJhon(p)) {
@@ -686,41 +757,38 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         if (jhon.getPosX() > this.getWidth() - jhon.getAncho() || jhon.getPosX() < 0) {
             direccion = 0;
         }
-        //checa para que jhon no se salga del applet por la gravedad
-        /*if (jhon.getPosY() > this.getHeight() - jhon.getAlto()) {
-            gravedadB = false;
-            brinco = 0;
-        }*/
 
+        //Revisa si John intersecta con un diamante
         if (jhon.intersecta(diamante)) {
             diamante.setPosX(-100);
             puntos += 10;
-            if(sonidosFlag){
-                 sonidoDiamante.play();
+            if (sonidosFlag) {
+                sonidoDiamante.play();
             }
-           
 
-            //agregar sonido
         }
 
+        //Revisa si John intersecta con un diamante
         if (jhon.intersecta(diamante2)) {
             diamante2.setPosX(-100);
             puntos += 10;
-            if(sonidosFlag){
-                 sonidoDiamante.play();
+            if (sonidosFlag) {
+                sonidoDiamante.play();
             }
 
         }
+
+        //Revisa si John intersecta con un diamante
         if (jhon.intersecta(diamante3)) {
             diamante3.setPosX(-100);
             puntos += 10;
-            if(sonidosFlag){
-                 sonidoDiamante.play();
+            if (sonidosFlag) {
+                sonidoDiamante.play();
             }
 
         }
-        
-        if (jhon.getPosY()+jhon.getAlto()-15<0 || (jhon.getPosY()+jhon.getAlto()/2>getHeight())){ // si el personaje se pasa por arriba del jframe, pierde el juego (nivel 1)
+
+        if (jhon.getPosY() + jhon.getAlto() - 15 < 0 || (jhon.getPosY() + jhon.getAlto() / 2 > getHeight())) { // si el personaje se pasa por arriba del jframe, pierde el juego (nivel 1)
             gameOver = true;//pierde el juego                                                     // o si el personaje cae cuando aun no aparecen las plataformas
             nivel = 0;
         }
@@ -767,7 +835,6 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             if (cont >= 78) {
                 g.drawImage(botonSaltaIntro.getImagenI(), botonSaltaIntro.getPosX(), botonSaltaIntro.getPosY(), this);
             }
-           
 
         }
 
@@ -783,7 +850,27 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         //Si esta prendida la variable ajustes, pintar el fondo correspondiente y el boton de regresar
         if (ajustes) {
             g.drawImage(imFondoAjustes, 0, 0, this);
-            g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
+            
+            
+            if(musicaFlag){
+                g.drawImage(musicaOn.getImagenI(), musicaOn.getPosX(), musicaOn.getPosY(), this);
+            }
+            
+
+            else if (!musicaFlag) {
+                g.drawImage(musicaOff.getImagenI(), musicaOff.getPosX(), musicaOff.getPosY(), this);
+            }
+
+            if(sonidosFlag){
+                g.drawImage(sonidoOn.getImagenI(), sonidoOn.getPosX(), sonidoOn.getPosY(), this);
+            }
+            if (!sonidosFlag) {
+                g.drawImage(sonidoOff.getImagenI(), sonidoOff.getPosX(), sonidoOff.getPosY(), this);
+            }
+
+            
+           g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
+           
         }
         //Si esta prendida la variable creditos, pintar el fondo correspondiente y el boton de regresar
         if (creditos) {
@@ -801,25 +888,25 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawString("3.", 40, 270);
             g.drawString("4.", 40, 320);
             g.drawString("5.", 40, 370);
-            
+
             // Mejores jugadores y sus puntos
             g.setColor(Color.WHITE);
-            
+
             g.drawString(nom1, 70, 170);
-            g.drawString(""+punt1, 270,170);
-            
+            g.drawString("" + punt1, 270, 170);
+
             g.drawString(nom2, 70, 220);
-            g.drawString(""+punt2, 270,220);
-            
+            g.drawString("" + punt2, 270, 220);
+
             g.drawString(nom3, 70, 270);
-            g.drawString(""+punt3, 270,270);
-            
+            g.drawString("" + punt3, 270, 270);
+
             g.drawString(nom4, 70, 320);
-            g.drawString(""+punt4, 270,320);
-            
+            g.drawString("" + punt4, 270, 320);
+
             g.drawString(nom5, 70, 370);
-            g.drawString(""+punt5, 270,370);
-            
+            g.drawString("" + punt5, 270, 370);
+
             g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
         }
         //Si esta prendida la variable instrucciones, pintar el fondo correspondiente y el boton de regresar
@@ -830,12 +917,17 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         //Si se termino el juego, pintar el fondo de GameOver y el boton de regresar
         if (gameOver) {
             g.drawImage(imFondoGameOver, 0, 0, this);
+            g.drawString("Puntajes: " + puntos, 330, 495);
             g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
 
         }
         if (!menu && nivel == 1) {
 
             g.drawImage(imFondoNivel1, 0, 0, this);
+            g.drawImage(puerta1.getImagenI(), puerta1.getPosX(), puerta1.getPosY(), this);
+            g.drawImage(antorcha1.getImagenI(), antorcha1.getPosX(), antorcha1.getPosY(), this);
+            g.drawImage(antorcha2.getImagenI(), antorcha2.getPosX(), antorcha2.getPosY(), this);
+
             //Dibuja la imagen en la posicion actualizada
             if (direccion == 3) {
                 g.drawImage(getJhon().getImagenI(), getJhon().getPosX() + 50, getJhon().getPosY(), -jhon.getAncho(), jhon.getAlto(), this);
@@ -852,12 +944,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             for (Plataforma p : plataformaLst) {
                 g.drawImage(p.getImagenI(), p.getPosX(), p.getPosY(), this);
             }
-            g.drawImage(antorcha1.getImagenI(), antorcha1.getPosX(), antorcha1.getPosY(), this);
-            g.drawImage(antorcha2.getImagenI(), antorcha2.getPosX(), antorcha2.getPosY(), this);
-            g.drawImage(puerta1.getImagenI(), puerta1.getPosX(), puerta1.getPosY(), this);
+
+            //Si le tecleo P entonces esta en Pausa
+            if (pausa) {
+                g.drawImage(imagenPausado, getWidth() / 2 - 130, getHeight() / 2 - 50, this);
+            }
 
             g.drawString("Puntos: " + puntos, getWidth() - 150, 60);
-            g.drawString("Balas: " + jhon.getBalas() , getWidth() - 250, 60);
+            g.drawString("Balas: " + jhon.getBalas(), getWidth() - 250, 60);
         }
 
         if (!menu && nivel == 2) {
@@ -882,6 +976,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawImage(piedra.getImagenI(), piedra.getPosX(), piedra.getPosY(), this);
             g.drawImage(momia.getImagenI(), momia.getPosX(), momia.getPosY(), this);
             g.drawImage(cobra.getImagenI(), cobra.getPosX(), cobra.getPosY(), this);
+        }
+        //Si le tecleo P entonces esta en Pausa
+        if (pausa) {
+            g.drawImage(imagenPausado, getWidth() / 2 - 130, getHeight() / 2 - 50, this);
         }
     }
 
@@ -915,10 +1013,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             mueveJohn = true;
         } else if ((e.getKeyCode() == KeyEvent.VK_UP) && (!gravedadB)) {    //Presiono flecha derecha
             brinco = 20;
-            if(sonidosFlag){
-                 sonidoSalta.play(); 
+            if (sonidosFlag) {
+                sonidoSalta.play();
             }
-          
+
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {    //Presiono flecha derecha
             direccion = 2;
         }
@@ -955,6 +1053,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     nivel++;
                 }
             }
+
+            if (e.getKeyCode() == KeyEvent.VK_P) {
+                pausa = !pausa;
+            }
         }
 
     }
@@ -967,6 +1069,18 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     public void mouseClicked(MouseEvent e) {
         int clickX = e.getX();
         int clickY = e.getY();
+        if (musicaOn.clickEnPersonaje(clickX, clickY)) {
+            musicaFlag = false;
+        }
+        if (musicaOff.clickEnPersonaje(clickX, clickY)) {
+            musicaFlag = true;
+        }
+         if (sonidoOn.clickEnPersonaje(clickX, clickY)) {
+            sonidosFlag = !sonidosFlag;
+        }
+        if (sonidoOff.clickEnPersonaje(clickX, clickY)) {
+            sonidosFlag = !sonidosFlag;
+        }
         if (botonSaltaIntro.clickEnPersonaje(clickX, clickY)) {
             saltaIntroduccion = true;
             musicaIntro.stop();
