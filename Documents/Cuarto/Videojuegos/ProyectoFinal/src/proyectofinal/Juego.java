@@ -429,7 +429,81 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         diamante.setPosY(aux2.getPosY() - aux2.getAlto() - diamante.getAlto() - 10);
 
     }
+     /**
+     * Reset - limpia y prepara todo para el inicio del nuevo juego.
+     *
+     */
+    public void resetNivel() {
 
+        //cont = 0;//contador de tiempo del video al inicio
+        auxLeerNombre = true;// permite leer una vez el nombre del jugador
+
+        //Antorchas
+        antorcha1.setPosY(getHeight() + antorcha1.getAlto());
+        antorcha2.setPosY(getHeight() + antorcha2.getAlto());
+
+        puerta1.setPosY(getHeight() + puerta1.getAlto());
+        iniciaMusicaIntro = 0;//Auxiliar para reproducir la musica de introduccion
+        iniciaMusicaNivel1 = 0;//Auxiliar para reproducir la musica del nivel 1
+
+        nivel = 2;// Nivel 0 indica que todavia no inicia
+        menu = false; // comenzamos en el menu
+        brinco = 0;
+        direccion = 0;
+
+        // Las demas pantallas estan apagadas
+        instrucciones = false;
+        ajustes = false;
+        pausa = false;
+        sonidosFlag = true;
+        musicaFlag = true;
+        creditos = false;
+        puntajes = false;
+        gameOver = false;
+        saltaIntroduccion = false;
+        // Valores default
+        veloc = 2;
+        gravedadB = false;
+        gravedad = 9.8;
+        tP = .1;
+        t = .15;
+        //AGregar musica nivel
+//        musicaNivel1.stop();
+//        musicaMenu.play();
+       // musicaMenu.setLooping(true);
+        //Vaciamos la lista de plataformas y volvemos a llenarla
+        plataformaLst.clear();
+
+        ran = 6;
+
+        for (int x = 1; x <= ran; x++) {
+
+            if (x == ran) { // si estas en la ultima plataforma, insertar la plataforma extendida que funcionara como piso del nivel
+                piso.setPosY(200 * x);
+                plataformaLst.add(piso);
+            } else { // Si no, insertar pares de plataformas 
+                int ran2 = 200 + (int) (Math.random() * ((600 - 200) + 1));
+                plataformaLst.add(new Plataforma(-(800 - ran2), 200 * x));
+                plataformaLst.add(new Plataforma(ran2 + 120, 200 * x));
+            }
+
+        }
+        diamante.setPosX(5);
+        diamante.setPosY(plataformaLst.get(ran).getPosY() - 60);
+        diamante2.setPosX(getWidth() - 100 - diamante.getAncho());
+        diamante2.setPosY(plataformaLst.getFirst().getPosY() - 60);
+        diamante3.setPosX(getWidth() / 2);
+        diamante3.setPosY(plataformaLst.get(ran / 2).getPosY() - 60);
+        //Se reposiciona a Jhon para que inicie desde arriba 
+        jhon.setPosX(getWidth() / 2);
+        jhon.setPosY(30); // Valor aproximado para que empiece arriba de todas las plataformas
+
+        //Se reposiciona el diamante sobre la ultima plataforma nueva
+        Plataforma aux2 = (Plataforma) plataformaLst.getLast();
+        diamante.setPosX(20);
+        diamante.setPosY(aux2.getPosY() - aux2.getAlto() - diamante.getAlto() - 10);
+
+    }
     /**
      * Metodo <I>run</I> sobrescrito de la clase <code>Thread</code>.<P>
      * En este metodo se ejecuta el hilo, es un ciclo indefinido donde se
@@ -953,7 +1027,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawImage(picos.getImagenI(), picos.getPosX(), picos.getPosY(), this);
 
             g.drawImage(momia.getImagenI(), momia.getPosX(), momia.getPosY(), this);
-
+            //Dibuja la imagen en la posicion actualizada
+            if (direccion == 3) {
+                g.drawImage(getJhon().getImagenI(), getJhon().getPosX() + 50, getJhon().getPosY(), -jhon.getAncho(), jhon.getAlto(), this);
+            } else {
+                g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), jhon.getAncho(), jhon.getAlto(), this);
+            }
+            //Dibuja la imagen en la posicion actualizada
+            for (Plataforma p : plataformaLst) {
+                g.drawImage(p.getImagenI(), p.getPosX(), p.getPosY(), this);
+            }
             g.drawImage(cobra.getImagenI(), cobra.getPosX(), cobra.getPosY(), this);
         }
         if (!menu && nivel == 3) {
@@ -1038,6 +1121,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 if (jhon.intersecta(puerta1)) {
                     nivel++;
+                    resetNivel();// SE inicializan todos los valores para el siguiente nivel
                 }
             }
 
