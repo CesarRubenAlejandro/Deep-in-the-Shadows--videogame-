@@ -327,7 +327,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         momia.getAnima().sumaCuadro(mom, 100);
         momia.getAnima().sumaCuadro(mom2, 100);
 
-        nivel = 0;// Nivel 0 indica que todavia no inicia
+        nivel = 2;// Nivel 0 indica que todavia no inicia
         menu = false; // comenzamos en el menu
 
         // Las demas pantallas estan apagadas
@@ -482,10 +482,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             if (x == ran) { // si estas en la ultima plataforma, insertar la plataforma extendida que funcionara como piso del nivel
                 piso.setPosY(200 * x);
                 plataformaLst.add(piso);
-            } else { // Si no, insertar pares de plataformas 
+            } else if(x==1){//el primer barra ponerla mas abajo
                 int ran2 = 200 + (int) (Math.random() * ((600 - 200) + 1));
-                plataformaLst.add(new Plataforma(-(800 - ran2), 200 * x));
-                plataformaLst.add(new Plataforma(ran2 + 120, 200 * x));
+                plataformaLst.add(new Plataforma(-(800 - ran2), 400));
+                plataformaLst.add(new Plataforma(ran2 + 120, 400));
+            }else { // Si no, insertar pares de plataformas 
+                int ran2 = 200 + (int) (Math.random() * ((600 - 200) + 1));
+                plataformaLst.add(new Plataforma(-(800 - ran2), 200 * (x+1)));
+                plataformaLst.add(new Plataforma(ran2 + 120, 200 * (x+1)));
             }
 
         }
@@ -777,6 +781,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             diamante3.actualiza(tiempoTranscurrido);
             antorcha1.actualiza(tiempoTranscurrido);
             antorcha2.actualiza(tiempoTranscurrido);
+            if(momia != null){
+                momia.actualiza(tiempoTranscurrido);
+            }
 
             //entra cuando no esta tocando las barras y la gravedad actua
             if (gravedadB) {
