@@ -287,7 +287,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         sonidoDiamante = new SoundClip("sonidos/clic.wav");
         sonidoSalta = new SoundClip("sonidos/Cae.wav");
 
-       // imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
+        // imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
         imFondoGameOver = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/gameOver.JPG"));
         piso = new Plataforma(0, getHeight() + 10);
         //se inicializan actores
@@ -421,7 +421,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         diamante3.setPosY(plataformaLst.get(ran / 2).getPosY() - 60);
         //Se reposiciona a Jhon para que inicie desde arriba 
         jhon.setPosX(getWidth() / 2);
-        jhon.setPosY(30); // Valor aproximado para que empiece arriba de todas las plataformas
+        jhon.setPosY(200-100); // Valor aproximado para que empiece arriba de todas las plataformas
 
         //Se reposiciona el diamante sobre la ultima plataforma nueva
         Plataforma aux2 = (Plataforma) plataformaLst.getLast();
@@ -429,7 +429,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         diamante.setPosY(aux2.getPosY() - aux2.getAlto() - diamante.getAlto() - 10);
 
     }
-     /**
+
+    /**
      * Reset - limpia y prepara todo para el inicio del nuevo juego.
      *
      */
@@ -470,11 +471,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         //AGregar musica nivel
 //        musicaNivel1.stop();
 //        musicaMenu.play();
-       // musicaMenu.setLooping(true);
+        // musicaMenu.setLooping(true);
         //Vaciamos la lista de plataformas y volvemos a llenarla
         plataformaLst.clear();
 
-        ran = 6;
+       // ran = 6;
 
         for (int x = 1; x <= ran; x++) {
 
@@ -496,7 +497,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         diamante3.setPosY(plataformaLst.get(ran / 2).getPosY() - 60);
         //Se reposiciona a Jhon para que inicie desde arriba 
         jhon.setPosX(getWidth() / 2);
-        jhon.setPosY(30); // Valor aproximado para que empiece arriba de todas las plataformas
+        Plataforma aux = (Plataforma) plataformaLst.get(0);
+        jhon.setPosY(200-100); // Valor aproximado para que empiece arriba de todas las plataformas
 
         //Se reposiciona el diamante sobre la ultima plataforma nueva
         Plataforma aux2 = (Plataforma) plataformaLst.getLast();
@@ -504,6 +506,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         diamante.setPosY(aux2.getPosY() - aux2.getAlto() - diamante.getAlto() - 10);
 
     }
+
     /**
      * Metodo <I>run</I> sobrescrito de la clase <code>Thread</code>.<P>
      * En este metodo se ejecuta el hilo, es un ciclo indefinido donde se
@@ -648,8 +651,25 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             fileOut.println(punt5);
 
             fileOut.close();
-        } catch (IOException e) {
-            System.out.println("Error en " + e.toString());
+        } catch (IOException e) { // Si no existe el archivo, crea uno y escribe los valores default
+            String nomArchivo = "Datos.txt";
+            PrintWriter fileOut = new PrintWriter(new FileWriter(nomArchivo));
+            fileOut.println(nom1);
+            fileOut.println(punt1);
+
+            fileOut.println(nom2);
+            fileOut.println(punt2);
+
+            fileOut.println(nom3);
+            fileOut.println(punt3);
+
+            fileOut.println(nom4);
+            fileOut.println(punt4);
+
+            fileOut.println(nom5);
+            fileOut.println(punt5);
+
+            fileOut.close();
         }
     }
 
@@ -861,6 +881,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             gameOver = true;//pierde el juego                                                     // o si el personaje cae cuando aun no aparecen las plataformas
             nivel = 0;
         }
+
+        if ((nivel > 1) && (jhon.intersecta(picos))) {
+            gameOver = true;
+            nivel = 0;
+        }
     }
 
     /**
@@ -926,7 +951,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 g.drawImage(musicaOn.getImagenI(), musicaOn.getPosX(), musicaOn.getPosY(), this);
 
             }
-             if (sonidosFlag) {
+            if (sonidosFlag) {
                 g.drawImage(sonidoOff.getImagenI(), sonidoOff.getPosX(), sonidoOff.getPosY(), this);
             } else if (!sonidosFlag) {
                 g.drawImage(sonidoOn.getImagenI(), sonidoOn.getPosX(), sonidoOn.getPosY(), this);
