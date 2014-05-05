@@ -61,6 +61,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private boolean sonidosFlag; //Bandera para saber si debe o no haber sonido
     private boolean musicaFlag; //Bandera para saber si debe o no haber musica
     private boolean pausa; //Variable para indicar si el usuario teclea P 
+    private int direccionSerpiente;
     //Musica
     private SoundClip musicaMenu; //Musica del menu
     private SoundClip musicaIntro; //Musica de la intro
@@ -316,16 +317,6 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         //Se inicializan los enemigos y obstaculos
         piedra = new Piedra(this.getWidth() - 110, this.getHeight() - 110);
         picos = new Picos(0, 25);
-        cobra = new Serpiente(500, getHeight() - 60);
-        Image cob = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpiente.png"));
-        Image cob2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpiente2.png"));
-        cobra.getAnima().sumaCuadro(cob, 100);
-        cobra.getAnima().sumaCuadro(cob2, 100);
-        momia = new Enemigo(0, 90);
-        Image mom = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia.png"));
-        Image mom2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia2.png"));
-        momia.getAnima().sumaCuadro(mom, 100);
-        momia.getAnima().sumaCuadro(mom2, 100);
 
         nivel = 1;// Nivel 0 indica que todavia no inicia
         menu = false; // comenzamos en el menu
@@ -360,7 +351,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      *
      */
     public void reset() {
-
+        //hay que borrar porque si se pierde, la momia no se va a pintar pero se presenta un gameover IMPORTANTE
+        momia = null;
+        cobra=null;
         //cont = 0;//contador de tiempo del video al inicio
         auxLeerNombre = true;// permite leer una vez el nombre del jugador
 
@@ -472,12 +465,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 //        musicaNivel1.stop();
 //        musicaMenu.play();
         // musicaMenu.setLooping(true);
-        //Vaciamos la lista de plataformas y volvemos a llenarla
+        // ran = 6;
+
+     //Vaciamos la lista de plataformas y volvemos a llenarla
         plataformaLst.clear();
 
-       // ran = 6;
-
-        for (int x = 1; x <= ran; x++) {
+          for (int x = 1; x <= ran; x++) {
 
             if (x == ran) { // si estas en la ultima plataforma, insertar la plataforma extendida que funcionara como piso del nivel
                 piso.setPosY(200 * x);
@@ -493,6 +486,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
 
         }
+        // crear enemigos
+        
+        cobra = new Serpiente(0, plataformaLst.get(5).getPosY()-60);
+        momia = new Enemigo(55,0);
+        momia.setPosY(getHeight() + momia.getAlto());
+        direccionSerpiente= 4;
         diamante.setPosX(5);
         diamante.setPosY(plataformaLst.get(ran).getPosY() - 60);
         diamante2.setPosX(getWidth() - 100 - diamante.getAncho());
@@ -686,6 +685,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         antorcha1.setPosY(plataformaLst.get(ran + 4).getPosY() - antorcha1.getAlto());
         antorcha2.setPosY(plataformaLst.get(ran + 4).getPosY() - antorcha1.getAlto());
         puerta1.setPosY(plataformaLst.get(ran + 4).getPosY() - puerta1.getAlto());
+        if(momia != null)
+        momia.setPosY(plataformaLst.get(ran + 4).getPosY() - momia.getAlto());
 
     }
 
@@ -756,20 +757,18 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
             }
 
-//            if (mueveJohn) { // Movimiento del personaje
+            if (mueveJohn) { // Movimiento del personaje
                 switch (direccion) {
                     case 3: {
                         jhon.setPosX(jhon.getPosX() - 10);
-                        mueveJohn = false;
                         break;    //se mueve hacia izquierda                
                     }
                     case 4: {
                         jhon.setPosX(jhon.getPosX() + 10);
-                        mueveJohn = false;
                         break;    //se mueve hacia derecha                  
                     }
                 }
-//            }
+            }
 
             long tiempoTranscurrido = System.currentTimeMillis() - getTiempoActual();
             setTiempoActual(getTiempoActual() + tiempoTranscurrido);
@@ -786,6 +785,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
             if(cobra != null){
                 cobra.actualiza(tiempoTranscurrido);
+                switch (direccionSerpiente) {
+                    case 3: {
+                        cobra.setPosX(cobra.getPosX() - veloc);
+                        break;    //se mueve hacia izquierda                
+                    }
+                    case 4: {
+                        cobra.setPosX(cobra.getPosX() + veloc);
+                        break;    //se mueve hacia derecha                  
+                    }
+                }
             }
 
             //entra cuando no esta tocando las barras y la gravedad actua
@@ -816,7 +825,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 diamante.setPosY(diamante.getPosY() - veloc);
                 diamante2.setPosY(diamante2.getPosY() - veloc);
                 diamante3.setPosY(diamante3.getPosY() - veloc);
-
+                if(cobra != null){
+                    cobra.setPosY(cobra.getPosY()-veloc);
+                }
                 for (Plataforma p : plataformaLst) {
                     p.setPosY(p.getPosY() - veloc);
 
@@ -838,7 +849,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * entre sí y con las orillas del <code>JFrame</code>.
      */
     public void checaColision() {
-
+        
         boolean b = false;
         for (Plataforma p : plataformaLst) {
             if (jhon.intersectaJhon(p)) {
@@ -876,7 +887,23 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
 
         }
-
+        //si existe el objeto, ya que solo existe hasta el nivel 2
+        if(cobra != null){
+            if(cobra.getPosX()<0)
+                direccionSerpiente= 4;
+            else if( cobra.getPosX()+cobra.getAncho()> this.getWidth())
+                direccionSerpiente= 3;
+            if(cobra.intersecta(jhon)){
+                gameOver = true;//pierde el juego                                                     // o si el personaje cae cuando aun no aparecen las plataformas
+                nivel = 0;
+            }
+        }
+        if(momia != null){
+            if(momia.intersecta(jhon)){
+                gameOver = true;//pierde el juego                                                     // o si el personaje cae cuando aun no aparecen las plataformas
+                nivel = 0;
+            }
+        }
         //Revisa si John intersecta con un diamante
         if (jhon.intersecta(diamante3)) {
             diamante3.setPosX(-100);
@@ -1072,7 +1099,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             for (Plataforma p : plataformaLst) {
                 g.drawImage(p.getImagenI(), p.getPosX(), p.getPosY(), this);
             }
-            g.drawImage(cobra.getImagenI(), cobra.getPosX(), cobra.getPosY(), this);
+            if (direccionSerpiente == 3) {
+                g.drawImage(cobra.getImagenI(), cobra.getPosX() + 100, cobra.getPosY(), -cobra.getAncho(), cobra.getAlto(), this);
+            } else {
+                g.drawImage(cobra.getImagenI(), cobra.getPosX(), cobra.getPosY(), cobra.getAncho(), cobra.getAlto(), this);
+            }
         }
         if (!menu && nivel == 3) {
             g.drawImage(imFondoNivel3, 0, 0, this);
@@ -1123,7 +1154,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
 
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {    //Presiono flecha derecha
-            direccion = 2;
+            mueveJohn = false;
         }
         
         if (e.getKeyCode() == KeyEvent.VK_B) {

@@ -52,7 +52,7 @@ public class Serpiente extends Base {
         //Se crea la animación
         anima = new Animacion();
         anima.sumaCuadro(serpiente, 100);
-           anima.sumaCuadro(serpiente1, 100);
+        anima.sumaCuadro(serpiente1, 100);
     }
     /**
      * Metodo que hace llamada al metodo de anima para actualizar la imagen segun el tiempo
