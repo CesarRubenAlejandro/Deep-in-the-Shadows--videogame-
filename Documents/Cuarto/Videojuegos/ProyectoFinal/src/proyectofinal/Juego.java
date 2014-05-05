@@ -756,7 +756,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
             }
 
-            if (mueveJohn) { // Movimiento del personaje
+//            if (mueveJohn) { // Movimiento del personaje
                 switch (direccion) {
                     case 3: {
                         jhon.setPosX(jhon.getPosX() - 10);
@@ -769,7 +769,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                         break;    //se mueve hacia derecha                  
                     }
                 }
-            }
+//            }
 
             long tiempoTranscurrido = System.currentTimeMillis() - getTiempoActual();
             setTiempoActual(getTiempoActual() + tiempoTranscurrido);
@@ -1142,6 +1142,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         //Para la entrega Alpha, una vez que se haya inicado el juego, se presiona la tecla 2 para ir al nivel 2, la tecla 3 para ir al nivel 3
         // y la tecla G para terminar el juego
         if (nivel > 0) {
+           
             if (e.getKeyCode() == KeyEvent.VK_G) {
                 gameOver = true;
                 nivel = 0;
