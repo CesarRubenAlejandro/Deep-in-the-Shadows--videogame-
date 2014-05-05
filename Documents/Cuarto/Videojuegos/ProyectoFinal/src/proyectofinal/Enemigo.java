@@ -20,7 +20,21 @@ public class Enemigo extends Base {
      */
     public Enemigo(int posX, int posY) {
         super(posX, posY);
+        //Se cargan las imágenes(cuadros) para la animación
+//        Image momia = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia.png"));
+        Image momia1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia1.png"));
+        Image momia2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia2.png"));
+        Image momia3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia3.png"));
+        Image momia4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia4.png"));
+        Image momia5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/momia5.png"));
+        //Se crea la animación
         anima = new Animacion();
+//        anima.sumaCuadro(momia, 100);
+        anima.sumaCuadro(momia1, 100);
+        anima.sumaCuadro(momia2, 200);
+        anima.sumaCuadro(momia3, 300);
+        anima.sumaCuadro(momia4, 400);
+        anima.sumaCuadro(momia5, 500);
  
     }
     /**
