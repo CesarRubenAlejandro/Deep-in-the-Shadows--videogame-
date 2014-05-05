@@ -1083,6 +1083,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 //            g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
+            g.drawImage(puerta1.getImagenI(), puerta1.getPosX(), puerta1.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
             //g.drawImage(plataforma.getImagenI(), plataforma.getPosX(), plataforma.getPosY(), this);
             //Dibuja la imagen en la posicion actualizada
@@ -1108,6 +1109,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         if (!menu && nivel == 3) {
             g.drawImage(imFondoNivel3, 0, 0, this);
             g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
+            g.drawImage(puerta1.getImagenI(), puerta1.getPosX(), puerta1.getPosY(), this);
             g.drawImage(picos.getImagenI(), picos.getPosX(), picos.getPosY(), this);
             g.drawImage(piedra.getImagenI(), piedra.getPosX(), piedra.getPosY(), this);
             g.drawImage(momia.getImagenI(), momia.getPosX(), momia.getPosY(), this);
