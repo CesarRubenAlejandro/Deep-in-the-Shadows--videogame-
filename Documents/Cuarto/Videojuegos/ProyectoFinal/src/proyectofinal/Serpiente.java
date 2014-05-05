@@ -46,8 +46,8 @@ public class Serpiente extends Base {
     public Serpiente(int posX, int posY) {
         super(posX, posY);
         //Se cargan las imágenes(cuadros) para la animación
-        Image serpiente = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpiente.png"));
-         Image serpiente1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpiente2.png"));
+        Image serpiente = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpientee.png"));
+         Image serpiente1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpientee2.png"));
 
         //Se crea la animación
         anima = new Animacion();
@@ -62,5 +62,9 @@ public class Serpiente extends Base {
      */
     public void actualiza(long tiempo) {
         anima.actualiza(tiempo);
+    }
+    
+    public Animacion getAnima(){
+        return anima;
     }
 }

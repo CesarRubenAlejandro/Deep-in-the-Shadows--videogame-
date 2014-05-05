@@ -73,7 +73,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     //Actores
     private Personaje jhon; //Personaje principal
     private Enemigo momia;
-    private Enemigo cobra;
+    private Serpiente cobra;
     private LinkedList<Plataforma> plataformaLst; //Lista de plataformas para el primer nivel
     private Plataforma piso; // not used
     private Piedra piedra;
@@ -316,7 +316,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         //Se inicializan los enemigos y obstaculos
         piedra = new Piedra(this.getWidth() - 110, this.getHeight() - 110);
         picos = new Picos(0, 25);
-        cobra = new Enemigo(500, getHeight() - 60);
+        cobra = new Serpiente(500, getHeight() - 60);
         Image cob = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpiente.png"));
         Image cob2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/serpiente2.png"));
         cobra.getAnima().sumaCuadro(cob, 100);
@@ -792,7 +792,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 t = t + tP;
                 //checa si el nuevo y de jhon esta justo al borde de la barra y si no la pone justo al borde
                 for (Plataforma p : plataformaLst) {
-                    if (jhon.intersectaJhon(p)) {
+                    if (jhon.intersecta(p)) {
                         jhon.setPosY(p.getPosY() - jhon.getAlto());
                         brinco = 0;
                         t = .15; // parche para que al final no se vaya hasta el final, sucede algo en el manejo de las colisiones que no checa que esta tocando la barra
