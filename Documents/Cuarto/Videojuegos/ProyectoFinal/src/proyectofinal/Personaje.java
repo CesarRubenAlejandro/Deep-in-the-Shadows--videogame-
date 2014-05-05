@@ -12,7 +12,9 @@ import java.awt.Toolkit;
 public class Personaje extends Base {
 
     private int balas;
- 
+    private boolean dispara;
+    private Animacion dispAnim;
+    private int num;
 
     /**
      * Metodo constructor que hereda los atributos de la clase
@@ -25,16 +27,24 @@ public class Personaje extends Base {
         
         super(posX, posY);
         //Se cargan las imágenes(cuadros) para la animación
+        
         Image corre1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/jhon1.png"));
         Image corre2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/jhon2.png"));
         Image corre3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/jhon3.png"));
         Image corre4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/jhon4.png"));
+        
+        Image dispara1= Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/jhon1.png"));
+        
         //Se crea la animación
         anima = new Animacion();
         anima.sumaCuadro(corre1, 200);
         anima.sumaCuadro(corre2, 200);
         anima.sumaCuadro(corre3, 200);
         anima.sumaCuadro(corre4, 200);
+        
+        dispAnim = new Animacion();
+        dispAnim.sumaCuadro(dispara1, 200);
+        dispAnim.sumaCuadro(dispara1, 200);
         balas = 5;
     }
     /**
@@ -44,7 +54,14 @@ public class Personaje extends Base {
      * @param tiempo es el tiempo <code>Int</code> del objeto Animacion.
      */
     public void actualiza(long tiempo) {
-        anima.actualiza(tiempo);
+        if(dispara){
+            dispAnim.actualiza(tiempo);
+            num--;
+            if(num==0)
+                dispara=false;
+        }else{
+            anima.actualiza(tiempo);
+        }
     }
     /**
      * Metodo de acceso que regresa un nuevo rectangulo
@@ -76,5 +93,33 @@ public class Personaje extends Base {
     }
     public void setBalas(int b){
         balas = b;
+    }
+
+    /**
+     * @return the dispara
+     */
+    public boolean isDispara() {
+        return dispara;
+    }
+
+    /**
+     * @param dispara the dispara to set
+     */
+    public void setDispara(boolean dispara) {
+        this.dispara = dispara;
+    }
+
+    /**
+     * @return the num
+     */
+    public int getNum() {
+        return num;
+    }
+
+    /**
+     * @param num the num to set
+     */
+    public void setNum(int num) {
+        this.num = num;
     }
 }

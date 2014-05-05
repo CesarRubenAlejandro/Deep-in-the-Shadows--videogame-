@@ -55,11 +55,11 @@ public class Momia extends Base {
         //Se crea la animación
         anima = new Animacion();
 //        anima.sumaCuadro(momia, 100);
-        anima.sumaCuadro(momia1, 100);
+        anima.sumaCuadro(momia1, 200);
         anima.sumaCuadro(momia2, 200);
-        anima.sumaCuadro(momia3, 300);
-        anima.sumaCuadro(momia4, 400);
-        anima.sumaCuadro(momia5, 500);
+        anima.sumaCuadro(momia3, 200);
+        anima.sumaCuadro(momia4, 200);
+        anima.sumaCuadro(momia5, 200);
     }
     /**
      * Metodo que hace llamada al metodo de anima para actualizar la imagen segun el tiempo

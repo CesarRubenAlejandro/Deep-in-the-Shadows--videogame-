@@ -327,7 +327,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         momia.getAnima().sumaCuadro(mom, 100);
         momia.getAnima().sumaCuadro(mom2, 100);
 
-        nivel = 2;// Nivel 0 indica que todavia no inicia
+        nivel = 1;// Nivel 0 indica que todavia no inicia
         menu = false; // comenzamos en el menu
 
         // Las demas pantallas estan apagadas
@@ -1122,6 +1122,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {    //Presiono flecha derecha
             direccion = 2;
         }
+        
+        if (e.getKeyCode() == KeyEvent.VK_B) {
+            jhon.setNum(5);
+            jhon.setDispara(true);
+        }
     }
 
     /**
@@ -1156,7 +1161,6 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     resetNivel();// SE inicializan todos los valores para el siguiente nivel
                 }
             }
-
             if (e.getKeyCode() == KeyEvent.VK_P) {
                 pausa = !pausa;
             }
