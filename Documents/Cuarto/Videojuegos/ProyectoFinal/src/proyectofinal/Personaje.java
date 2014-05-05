@@ -71,7 +71,7 @@ public class Personaje extends Base {
      */
     public Rectangle getPerimetroJhon() {
         
-        return new Rectangle((int) getPosX(), (int) getPosY()+99, getAncho(), getAlto()-99);
+        return new Rectangle((int) getPosX(), (int) getPosY()+80, getAncho(), getAlto()-80);
     }
     
 

@@ -784,6 +784,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             if(momia != null){
                 momia.actualiza(tiempoTranscurrido);
             }
+            if(cobra != null){
+                cobra.actualiza(tiempoTranscurrido);
+            }
 
             //entra cuando no esta tocando las barras y la gravedad actua
             if (gravedadB) {
@@ -792,7 +795,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 t = t + tP;
                 //checa si el nuevo y de jhon esta justo al borde de la barra y si no la pone justo al borde
                 for (Plataforma p : plataformaLst) {
-                    if (jhon.intersecta(p)) {
+                    if (jhon.intersectaJhon(p)) {
                         jhon.setPosY(p.getPosY() - jhon.getAlto());
                         brinco = 0;
                         t = .15; // parche para que al final no se vaya hasta el final, sucede algo en el manejo de las colisiones que no checa que esta tocando la barra
