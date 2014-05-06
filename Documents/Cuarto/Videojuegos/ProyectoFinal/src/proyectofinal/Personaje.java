@@ -13,8 +13,9 @@ public class Personaje extends Base {
 
     private int balas;
     private boolean dispara;
-    private Animacion dispAnim;
     private int num;
+    private Image imagenDispara;
+    private Image imagenSalta;
 
     /**
      * Metodo constructor que hereda los atributos de la clase
@@ -33,7 +34,8 @@ public class Personaje extends Base {
         Image corre3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/jhon3.png"));
         Image corre4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/jhon4.png"));
         
-        Image dispara1= Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/jhon1.png"));
+        imagenDispara= Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/disparo.png"));
+        imagenSalta = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/saltaaa.png"));
         
         //Se crea la animación
         anima = new Animacion();
@@ -41,11 +43,8 @@ public class Personaje extends Base {
         anima.sumaCuadro(corre2, 200);
         anima.sumaCuadro(corre3, 200);
         anima.sumaCuadro(corre4, 200);
-        
-        dispAnim = new Animacion();
-        dispAnim.sumaCuadro(dispara1, 200);
-        dispAnim.sumaCuadro(dispara1, 200);
         balas = 5;
+        dispara = false;
     }
     /**
      * Metodo que hace llamada al metodo de anima para actualizar la imagen segun el tiempo
@@ -54,11 +53,11 @@ public class Personaje extends Base {
      * @param tiempo es el tiempo <code>Int</code> del objeto Animacion.
      */
     public void actualiza(long tiempo) {
-        if(dispara){
-            dispAnim.actualiza(tiempo);
+        if(isDispara()){
+          //  dispAnim.actualiza(tiempo);
             num--;
             if(num==0)
-                dispara=false;
+                setDispara(false);
         }else{
             anima.actualiza(tiempo);
         }
@@ -87,16 +86,26 @@ public class Personaje extends Base {
     public boolean intersectaJhon(Base obj) {
         return getPerimetroJhon().intersects(obj.getPerimetro());
     }
+    
+    /**
+     * Metodo para regresar el numero de balas restantes
+     * @return balas son las balas restantes
+     */
     public int getBalas(){
         return balas;
         
     }
+    /**
+     * Metodo para modificar la cantidad de balas restantes
+     * @param b es la nueva cantidad de balas
+     */
     public void setBalas(int b){
         balas = b;
     }
 
     /**
-     * @return the dispara
+     * @return dispara
+     * regresa un booleano que indica si el personaje esta disparando
      */
     public boolean isDispara() {
         return dispara;
@@ -121,5 +130,19 @@ public class Personaje extends Base {
      */
     public void setNum(int num) {
         this.num = num;
+    }
+    /**
+     * Metodo que regresa la imagen del personaje saltando
+     * @return imagen del personaje saltando
+     */
+    public Image getSalta(){
+        return imagenSalta;
+    }
+    /**
+     * Metodo que regresa la imagen del personaje disparando
+     * @return imagen del personaje disparando
+     */
+    public Image getDispara(){
+        return imagenDispara;
     }
 }
