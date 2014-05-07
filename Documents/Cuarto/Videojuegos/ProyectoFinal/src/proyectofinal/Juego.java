@@ -76,6 +76,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Personaje jhon; //Personaje principal
     private Enemigo momia;
     private Serpiente cobra;
+    private Serpiente cobra2;
     private LinkedList<Plataforma> plataformaLst; //Lista de plataformas para el primer nivel
     private Plataforma piso; // not used
     private Piedra piedra;
@@ -381,6 +382,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         puntos = 0;
         momia = null;
         cobra = null;
+        cobra2 = null;
         //cont = 0;//contador de tiempo del video al inicio
         auxLeerNombre = true;// permite leer una vez el nombre del jugador
 
@@ -519,6 +521,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         // crear enemigos
 
         cobra = new Serpiente(0, plataformaLst.get(5).getPosY() - 60);
+        cobra2 = new Serpiente (30,plataformaLst.get(9).getPosY() - 60 );
         momia = new Enemigo(55, 0);
         momia.setPosY(getHeight() + momia.getAlto());
         direccionSerpiente = 4;
@@ -830,13 +833,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
             if (cobra != null) {
                 cobra.actualiza(tiempoTranscurrido);
+                cobra2.actualiza(tiempoTranscurrido);
                 switch (direccionSerpiente) {
                     case 3: {
                         cobra.setPosX(cobra.getPosX() - veloc);
+                        //cobra2.setPosX(cobra.getPosX() - veloc);
                         break;    //se mueve hacia izquierda                
                     }
                     case 4: {
                         cobra.setPosX(cobra.getPosX() + veloc);
+                        //cobra2.setPosX(cobra.getPosX() + veloc);
                         break;    //se mueve hacia derecha                  
                     }
                 }
@@ -877,6 +883,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
                 if (cobra != null) {
                     cobra.setPosY(cobra.getPosY() - veloc);
+                    cobra2.setPosY(cobra.getPosY() - veloc);
                 }
                 for (Plataforma p : plataformaLst) {
                     p.setPosY(p.getPosY() - veloc);
@@ -952,7 +959,17 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 gameOver = true;//pierde el juego // o si el personaje cae cuando aun no aparecen las plataformas
                 nivel = 0;
             }
+             if (cobra2.intersecta(jhon)) {
+                gameOver = true;//pierde el juego // o si el personaje cae cuando aun no aparecen las plataformas
+                nivel = 0;
+            }
           if (cobra.intersecta(bala)){
+                cobra.setPosX(getWidth()+100);
+                cobra.setPosY(-100);
+               // bala.cambiaDispara();
+                puntos+=15;
+            }
+          if (cobra2.intersecta(bala)){
                 cobra.setPosX(getWidth()+100);
                 cobra.setPosY(-100);
                // bala.cambiaDispara();
@@ -1241,8 +1258,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawImage(picos.getImagenI(), picos.getPosX(), picos.getPosY(), this);
             if (direccionSerpiente == 3) {
                 g.drawImage(cobra.getImagenI(), cobra.getPosX() + 100, cobra.getPosY(), -cobra.getAncho(), cobra.getAlto(), this);
+                g.drawImage(cobra2.getImagenI(), cobra.getPosX() + 100, cobra.getPosY(), -cobra.getAncho(), cobra.getAlto(), this);
             } else {
                 g.drawImage(cobra.getImagenI(), cobra.getPosX(), cobra.getPosY(), cobra.getAncho(), cobra.getAlto(), this);
+                g.drawImage(cobra2.getImagenI(), cobra.getPosX(), cobra.getPosY(), cobra.getAncho(), cobra.getAlto(), this);
             }
 
             g.drawString("Puntos: " + puntos, getWidth() - 150, 60);
