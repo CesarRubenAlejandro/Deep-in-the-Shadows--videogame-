@@ -332,8 +332,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         diamante5 = new Diamante(getWidth() / 2, plataformaLst.get(10).getPosY() - 60);
         diamante6 = new Diamante(5, plataformaLst.get(14).getPosY() - 60);
         
-        municiones.setPosX(5 );
-        municiones.setPosY(plataformaLst.get(10).getPosY() - 60);
+        //municiones = new Municion (0,0);
+        municiones.setPosX(300 );
+        municiones.setPosY(plataformaLst.get(3).getPosY() - 60);
         
 
         //Se inicializan los enemigos y obstaculos
@@ -1004,7 +1005,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         }
         
-        if(nivel == 2){
+        if(nivel > 1){
             if(jhon.intersecta(municiones)){
                 jhon.setBalas(jhon.getBalas() + 3);
                 municiones.setPosY(-100);
@@ -1229,9 +1230,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 g.drawImage(diamante5.getImagenI(), diamante5.getPosX(), diamante5.getPosY(), this);
                 g.drawImage(diamante6.getImagenI(), diamante6.getPosX(), diamante6.getPosY(), this);
             }
-            if(municiones != null){
+            //if(municiones != null){
                 g.drawImage(municiones.getImagenI(), municiones.getPosX(), municiones.getPosY(), this);
-            }
+            //}
 
             //Dibuja la imagen en la posicion actualizada
             for (Plataforma p : plataformaLst) {
