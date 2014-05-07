@@ -131,6 +131,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     //Antorchas
     private Antorcha antorcha1;
     private Antorcha antorcha2;
+    
+    //Municiones
+    private Municion municiones;
 
     //Puertas
     private Puerta puerta1;
@@ -266,6 +269,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         antorcha2 = new Antorcha(3 * getWidth() / 4, 0);
         antorcha1.setPosY(getHeight() + antorcha1.getAlto());
         antorcha2.setPosY(getHeight() + antorcha2.getAlto());
+        
+        //Municiones
+        municiones = new Municion(0,0);
 
         iniciaMusicaIntro = 0;//Auxiliar para reproducir la musica de introduccion
         iniciaMusicaNivel1 = 0;//Auxiliar para reproducir la musica del nivel 1
@@ -325,6 +331,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         diamante4 = new Diamante(5, plataformaLst.get(8).getPosY() - 60);
         diamante5 = new Diamante(getWidth() / 2, plataformaLst.get(10).getPosY() - 60);
         diamante6 = new Diamante(5, plataformaLst.get(14).getPosY() - 60);
+        
+        municiones.setPosX(5 );
+        municiones.setPosY(plataformaLst.get(10).getPosY() - 60);
+        
 
         //Se inicializan los enemigos y obstaculos
         piedra = new Piedra(this.getWidth() - 110, this.getHeight() - 110);
@@ -862,6 +872,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 diamante4.setPosY(diamante4.getPosY() - veloc);
                 diamante5.setPosY(diamante5.getPosY() - veloc);
                 diamante6.setPosY(diamante6.getPosY() - veloc);
+                municiones.setPosY(municiones.getPosY() - veloc);
 
                 if (cobra != null) {
                     cobra.setPosY(cobra.getPosY() - veloc);
@@ -992,7 +1003,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
 
         }
-
+        
+        if(nivel == 2){
+            if(jhon.intersecta(municiones)){
+                jhon.setBalas(jhon.getBalas() + 3);
+                municiones.setPosY(-100);
+            }
+        }
         if (jhon.getPosY() + jhon.getAlto() - 15 < 0 || (jhon.getPosY() + jhon.getAlto() / 2 > getHeight())) { // si el personaje se pasa por arriba del jframe, pierde el juego (nivel 1)
             gameOver = true;//pierde el juego                                                     // o si el personaje cae cuando aun no aparecen las plataformas
             nivel = 0;
@@ -1211,6 +1228,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 g.drawImage(diamante4.getImagenI(), diamante4.getPosX(), diamante4.getPosY(), this);
                 g.drawImage(diamante5.getImagenI(), diamante5.getPosX(), diamante5.getPosY(), this);
                 g.drawImage(diamante6.getImagenI(), diamante6.getPosX(), diamante6.getPosY(), this);
+            }
+            if(municiones != null){
+                g.drawImage(municiones.getImagenI(), municiones.getPosX(), municiones.getPosY(), this);
             }
 
             //Dibuja la imagen en la posicion actualizada
