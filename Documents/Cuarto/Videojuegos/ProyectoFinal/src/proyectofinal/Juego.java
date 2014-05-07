@@ -476,7 +476,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         // iniciaMusicaIntro = 0;//Auxiliar para reproducir la musica de introduccion
         iniciaMusicaNivel1 = 0;//Auxiliar para reproducir la musica del nivel 1
 
-        nivel = 2;// Nivel 0 indica que todavia no inicia
+        nivel ++;// Nivel 0 indica que todavia no inicia
         menu = false; // comenzamos en el menu
         brinco = 0;
         direccion = 0;
@@ -1387,7 +1387,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 if (jhon.intersecta(puerta1)) {
-                    nivel++;
+                    //nivel++;
                     resetNivel();// SE inicializan todos los valores para el siguiente nivel
                 }
             }
