@@ -44,6 +44,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private boolean puntajes; // Bandera para indicar la pantalla de puntajes
     private boolean saltaIntroduccion; //Bandera para indicar si se salta o no la intro
     private boolean gameOver; // Bandera para indicar la pantalla de Game Over
+    private boolean win; //bandera pra indicar que se gano
     private boolean mueveJohn; //sirve para que cuando el usuario no le este presionando a las flechas,John no se anime!
     private long tiempoActual;
     private int veloc;
@@ -121,6 +122,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image imFondoPuntajes;
     private Image imFondoInstrucciones;
     private Image imFondoGameOver;
+    private Image imFondoWin;
     private Image imFondoNivel1;
     private Image imFondoNivel2;
     private Image imFondoNivel3;
@@ -320,6 +322,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         // imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
         imFondoGameOver = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/gameOver.JPG"));
+         // imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
+        imFondoWin = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/finalJuego.gif"));
         piso = new Plataforma(0, getHeight() + 10);
         //se inicializan actores
         jhon = new Personaje(0, 200 - 100); //menos 100 para que este sobre la primera barra
@@ -375,6 +379,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         puntajes = false;
         pausa = false;
         gameOver = false;
+        win=false;
         sonidosFlag = true;
         musicaFlag = true;
         saltaIntroduccion = false;
@@ -428,6 +433,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         creditos = false;
         puntajes = false;
         gameOver = false;
+        win=false;
         saltaIntroduccion = false;
         // Valores default
         veloc = 3;
@@ -520,6 +526,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         creditos = false;
         puntajes = false;
         gameOver = false;
+        win=false;
         saltaIntroduccion = false;
         // Valores default
         veloc = 3;
@@ -606,7 +613,6 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         while (true) {
             // cambio de colision y actualiza
-
             actualiza();
             checaColision();
             repaint(); // Se actualiza el <code>JFrame</code> repintando el contenido.
@@ -784,8 +790,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * las variables.
      */
     public void actualiza() {
-
-        if (gameOver && auxLeerNombre) { // Si se acaba el juego y esta prendida la bandera
+        
+        if ((win||gameOver) && auxLeerNombre) { // Si se acaba el juego y esta prendida la bandera
             //Leer el nombre del jugador por medio de un OptionPane
             playerName = JOptionPane.showInputDialog(null, "Nombre:", "Puntaje", JOptionPane.QUESTION_MESSAGE);
             if (playerName == null) {
@@ -798,6 +804,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 System.out.println("Error en " + e.toString());
             }
             auxLeerNombre = false; // Apagar bandera para realizar el proceso solo 1 vez cada vez que termine el juego
+            if(win)
+                reset();
         }
         if ((menu) && (iniciaMusica == 0)) { // Se utiliza un bool para todas las musicas de fondo para que se comience a reproducir solo una vez 
             musicaMenu.setLooping(true);
@@ -980,7 +988,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         if (nivel > 0) {
             if (jhon.intersecta(puerta1)) {
                 //nivel++;
-                resetNivel();// SE inicializan todos los valores para el siguiente nivel
+                if(nivel!= 3)
+                    resetNivel();// SE inicializan todos los valores para el siguiente nivel
+                else
+                    win=true;
             }
         }
         if ((bala.getEnMovimiento()) && (bala.getPosX() > getWidth() || bala.getPosX() < 0)) { //Revisar cuando la bala se sale del jframe
@@ -1049,7 +1060,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         }
         //si existe el objeto, ya que solo existe hasta el nivel 2
-        if (!listaCobras.isEmpty()) {
+        if (!listaCobras.isEmpty()&& nivel>1) {
             for (Serpiente s : listaCobras) {
                 if (s.getPosX() < 0) {
                     s.setDireccion(4);
@@ -1092,7 +1103,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         if (momia != null) {
             if (momia.intersecta(jhon)) {
                 gameOver = true;//pierde el juego                                                     // o si el personaje cae cuando aun no aparecen las plataformas
-                nivel = 0;
+               nivel = 0;
             }
             if (momia.intersecta(bala)) {
                 momia.setPosX(getWidth() + 100);
@@ -1135,9 +1146,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         }
 
-        if (nivel > 1) {
-
-        }
+        
         if (jhon.getPosY() + jhon.getAlto() - 15 < 0 || (jhon.getPosY() + jhon.getAlto() / 2 > getHeight())) { // si el personaje se pasa por arriba del jframe, pierde el juego (nivel 1)
             gameOver = true;//pierde el juego   
             sonidoGameOver.play();// o si el personaje cae cuando aun no aparecen las plataformas
@@ -1186,6 +1195,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     public void paint1(Graphics g) {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Baskerville Old Face", Font.BOLD, 20));
+        
         //Si no se ha dado click en el boton de saltarIntroduccion y no ha pasado el tiempo completo del gif se pintan
         if ((cont < 330) && (!saltaIntroduccion)) {
             g.drawImage(imagenIntro, 0, 0, this);
@@ -1270,6 +1280,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawImage(botonRegresa.getImagenI(), botonRegresa.getPosX(), botonRegresa.getPosY(), this);
 
         }
+       
         if (!menu && nivel == 1) {
 
             g.drawImage(imFondoNivel1, 0, 0, this);
@@ -1373,7 +1384,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 if (s.getDireccion() == 3) {
                     g.drawImage(s.getImagenI(), s.getPosX() + 100, s.getPosY(), -s.getAncho(), s.getAlto(), this);
                 } else {
-                    g.drawImage(s.getImagenI(), s.getPosX() + 100, s.getPosY(), s.getAncho(), s.getAlto(), this);
+                    g.drawImage(s.getImagenI(), s.getPosX(), s.getPosY(), s.getAncho(), s.getAlto(), this);
                 }
             }
 
@@ -1420,7 +1431,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 if (s.getDireccion() == 3) {
                     g.drawImage(s.getImagenI(), s.getPosX() + 100, s.getPosY(), -s.getAncho(), s.getAlto(), this);
                 } else {
-                    g.drawImage(s.getImagenI(), s.getPosX() + 100, s.getPosY(), s.getAncho(), s.getAlto(), this);
+                    g.drawImage(s.getImagenI(), s.getPosX(), s.getPosY(), s.getAncho(), s.getAlto(), this);
                 }
             }
 
@@ -1428,7 +1439,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 if (m.getDireccion() == 3) {
                     g.drawImage(m.getImagenI(), m.getPosX() + 100, m.getPosY(), -m.getAncho(), m.getAlto(), this);
                 } else {
-                    g.drawImage(m.getImagenI(), m.getPosX() + 100, m.getPosY(), m.getAncho(), m.getAlto(), this);
+                    g.drawImage(m.getImagenI(), m.getPosX(), m.getPosY(), m.getAncho(), m.getAlto(), this);
                 }
             }
 
@@ -1442,6 +1453,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawImage(cobra.getImagenI(), cobra.getPosX(), cobra.getPosY(), this);
             g.drawImage(bala.getImagenI(), bala.getPosX(), bala.getPosY(), this);
 
+        }
+        if (win) {
+            g.drawImage(imFondoWin, 0, 0, this);
         }
         //Si le tecleo P entonces esta en Pausa
         if (pausa) {
@@ -1523,11 +1537,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
 
             if (e.getKeyCode() == KeyEvent.VK_2) {
-                nivel = 2;
-            }
-
-            if (e.getKeyCode() == KeyEvent.VK_3) {
-                nivel = 3;
+                resetNivel();
             }
 
             if (e.getKeyCode() == KeyEvent.VK_P) {
@@ -1597,6 +1607,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 creditos = false;
                 ajustes = false;
                 gameOver = false;
+                win=false;
             }
         } else if (gameOver) {
             if (botonRegresa.clickEnPersonaje(clickX, clickY)) {
