@@ -16,22 +16,7 @@ import java.awt.Toolkit;
 
 public class Momia extends Base {
 
-    private final static String PAUSE = "PAUSADO";
-    private final static String DISP = "DESAPARECE";
-
-    /**
-     * @return the DISP
-     */
-    public static String getDISP() {
-        return DISP;
-    }
-
-    /**
-     * @return the PAUSE
-     */
-    public static String getPAUSE() {
-        return PAUSE;
-    }
+     private int direccion;
 
     /**
      * Metodo constructor que hereda los atributos de la clase
@@ -39,9 +24,7 @@ public class Momia extends Base {
      *
      * @param posX es la <code>posiscion en x</code> del objeto elefante.
      * @param posY es el <code>posiscion en y</code> del objeto elefante.
-     * @param elefN es la <code>imagen</code> del los objetos elefs.
      * @param anima es la <code>Animacion</code> del objeto elefante.
-     * @param num es la cantidad de elefes <code>Int</code> del objeto elefante.
      */
     public Momia(int posX, int posY) {
         super(posX, posY);
@@ -60,6 +43,8 @@ public class Momia extends Base {
         anima.sumaCuadro(momia3, 200);
         anima.sumaCuadro(momia4, 200);
         anima.sumaCuadro(momia5, 200);
+        
+        direccion =3;
     }
     /**
      * Metodo que hace llamada al metodo de anima para actualizar la imagen segun el tiempo
@@ -69,5 +54,20 @@ public class Momia extends Base {
      */
     public void actualiza(long tiempo) {
         anima.actualiza(tiempo);
+    }
+    
+    /**
+     * Metodo para cambiar la direccion de la momia
+     * @param x es la nueva direccion
+     */
+    public void setDireccion(int x){
+        direccion = x;
+    }
+    /**
+     * Metodo para regresar la direccion de la momia
+     * @return direccion es la direccion de la momia
+     */
+    public int getDireccion(){
+        return direccion;
     }
 }
