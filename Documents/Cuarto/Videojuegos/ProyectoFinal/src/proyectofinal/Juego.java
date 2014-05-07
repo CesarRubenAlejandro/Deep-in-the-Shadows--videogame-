@@ -70,6 +70,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     //Sonidos
     private SoundClip sonidoSalta; //Sonido cuando John salta
     private SoundClip sonidoDiamante; //Sonido cuando John toma un diamante
+    private SoundClip sonidoDisparo;
 
     //Actores
     private Personaje jhon; //Personaje principal
@@ -123,6 +124,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Diamante diamante;
     private Diamante diamante2;
     private Diamante diamante3;
+    private Diamante diamante4;
+    private Diamante diamante5;
+    private Diamante diamante6;
 
     //Antorchas
     private Antorcha antorcha1;
@@ -286,17 +290,18 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         //Sonidos
         sonidoDiamante = new SoundClip("sonidos/clic.wav");
-        sonidoSalta = new SoundClip("sonidos/Cae.wav");
+        sonidoSalta = new SoundClip("sonidos/jumpLink.wav");
+        sonidoDisparo = new SoundClip("sonidos/clic.wav");
 
         // imFondoInstrucciones = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/instrucciones.jpg"));
         imFondoGameOver = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Fondos/gameOver.JPG"));
         piso = new Plataforma(0, getHeight() + 10);
         //se inicializan actores
         jhon = new Personaje(0, 200 - 100); //menos 100 para que este sobre la primera barra
-        jhon.setPosX(jhon.getAncho());
+        jhon.setPosX(jhon.getAncho() + 100);
 
         plataformaLst = new LinkedList();
-        ran = 6;
+        ran = 15;
         //Llenar lista de plataformas
         for (int x = 1; x <= ran; x++) {
 
@@ -312,8 +317,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         }
         //Se inicializan los diamantes
         diamante = new Diamante(5, plataformaLst.get(ran).getPosY() - 60);
-        diamante2 = new Diamante(getWidth() - 100 - diamante.getAncho(), plataformaLst.getFirst().getPosY() - 60);
-        diamante3 = new Diamante(getWidth() / 2, plataformaLst.get(ran / 2).getPosY() - 60);
+        diamante2 = new Diamante(getWidth() - 100 - diamante.getAncho(), plataformaLst.get(4).getPosY() - 60);
+        diamante3 = new Diamante(getWidth() / 2, plataformaLst.get(6).getPosY() - 60);
+        diamante4 = new Diamante(5, plataformaLst.get(8).getPosY() - 60);
+        diamante5 = new Diamante(getWidth() / 2, plataformaLst.get(10).getPosY() - 60);
+        diamante6 = new Diamante(5, plataformaLst.get(14).getPosY() - 60);
+
         //Se inicializan los enemigos y obstaculos
         piedra = new Piedra(this.getWidth() - 110, this.getHeight() - 110);
         picos = new Picos(0, 25);
@@ -393,7 +402,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         //Vaciamos la lista de plataformas y volvemos a llenarla
         plataformaLst.clear();
 
-        ran = 6;
+        ran = 15;
 
         for (int x = 1; x <= ran; x++) {
 
@@ -407,12 +416,27 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
 
         }
+        /*diamante.setPosX(5);
+         diamante.setPosY(plataformaLst.get(12).getPosY() - 60);
+         diamante2.setPosX(getWidth() - 100 - diamante.getAncho());
+         diamante2.setPosY(plataformaLst.getFirst().getPosY() - 60);
+         diamante3.setPosX(getWidth() / 2);
+         diamante3.setPosY(plataformaLst.get(ran / 2).getPosY() - 60);*/
+
+        //Se inicializan los diamantes
         diamante.setPosX(5);
-        diamante.setPosY(plataformaLst.get(ran).getPosY() - 60);
+        diamante.setPosY(plataformaLst.get(3).getPosY() - 60);
         diamante2.setPosX(getWidth() - 100 - diamante.getAncho());
-        diamante2.setPosY(plataformaLst.getFirst().getPosY() - 60);
+        diamante2.setPosY(plataformaLst.get(5).getPosY() - 60);
         diamante3.setPosX(getWidth() / 2);
-        diamante3.setPosY(plataformaLst.get(ran / 2).getPosY() - 60);
+        diamante3.setPosY(plataformaLst.get(7).getPosY() - 60);
+        diamante4.setPosX(5);
+        diamante4.setPosY(plataformaLst.get(8).getPosY() - 60);
+        diamante5.setPosX(getWidth() / 2);
+        diamante5.setPosY(plataformaLst.get(10).getPosY() - 60);
+        diamante6.setPosX(5);
+        diamante6.setPosY(plataformaLst.get(14).getPosY() - 60);
+
         //Se reposiciona a Jhon para que inicie desde arriba 
         jhon.setPosX(getWidth() / 2);
         jhon.setPosY(200 - 100); // Valor aproximado para que empiece arriba de todas las plataformas
@@ -487,11 +511,18 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         momia.setPosY(getHeight() + momia.getAlto());
         direccionSerpiente = 4;
         diamante.setPosX(5);
-        diamante.setPosY(plataformaLst.get(ran).getPosY() - 60);
+        diamante.setPosY(plataformaLst.get(3).getPosY() - 60);
         diamante2.setPosX(getWidth() - 100 - diamante.getAncho());
-        diamante2.setPosY(plataformaLst.getFirst().getPosY() - 60);
+        diamante2.setPosY(plataformaLst.get(5).getPosY() - 60);
         diamante3.setPosX(getWidth() / 2);
-        diamante3.setPosY(plataformaLst.get(ran / 2).getPosY() - 60);
+        diamante3.setPosY(plataformaLst.get(7).getPosY() - 60);
+        diamante4.setPosX(5);
+        diamante4.setPosY(plataformaLst.get(8).getPosY() - 60);
+        diamante5.setPosX(getWidth() / 2);
+        diamante5.setPosY(plataformaLst.get(10).getPosY() - 60);
+        diamante6.setPosX(5);
+        diamante6.setPosY(plataformaLst.get(14).getPosY() - 60);
+
         //Se reposiciona a Jhon para que inicie desde arriba 
         jhon.setPosX(getWidth() / 2);
         Plataforma aux = (Plataforma) plataformaLst.get(0);
@@ -676,11 +707,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      */
     public void mueveObjetos() {
 
-        antorcha1.setPosY(plataformaLst.get(ran + 4).getPosY() - antorcha1.getAlto());
-        antorcha2.setPosY(plataformaLst.get(ran + 4).getPosY() - antorcha1.getAlto());
-        puerta1.setPosY(plataformaLst.get(ran + 4).getPosY() - puerta1.getAlto());
+        antorcha1.setPosY(plataformaLst.get(ran + 13).getPosY() - antorcha1.getAlto());
+        antorcha2.setPosY(plataformaLst.get(ran + 13).getPosY() - antorcha1.getAlto());
+        puerta1.setPosY(plataformaLst.get(ran + 13).getPosY() - puerta1.getAlto());
         if (momia != null) {
-            momia.setPosY(plataformaLst.get(ran + 4).getPosY() - momia.getAlto());
+            momia.setPosY(plataformaLst.get(ran + 13).getPosY() - momia.getAlto());
         }
 
     }
@@ -773,6 +804,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             diamante.actualiza(tiempoTranscurrido);
             diamante2.actualiza(tiempoTranscurrido);
             diamante3.actualiza(tiempoTranscurrido);
+            diamante4.actualiza(tiempoTranscurrido);
+            diamante5.actualiza(tiempoTranscurrido);
+            diamante6.actualiza(tiempoTranscurrido);
             antorcha1.actualiza(tiempoTranscurrido);
             antorcha2.actualiza(tiempoTranscurrido);
             if (momia != null) {
@@ -816,10 +850,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
 
             //mueve plataforma hacia arriba hasta que sea la ultima barra
-            if (plataformaLst.get(ran + 4).getPosY() > getHeight() - 40) {
+            if (plataformaLst.get(ran + 13).getPosY() > getHeight() - 40) {
                 diamante.setPosY(diamante.getPosY() - veloc);
                 diamante2.setPosY(diamante2.getPosY() - veloc);
                 diamante3.setPosY(diamante3.getPosY() - veloc);
+                diamante4.setPosY(diamante4.getPosY() - veloc);
+                diamante5.setPosY(diamante5.getPosY() - veloc);
+                diamante6.setPosY(diamante6.getPosY() - veloc);
+
                 if (cobra != null) {
                     cobra.setPosY(cobra.getPosY() - veloc);
                 }
@@ -903,6 +941,30 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         //Revisa si John intersecta con un diamante
         if (jhon.intersecta(diamante3)) {
             diamante3.setPosX(-100);
+            puntos += 10;
+            if (sonidosFlag) {
+                sonidoDiamante.play();
+            }
+
+        }
+        if (jhon.intersecta(diamante4)) {
+            diamante4.setPosX(-100);
+            puntos += 10;
+            if (sonidosFlag) {
+                sonidoDiamante.play();
+            }
+
+        }
+        if (jhon.intersecta(diamante5)) {
+            diamante5.setPosX(-100);
+            puntos += 10;
+            if (sonidosFlag) {
+                sonidoDiamante.play();
+            }
+
+        }
+        if (jhon.intersecta(diamante6)) {
+            diamante6.setPosX(-100);
             puntos += 10;
             if (sonidosFlag) {
                 sonidoDiamante.play();
@@ -1071,6 +1133,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
                 g.drawImage(diamante2.getImagenI(), diamante2.getPosX(), diamante2.getPosY(), this);
                 g.drawImage(diamante3.getImagenI(), diamante3.getPosX(), diamante3.getPosY(), this);
+                g.drawImage(diamante4.getImagenI(), diamante4.getPosX(), diamante4.getPosY(), this);
+                g.drawImage(diamante5.getImagenI(), diamante5.getPosX(), diamante5.getPosY(), this);
+                g.drawImage(diamante6.getImagenI(), diamante6.getPosX(), diamante6.getPosY(), this);
             }
 
             //Dibuja la imagen en la posicion actualizada
@@ -1115,6 +1180,15 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), jhon.getAncho(), jhon.getAlto(), this);
                 }
             }
+            if ((diamante != null) && (diamante2 != null) && (diamante3 != null)) {
+                g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
+                g.drawImage(diamante2.getImagenI(), diamante2.getPosX(), diamante2.getPosY(), this);
+                g.drawImage(diamante3.getImagenI(), diamante3.getPosX(), diamante3.getPosY(), this);
+                g.drawImage(diamante4.getImagenI(), diamante4.getPosX(), diamante4.getPosY(), this);
+                g.drawImage(diamante5.getImagenI(), diamante5.getPosX(), diamante5.getPosY(), this);
+                g.drawImage(diamante6.getImagenI(), diamante6.getPosX(), diamante6.getPosY(), this);
+            }
+
             //Dibuja la imagen en la posicion actualizada
             for (Plataforma p : plataformaLst) {
                 g.drawImage(p.getImagenI(), p.getPosX(), p.getPosY(), this);
@@ -1149,14 +1223,34 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     g.drawImage(getJhon().getImagenI(), getJhon().getPosX(), getJhon().getPosY(), jhon.getAncho(), jhon.getAlto(), this);
                 }
             }
-            g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
+
+            if ((diamante != null) && (diamante2 != null) && (diamante3 != null)) {
+                g.drawImage(diamante.getImagenI(), diamante.getPosX(), diamante.getPosY(), this);
+                g.drawImage(diamante2.getImagenI(), diamante2.getPosX(), diamante2.getPosY(), this);
+                g.drawImage(diamante3.getImagenI(), diamante3.getPosX(), diamante3.getPosY(), this);
+                g.drawImage(diamante4.getImagenI(), diamante4.getPosX(), diamante4.getPosY(), this);
+                g.drawImage(diamante5.getImagenI(), diamante5.getPosX(), diamante5.getPosY(), this);
+                g.drawImage(diamante6.getImagenI(), diamante6.getPosX(), diamante6.getPosY(), this);
+            }
+
+            for (Plataforma p : plataformaLst) {
+                g.drawImage(p.getImagenI(), p.getPosX(), p.getPosY(), this);
+            }
+            if (direccionSerpiente == 3) {
+                g.drawImage(cobra.getImagenI(), cobra.getPosX() + 100, cobra.getPosY(), -cobra.getAncho(), cobra.getAlto(), this);
+            } else {
+                g.drawImage(cobra.getImagenI(), cobra.getPosX(), cobra.getPosY(), cobra.getAncho(), cobra.getAlto(), this);
+            }
+
+            g.drawString("Puntos: " + puntos, getWidth() - 150, 60);
+            g.drawString("Balas: " + jhon.getBalas(), getWidth() - 250, 60);
+
             g.drawImage(puerta1.getImagenI(), puerta1.getPosX(), puerta1.getPosY(), this);
-            g.drawImage(picos.getImagenI(), picos.getPosX(), picos.getPosY(), this);
+
             g.drawImage(piedra.getImagenI(), piedra.getPosX(), piedra.getPosY(), this);
             g.drawImage(momia.getImagenI(), momia.getPosX(), momia.getPosY(), this);
             g.drawImage(cobra.getImagenI(), cobra.getPosX(), cobra.getPosY(), this);
-            g.drawString("Puntos: " + puntos, getWidth() - 150, 60);
-            g.drawString("Balas: " + jhon.getBalas(), getWidth() - 250, 60);
+
         }
         //Si le tecleo P entonces esta en Pausa
         if (pausa) {
@@ -1203,11 +1297,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         }
 
         if (e.getKeyCode() == KeyEvent.VK_B) {
-            jhon.setNum(5);
 
-            if ((nivel > 1) && (jhon.getBalas() > 0)) {
+            if ( (jhon.getBalas() > 0)) {
                 jhon.setDispara(true);
+                jhon.setNum(5);
                 jhon.setBalas(jhon.getBalas() - 1);
+                sonidoDisparo.play();
             }
 
         }

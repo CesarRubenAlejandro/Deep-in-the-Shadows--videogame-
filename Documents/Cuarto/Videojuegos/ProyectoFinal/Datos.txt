@@ -1,3 +1,5 @@
+-
+60
 Alejandro
 50
 l
@@ -5,6 +7,4 @@ l
 luis
 50
 Tu
-40
-luis
 40
