@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package proyectofinal;
 
 /**
@@ -12,20 +11,29 @@ package proyectofinal;
  */
 import java.awt.Image;
 import java.awt.Toolkit;
+
 public class Puerta extends Base {
+
+    /**
+     * Metodo constructor de la clase puerta
+     *
+     * @param posX es la posicion en x
+     * @param posY es la posicion en y
+     */
     public Puerta(int posX, int posY) {
         super(posX, posY);
         //Se cargan las imágenes(cuadros) para la animación
         Image diamante2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/puerta.png"));
-      
+
         //Se crea la animación
         anima = new Animacion();
         anima.sumaCuadro(diamante2, 100);
-       
+
     }
+
     /**
-     * Metodo que hace llamada al metodo de anima para actualizar la imagen segun el tiempo
-     * <code>Animacion</code>.
+     * Metodo que hace llamada al metodo de anima para actualizar la imagen
+     * segun el tiempo <code>Animacion</code>.
      *
      * @param tiempo es el tiempo <code>Int</code> del objeto Animacion.
      */

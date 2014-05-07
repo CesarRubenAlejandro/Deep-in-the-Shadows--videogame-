@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package proyectofinal;
+
 /**
  * Clase Piedra
  *
- * @author Luis Reyna 
+ * @author Luis Reyna
  * @version 1.00 2014/9/4
  */
 import java.awt.Image;
@@ -16,7 +16,7 @@ import java.awt.Toolkit;
 
 public class Momia extends Base {
 
-     private int direccion;
+    private int direccion;
 
     /**
      * Metodo constructor que hereda los atributos de la clase
@@ -43,31 +43,35 @@ public class Momia extends Base {
         anima.sumaCuadro(momia3, 200);
         anima.sumaCuadro(momia4, 200);
         anima.sumaCuadro(momia5, 200);
-        
-        direccion =3;
+
+        direccion = 3;
     }
+
     /**
-     * Metodo que hace llamada al metodo de anima para actualizar la imagen segun el tiempo
-     * <code>Animacion</code>.
+     * Metodo que hace llamada al metodo de anima para actualizar la imagen
+     * segun el tiempo <code>Animacion</code>.
      *
      * @param tiempo es el tiempo <code>Int</code> del objeto Animacion.
      */
     public void actualiza(long tiempo) {
         anima.actualiza(tiempo);
     }
-    
+
     /**
      * Metodo para cambiar la direccion de la momia
+     *
      * @param x es la nueva direccion
      */
-    public void setDireccion(int x){
+    public void setDireccion(int x) {
         direccion = x;
     }
+
     /**
      * Metodo para regresar la direccion de la momia
+     *
      * @return direccion es la direccion de la momia
      */
-    public int getDireccion(){
+    public int getDireccion() {
         return direccion;
     }
 }

@@ -14,6 +14,12 @@ import java.awt.Toolkit;
 
 public class Antorcha extends Base {
 
+    /**
+     * Metodo constructor de la clase
+     *
+     * @param posX es la posicion en x
+     * @param posY es la posision en y
+     */
     public Antorcha(int posX, int posY) {
         super(posX, posY);
         //Se cargan las imágenes(cuadros) para la animación

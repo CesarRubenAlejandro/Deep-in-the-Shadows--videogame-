@@ -1,8 +1,9 @@
 package proyectofinal;
+
 /**
  * Clase Personaje
  *
- * @author Luis Reyna 
+ * @author Luis Reyna
  * @version 1.00 2014/9/4
  */
 import java.awt.Image;
@@ -21,22 +22,22 @@ public class Personaje extends Base {
      * Metodo constructor que hereda los atributos de la clase
      * <code>Base</code>.
      *
-     * @param posX es la <code>posiscion en x</code> del objeto personaje. 
+     * @param posX es la <code>posiscion en x</code> del objeto personaje.
      * @param posY es el <code>posiscion en y</code> del objeto personaje
      */
     public Personaje(int posX, int posY) {
-        
+
         super(posX, posY);
         //Se cargan las imágenes(cuadros) para la animación
-        
+
         Image corre1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/jhon1.png"));
         Image corre2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/jhon2.png"));
         Image corre3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/jhon3.png"));
         Image corre4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/jhon4.png"));
-        
-        imagenDispara= Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/disparo.png"));
+
+        imagenDispara = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/disparo.png"));
         imagenSalta = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/saltaaa.png"));
-        
+
         //Se crea la animación
         anima = new Animacion();
         anima.sumaCuadro(corre1, 200);
@@ -46,22 +47,25 @@ public class Personaje extends Base {
         balas = 5;
         dispara = false;
     }
+
     /**
-     * Metodo que hace llamada al metodo de anima para actualizar la imagen segun el tiempo
-     * <code>Animacion</code>.
+     * Metodo que hace llamada al metodo de anima para actualizar la imagen
+     * segun el tiempo <code>Animacion</code>.
      *
      * @param tiempo es el tiempo <code>Int</code> del objeto Animacion.
      */
     public void actualiza(long tiempo) {
-        if(isDispara()){
-          //  dispAnim.actualiza(tiempo);
+        if (isDispara()) {
+            //  dispAnim.actualiza(tiempo);
             num--;
-            if(num==0)
+            if (num == 0) {
                 setDispara(false);
-        }else{
+            }
+        } else {
             anima.actualiza(tiempo);
         }
     }
+
     /**
      * Metodo de acceso que regresa un nuevo rectangulo
      *
@@ -69,14 +73,13 @@ public class Personaje extends Base {
      * del rectangulo
      */
     public Rectangle getPerimetroJhon() {
-        
-        return new Rectangle((int) getPosX(), (int) getPosY()+80, getAncho(), getAlto()-80);
+
+        return new Rectangle((int) getPosX(), (int) getPosY() + 80, getAncho(), getAlto() - 80);
     }
-    
 
     /**
      * Metodo intersecta
-     * 
+     *
      * Checa si el objeto <code>Animal</code> intersecta a otro
      * <code>Animal</code>
      *
@@ -86,26 +89,29 @@ public class Personaje extends Base {
     public boolean intersectaJhon(Base obj) {
         return getPerimetroJhon().intersects(obj.getPerimetro());
     }
-    
+
     /**
      * Metodo para regresar el numero de balas restantes
+     *
      * @return balas son las balas restantes
      */
-    public int getBalas(){
+    public int getBalas() {
         return balas;
-        
+
     }
+
     /**
      * Metodo para modificar la cantidad de balas restantes
+     *
      * @param b es la nueva cantidad de balas
      */
-    public void setBalas(int b){
+    public void setBalas(int b) {
         balas = b;
     }
 
     /**
-     * @return dispara
-     * regresa un booleano que indica si el personaje esta disparando
+     * @return dispara regresa un booleano que indica si el personaje esta
+     * disparando
      */
     public boolean isDispara() {
         return dispara;
@@ -131,18 +137,22 @@ public class Personaje extends Base {
     public void setNum(int num) {
         this.num = num;
     }
+
     /**
      * Metodo que regresa la imagen del personaje saltando
+     *
      * @return imagen del personaje saltando
      */
-    public Image getSalta(){
+    public Image getSalta() {
         return imagenSalta;
     }
+
     /**
      * Metodo que regresa la imagen del personaje disparando
+     *
      * @return imagen del personaje disparando
      */
-    public Image getDispara(){
+    public Image getDispara() {
         return imagenDispara;
     }
 }

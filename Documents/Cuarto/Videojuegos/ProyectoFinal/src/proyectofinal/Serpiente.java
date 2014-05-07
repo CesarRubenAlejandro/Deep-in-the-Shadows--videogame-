@@ -3,27 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package proyectofinal;
+
 /**
  * Clase Piedra
  *
- * @author Luis Reyna 
+ * @author Luis Reyna
  * @version 1.00 2014/9/4
  */
 import java.awt.Image;
 import java.awt.Toolkit;
 
 public class Serpiente extends Base {
+
     private int direccion;
 
     /**
      * Metodo constructor que hereda los atributos de la clase
      * <code>Base</code>.
      *
-     * @param posX es la <code>posiscion en x</code> del objeto elefante.
-     * @param posY es el <code>posiscion en y</code> del objeto elefante.
-     * @param anima es la <code>Animacion</code> del objeto elefante.
+     * @param posX es la <code>posiscion en x</code> del objeto serpiente.
+     * @param posY es el <code>posiscion en y</code> del objeto serpiente.
+     * @param anima es la <code>Animacion</code> del objeto serpiente.
      */
     public Serpiente(int posX, int posY) {
         super(posX, posY);
@@ -37,26 +38,31 @@ public class Serpiente extends Base {
         anima.sumaCuadro(serpiente, 100);
         anima.sumaCuadro(serpiente1, 100);
     }
-    
+
     /**
      * Metodo para regresar el parametro de animacion
+     *
      * @return anima es la animacion de la serpiente
      */
-    public Animacion getAnima(){
+    public Animacion getAnima() {
         return anima;
     }
+
     /**
      * Metodo para cambiar la direccion de la serpiente
+     *
      * @param x es la nueva direccion
      */
-    public void setDireccion(int x){
+    public void setDireccion(int x) {
         direccion = x;
     }
+
     /**
      * Metodo para regresar la direccion de la serpiente
+     *
      * @return direccion es la direccion de la serpiente
      */
-    public int getDireccion(){
+    public int getDireccion() {
         return direccion;
     }
 }

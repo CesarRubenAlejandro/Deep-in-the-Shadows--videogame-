@@ -171,6 +171,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private LinkedList<Momia> listaMomias;
 
     //Constructor
+    /**
+     * Metodo constructor del juego
+     */
     public Juego() {
         setTitle("Deep in the shadows");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -472,7 +475,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         municiones2.setPosX(30);
         municiones2.setPosY(plataformaLst.get(6).getPosY() - 45);
         municiones3.setPosX(getWidth() / 2);
-        municiones3.setPosY(plataformaLst.get(12).getPosY() - 45);  
+        municiones3.setPosY(plataformaLst.get(12).getPosY() - 45);
 
         //Se reposiciona a Jhon para que inicie desde arriba 
         jhon.setPosX(getWidth() / 2);
@@ -488,7 +491,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     }
 
     /**
-     * Reset - limpia y prepara todo para el inicio del nuevo juego.
+     * Reset - limpia y prepara todo para el inicio del nuevo nivel
      *
      */
     public void resetNivel() {
@@ -758,9 +761,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         }
     }
 
-    /*
-     Este metodo sirve para mover los objetos antorchas y puertas junto a la ultima barra
-     Los objetos estan posicionados encima de la ultima barra, de esta forma simulan moverse junto a ella
+    /**
+     * Este metodo sirve para mover los objetos antorchas y puertas junto a la
+     * ultima barra Los objetos estan posicionados encima de la ultima barra, de
+     * esta forma simulan moverse junto a ella
      */
     public void mueveObjetos() {
 
@@ -1665,17 +1669,4 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     public void setJhon(Personaje jhon) {
         this.jhon = jhon;
     }
-
-    /**
-     * @return the enemigo
-     */
-    ///public Enemigo getEnemigo() {
-    //  return enemigo;
-    // }
-    /**
-     * @param enemigo the enemigo to set
-     */
-  //  public void setEnemigo(Enemigo enemigo) {
-    //     this.enemigo = enemigo;
-    // }
 }

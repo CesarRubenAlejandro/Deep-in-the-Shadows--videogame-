@@ -1,9 +1,9 @@
-
 package proyectofinal;
+
 /**
  * Clase Personaje
  *
- * @author Luis Reyna 
+ * @author Luis Reyna
  * @version 1.00 2014/9/4
  */
 import java.awt.Image;
@@ -35,18 +35,25 @@ public class Enemigo extends Base {
         anima.sumaCuadro(momia3, 300);
         anima.sumaCuadro(momia4, 400);
         anima.sumaCuadro(momia5, 500);
- 
+
     }
+
     /**
-     * Metodo que hace llamada al metodo de anima para actualizar la imagen segun el tiempo
-     * <code>Animacion</code>.
+     * Metodo que hace llamada al metodo de anima para actualizar la imagen
+     * segun el tiempo <code>Animacion</code>.
      *
      * @param tiempo es el tiempo <code>Int</code> del objeto Animacion.
      */
     public void actualiza(long tiempo) {
         anima.actualiza(tiempo);
     }
-    public Animacion getAnima(){
+
+    /**
+     * Metodo para obtener el atributo de animacion del enemigo
+     *
+     * @return anima es la animacion del objeto enemigo
+     */
+    public Animacion getAnima() {
         return anima;
     }
 }

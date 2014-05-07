@@ -1,32 +1,15 @@
-
 package proyectofinal;
+
 /**
  * Clase Picos
  *
- * @author Luis Reyna 
+ * @author Luis Reyna
  * @version 1.00 2014/9/4
  */
 import java.awt.Image;
 import java.awt.Toolkit;
 
 public class Picos extends Base {
-
-    private final static String PAUSE = "PAUSADO";
-    private final static String DISP = "DESAPARECE";
-
-    /**
-     * @return the DISP
-     */
-    public static String getDISP() {
-        return DISP;
-    }
-
-    /**
-     * @return the PAUSE
-     */
-    public static String getPAUSE() {
-        return PAUSE;
-    }
 
     /**
      * Metodo constructor que hereda los atributos de la clase
@@ -47,9 +30,10 @@ public class Picos extends Base {
         anima = new Animacion();
         anima.sumaCuadro(picos, 100);
     }
+
     /**
-     * Metodo que hace llamada al metodo de anima para actualizar la imagen segun el tiempo
-     * <code>Animacion</code>.
+     * Metodo que hace llamada al metodo de anima para actualizar la imagen
+     * segun el tiempo <code>Animacion</code>.
      *
      * @param tiempo es el tiempo <code>Int</code> del objeto Animacion.
      */

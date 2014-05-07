@@ -1,9 +1,9 @@
-
 package proyectofinal;
+
 /**
  * Clase Diamante
  *
- * @author Luis Reyna 
+ * @author Luis Reyna
  * @version 1.00 2014/9/4
  */
 import java.awt.Image;
@@ -31,9 +31,10 @@ public class Diamante extends Base {
         anima.sumaCuadro(diamante2, 100);
         anima.sumaCuadro(diamante3, 100);
     }
+
     /**
-     * Metodo que hace llamada al metodo de anima para actualizar la imagen segun el tiempo
-     * <code>Animacion</code>.
+     * Metodo que hace llamada al metodo de anima para actualizar la imagen
+     * segun el tiempo <code>Animacion</code>.
      *
      * @param tiempo es el tiempo <code>Int</code> del objeto Animacion.
      */
